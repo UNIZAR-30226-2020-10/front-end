@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/pages/show_list.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,6 +9,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      routes:{
+        '/list':(context) => ShowList(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -20,7 +24,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'TUSA'),
     );
   }
 }
@@ -102,7 +106,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: (){
+          Navigator.pushNamed(context, '/list',arguments: {
+            'list_title':'Favoritos'
+          });
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
