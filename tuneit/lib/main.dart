@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/pages/playlists.dart';
 import 'package:tuneit/pages/show_list.dart';
 
 void main() => runApp(MyApp());
@@ -9,8 +10,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      initialRoute: '/playlists',
       routes:{
         '/list':(context) => ShowList(),
+        '/playlists':(context) => PlayLists(),
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -107,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.pushNamed(context, '/list',arguments: {
+          Navigator.pushNamed(context, '/playlists',arguments: {
             'list_title':'Favoritos'
           });
         },
