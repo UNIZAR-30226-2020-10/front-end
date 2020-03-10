@@ -49,15 +49,6 @@ class _State extends State<ShowList> {
 
     super.initState();
     ObtenerDatos();
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-    print(songs.length);
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
 
 
   }
@@ -97,7 +88,13 @@ class _State extends State<ShowList> {
                   itemBuilder:( context,index){
                     return Card(
                       child: ListTile(
-                        onTap:(){},
+                        onTap:(){
+                          Navigator.pushReplacementNamed(context, '/player',arguments: {
+                          'titulo_cancion':songs[index].title,
+                          'artista':songs[index].artist,
+                          'url_imagen':songs[index].album
+                          });
+                        },
 
                         leading: CircleAvatar(
                          backgroundImage: AssetImage(

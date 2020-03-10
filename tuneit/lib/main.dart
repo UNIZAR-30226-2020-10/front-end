@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/pages/playlists.dart';
 import 'package:tuneit/pages/show_list.dart';
+import 'package:tuneit/pages/player_song.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
       routes:{
         '/list':(context) => ShowList(),
         '/playlists':(context) => PlayLists(),
+        '/player':(context) => PlayerPage(),
       },
       theme: ThemeData(
         // This is the theme of your application.
