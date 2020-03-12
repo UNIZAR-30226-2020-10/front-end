@@ -10,26 +10,28 @@ enum PlayingRouteState { speakers, earpiece }
 class PlayerWidget extends StatefulWidget {
   final String url;
   final PlayerMode mode;
+   int indice;
+   bool second;
 
-  PlayerWidget({@required this.url, this.mode = PlayerMode.MEDIA_PLAYER});
+  PlayerWidget({@required this.url, this.mode = PlayerMode.MEDIA_PLAYER, int indice,bool second});
 
   @override
   State<StatefulWidget> createState() {
-    return _PlayerWidgetState(url, mode);
+    return _PlayerWidgetState(url, mode,indice,second);
   }
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
   String url;
   PlayerMode mode;
+  int indice;
+  bool second;
 
   AudioPlayer _audioPlayer;
-  AudioPlayerState _audioPlayerState;
   Duration _duration;
   Duration _position;
 
   PlayerState _playerState = PlayerState.stopped;
-  PlayingRouteState _playingRouteState = PlayingRouteState.speakers;
   StreamSubscription _durationSubscription;
   StreamSubscription _positionSubscription;
   StreamSubscription _playerCompleteSubscription;
@@ -42,7 +44,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   get _positionText => _position?.toString()?.split('.')?.first ?? '';
 
 
-  _PlayerWidgetState(this.url, this.mode);
+  _PlayerWidgetState(this.url, this.mode,this.indice,this.second);
 
   @override
   void initState() {
@@ -78,7 +80,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                 icon: Icon(Icons.skip_previous),
                 onPressed: () {
 
-
+                  _stop();
 
                 }),
 
@@ -98,6 +100,10 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                 iconSize: 64.0,
                 icon: Icon(Icons.skip_next),
                 onPressed: () {
+
+                  _stop();
+
+
                   // setState(() {});
                 }),
 
@@ -172,20 +178,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
         _position = Duration(seconds: 0);
       });
     });
-
-    _audioPlayer.onPlayerStateChanged.listen((state) {
-      if (!mounted) return;
-      setState(() {
-        _audioPlayerState = state;
-      });
-    });
-
-    _audioPlayer.onNotificationPlayerStateChanged.listen((state) {
-      if (!mounted) return;
-      setState(() => _audioPlayerState = state);
-    });
-
-    _playingRouteState = PlayingRouteState.speakers;
   }
 
   Future<int> _play() async {

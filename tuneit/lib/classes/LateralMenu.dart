@@ -18,12 +18,12 @@ class MenuLateral extends StatelessWidget {
           new ListTile(
             title: Text('Música'),
             onTap:(){
-              Navigator.push(
+             /* Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => PlayerPage(),
                 ),
-              );
+              );*/
             }
           ),
           new ListTile(

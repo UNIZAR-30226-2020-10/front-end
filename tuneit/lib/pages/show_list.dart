@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/Song.dart';
+import 'package:tuneit/pages/player_song.dart';
 
 class ShowList extends StatefulWidget {
   @override
@@ -9,27 +10,33 @@ class ShowList extends StatefulWidget {
 class _State extends State<ShowList> {
   List<Song> songs= new List<Song>();
   String list_title;
+  int indice;
+
+
+
+
 
   Future<void> fillthelist ( ) async{
 
-      songs.add(Song(title:'Si veo a tu mama',album:'1.jpg',artist:'Bad bunny'));
-      songs.add(Song(title:'All Shall Fall',album:'2.jpeg',artist:'Immortal'));
-      songs.add(Song(title:'Primo Victoria',album:'3.jpg',artist:'Sabaton'));
-      songs.add(Song(title:'Si veo a tu mama',album:'1.jpg',artist:'Bad bunny'));
-      songs.add(Song(title:'All Shall Fall',album:'2.jpeg',artist:'Immortal'));
-      songs.add(Song(title:'Primo Victoria',album:'3.jpg',artist:'Sabaton'));
-      songs.add(Song(title:'Master of Puppets',album:'4.jpg',artist:'Metallica'));
-      songs.add(Song(title:'Se preparó',album:'5.jpeg',artist:'Ozuna'));
-      songs.add(Song(title:'Du Hast',album:'6.jpg',artist:'Rammstein'));
-      songs.add(Song(title:'Master of Puppets',album:'4.jpg',artist:'Metallica'));
-      songs.add(Song(title:'Si veo a tu mama',album:'1.jpg',artist:'Bad bunny'));
-      songs.add(Song(title:'All Shall Fall',album:'2.jpeg',artist:'Immortal'));
-      songs.add(Song(title:'Primo Victoria',album:'3.jpg',artist:'Sabaton'));
-      songs.add(Song(title:'Master of Puppets',album:'4.jpg',artist:'Metallica'));
-      songs.add(Song(title:'Se preparó',album:'5.jpeg',artist:'Ozuna'));
-      songs.add(Song(title:'Du Hast',album:'6.jpg',artist:'Rammstein'));
-      songs.add(Song(title:'Se preparó',album:'5.jpeg',artist:'Ozuna'));
-      songs.add(Song(title:'Du Hast',album:'6.jpg',artist:'Rammstein'));
+      songs.add(Song(title:'Si veo a tu mama',album:'1.jpg',artist:'Bad bunny',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
+      songs.add(Song(title:'All Shall Fall',album:'2.jpeg',artist:'Immortal',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
+      songs.add(Song(title:'Primo Victoria',album:'3.jpg',artist:'Sabaton',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
+      songs.add(Song(title:'Si veo a tu mama',album:'1.jpg',artist:'Bad bunny',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
+      songs.add(Song(title:'All Shall Fall',album:'2.jpeg',artist:'Immortal',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
+      songs.add(Song(title:'Primo Victoria',album:'3.jpg',artist:'Sabaton',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
+      songs.add(Song(title:'Master of Puppets',album:'4.jpg',artist:'Metallica',url:'https://luan.xyz/files/audio/ambient_c_motion.mp3'));
+      songs.add(Song(title:'Se preparó',album:'5.jpeg',artist:'Ozuna',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
+      songs.add(Song(title:'Du Hast',album:'6.jpg',artist:'Rammstein',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
+      songs.add(Song(title:'Master of Puppets',album:'4.jpg',artist:'Metallica',url:'https://luan.xyz/files/audio/ambient_c_motion.mp3'));
+      songs.add(Song(title:'Si veo a tu mama',album:'1.jpg',artist:'Bad bunny',url:'https://luan.xyz/files/audio/ambient_c_motion.mp3'));
+      songs.add(Song(title:'All Shall Fall',album:'2.jpeg',artist:'Immortal',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
+      songs.add(Song(title:'Primo Victoria',album:'3.jpg',artist:'Sabaton',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
+      songs.add(Song(title:'Master of Puppets',album:'4.jpg',artist:'Metallica',url:'https://luan.xyz/files/audio/ambient_c_motion.mp3'));
+      songs.add(Song(title:'Se preparó',album:'5.jpeg',artist:'Ozuna',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
+      songs.add(Song(title:'Du Hast',album:'6.jpg',artist:'Rammstein', url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
+      songs.add(Song(title:'Se preparó',album:'5.jpeg',artist:'Ozuna',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
+      songs.add(Song(title:'Du Hast',album:'6.jpg',artist:'Rammstein',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
+
   }
 
 
@@ -89,11 +96,20 @@ class _State extends State<ShowList> {
                     return Card(
                       child: ListTile(
                         onTap:(){
-                          Navigator.pushReplacementNamed(context, '/player',arguments: {
-                          'titulo_cancion':songs[index].title,
-                          'artista':songs[index].artist,
-                          'url_imagen':songs[index].album
-                          });
+                          /*Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>  PlayerPage(indice,songs),
+                            ),
+                          );
+                          PlayerPage(
+                              indice:index,
+                              songs: songs);*/
+                          //_navigateHome(context,index);
+                         Navigator.of(context).push(MaterialPageRoute(
+                           builder: (context) => PlayerPage(songs: songs,indice: index),
+
+                         ));
                         },
 
                         leading: CircleAvatar(
@@ -120,7 +136,15 @@ class _State extends State<ShowList> {
       bottomNavigationBar: NewWidget(),
     );
   }
+
+
+
+
 }
+
+
+
+
 
 class NewWidget extends StatefulWidget {
   const NewWidget({

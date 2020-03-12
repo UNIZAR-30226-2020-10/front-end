@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       routes:{
         '/list':(context) => ShowList(),
         '/playlists':(context) => PlayLists(),
-        '/player':(context) => PlayerPage(),
+        /*'/player':(context) => PlayerPage(),*/
       },
       theme: ThemeData(
         // This is the theme of your application.

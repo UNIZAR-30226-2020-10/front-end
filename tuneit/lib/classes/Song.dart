@@ -4,7 +4,8 @@ class Song{
   String title;
   String album;
   String artist;
-  Song({this.title,this.album, this.artist});
+  String url;
+  Song({this.title,this.album, this.artist,this.url});
 
 
 
