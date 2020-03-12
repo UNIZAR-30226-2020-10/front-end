@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:tuneit/pages/player_widget.dart';
 import 'package:tuneit/classes/Song.dart';
 
 import 'package:audioplayers/audio_cache.dart';
