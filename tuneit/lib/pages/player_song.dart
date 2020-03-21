@@ -12,7 +12,7 @@ import 'package:flutter/src/foundation/constants.dart';
 
 
 typedef void OnError(Exception exception);
-
+enum PlayerState { stopped, playing, paused }
 
 const kUrl2 = 'https://luan.xyz/files/audio/nasa_on_a_mission.mp3';
 const kUrl3 = 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p';
@@ -270,37 +270,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
                       ],
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Stack(
-                            children: [
-                              Slider(
-                                onChanged: (v) {
-                                  final Position = v * _duration.inMilliseconds;
-                                  _audioPlayer
-                                      .seek(Duration(milliseconds: Position.round()));
-                                },
-                                value: (_position != null &&
-                                    _duration != null &&
-                                    _position.inMilliseconds > 0 &&
-                                    _position.inMilliseconds < _duration.inMilliseconds)
-                                    ? _position.inMilliseconds / _duration.inMilliseconds
-                                    : 0.0,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text(
-                          _position != null
-                              ? '${_positionText ?? ''} / ${_durationText ?? ''}'
-                              : _duration != null ? _durationText : '',
-                          style: TextStyle(fontSize: 24.0),
-                        ),
-                      ],
-                    ),
+                   tiempo(),
                   ],
                 ),
               ),
@@ -314,6 +284,52 @@ class _PlayerPageState extends State<PlayerPage> {
         ),
       ),
     );
+  }
+
+  Widget tiempo(){
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Stack(
+            children: [
+              Slider(
+                onChanged: (v) {
+                  print("aaaaaaaaaaaaaa");
+                  final Position = v * _duration.inMilliseconds;
+                  _audioPlayer
+                      .seek(Duration(milliseconds: Position.round()));
+                    setState(() {
+                      if(_duration.inMilliseconds==_position.inMilliseconds){
+                          print("WWWWWWWWWWWWWWWWWWWWWWWWW");
+                          _incrementCounter();
+                      }
+
+                    });
+                },
+                value: (_position != null &&
+                    _duration != null &&
+                    _position.inMilliseconds > 0 &&
+                    _position.inMilliseconds < _duration.inMilliseconds)
+                    ? _position.inMilliseconds / _duration.inMilliseconds
+                    : 0.0,
+              ),
+            ],
+          ),
+        ),
+        Text(
+
+          _position != null
+              ? '${_positionText ?? ''} / ${_durationText ?? ''}'
+              : _duration != null ? _durationText : '',
+          style: TextStyle(fontSize: 24.0),
+        ),
+      ],
+
+    );
+
   }
 
   void _initAudioPlayer() {
@@ -347,6 +363,7 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   Future<int> _play( String enlace) async {
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     final playPosition = (_position != null &&
         _duration != null &&
         _position.inMilliseconds > 0 &&
@@ -360,6 +377,7 @@ class _PlayerPageState extends State<PlayerPage> {
     // this should be called after _audioPlayer.play() or _audioPlayer.resume()
     // this can also be called everytime the user wants to change playback rate in the UI
     _audioPlayer.setPlaybackRate(playbackRate: 1.0);
+    print("Termino");
 
     return result;
   }
@@ -392,8 +410,17 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   void _onComplete() {
-    setState(() => _playerState = PlayerState.stopped);
+    setState(
+            () => _playerState = PlayerState.stopped
+
+               );
+    setState(() {
+      _incrementCounter();
+    });
   }
 
 
 }
+
+
+
