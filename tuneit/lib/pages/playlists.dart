@@ -47,17 +47,15 @@ class _PlayListsState extends State<PlayLists> {
         centerTitle: true,
       ),
       drawer: MenuLateral(),
-      body: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 5,
-              child: playlist_box(context, '/list', 'Favoritos', 'assets/1.jpg'),
-            ),
-            Expanded(
-              flex: 5,
-              child: playlist_box(context, '/list', 'Mi lista', 'assets/2.jpeg'),
-            ),
-          ]
+      body: GridView.count(
+        crossAxisCount: 2,
+        padding: const EdgeInsets.all(8),
+        children: <Widget>[
+          playlist_box(context, '/list', 'Favoritos', 'assets/1.jpg'),
+          playlist_box(context, '/list', 'Mi lista', 'assets/2.jpeg'),
+          playlist_box(context, '/list', 'Favoritos', 'assets/1.jpg'),
+          playlist_box(context, '/list', 'Mi lista', 'assets/2.jpeg'),
+        ],
       ),
     );
   }
@@ -68,10 +66,10 @@ Widget template_playlist (String image, String playlist_name) {
     decoration: new BoxDecoration(
         color: Colors.indigo[700],
         borderRadius: new BorderRadius.only(
-          topLeft: const Radius.circular(10.0),
-          topRight: const Radius.circular(10.0),
-          bottomLeft: const Radius.circular(10.0),
-          bottomRight: const Radius.circular(10.0),
+          topLeft: const Radius.circular(8.0),
+          topRight: const Radius.circular(8.0),
+          bottomLeft: const Radius.circular(8.0),
+          bottomRight: const Radius.circular(8.0),
         )
     ),
     child: Center(
@@ -102,8 +100,8 @@ Widget template_playlist (String image, String playlist_name) {
             ]
         )
     ),
-    margin: const EdgeInsets.all(10.0),
-    height: 220.0,
+    margin: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.all(1),
   );
 }
 
