@@ -19,24 +19,10 @@ class _State extends State<ShowList> {
 
   Future<void> fillthelist ( ) async{
 
-      songs.add(Song(title:'Si veo a tu mama',album:'1.jpg',artist:'Bad bunny',url:'https://www.youtube.com/watch?v=GDAxr9usxZA'));
-      songs.add(Song(title:'All Shall Fall',album:'2.jpeg',artist:'Immortal',url:'https://www.soundboard.com/mediafiles/22/223554-d1826dea-bfc3-477b-a316-20ded5e63e08.mp3'));
-      songs.add(Song(title:'Primo Victoria',album:'3.jpg',artist:'Sabaton',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
-      songs.add(Song(title:'Si veo a tu mama',album:'1.jpg',artist:'Bad bunny',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
-      songs.add(Song(title:'All Shall Fall',album:'2.jpeg',artist:'Immortal',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
-      songs.add(Song(title:'Primo Victoria',album:'3.jpg',artist:'Sabaton',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
-      songs.add(Song(title:'Master of Puppets',album:'4.jpg',artist:'Metallica',url:'https://luan.xyz/files/audio/ambient_c_motion.mp3'));
-      songs.add(Song(title:'Se preparó',album:'5.jpeg',artist:'Ozuna',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
-      songs.add(Song(title:'Du Hast',album:'6.jpg',artist:'Rammstein',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
-      songs.add(Song(title:'Master of Puppets',album:'4.jpg',artist:'Metallica',url:'https://luan.xyz/files/audio/ambient_c_motion.mp3'));
-      songs.add(Song(title:'Si veo a tu mama',album:'1.jpg',artist:'Bad bunny',url:'https://luan.xyz/files/audio/ambient_c_motion.mp3'));
-      songs.add(Song(title:'All Shall Fall',album:'2.jpeg',artist:'Immortal',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
-      songs.add(Song(title:'Primo Victoria',album:'3.jpg',artist:'Sabaton',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
-      songs.add(Song(title:'Master of Puppets',album:'4.jpg',artist:'Metallica',url:'https://luan.xyz/files/audio/ambient_c_motion.mp3'));
-      songs.add(Song(title:'Se preparó',album:'5.jpeg',artist:'Ozuna',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
-      songs.add(Song(title:'Du Hast',album:'6.jpg',artist:'Rammstein', url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
-      songs.add(Song(title:'Se preparó',album:'5.jpeg',artist:'Ozuna',url:'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p'));
-      songs.add(Song(title:'Du Hast',album:'6.jpg',artist:'Rammstein',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
+      songs.add(Song(title:"I'll be there for you",album:'https://uh.gsstatic.es/sfAttachPlugin/1007229.jpg',artist:'The Rembrandts',url:'https://www.soundboard.com/mediafiles/22/223554-d1826dea-bfc3-477b-a316-20ded5e63e08.mp3'));
+      songs.add(Song(title:'All Shall Fall',album:'https://diablorock.com/wp-content/uploads/2018/07/immortal-northern-chaos-gods.jpg',artist:'Immortal',url:'https://www.soundboard.com/mediafiles/22/223554-d1826dea-bfc3-477b-a316-20ded5e63e08.mp3'));
+      songs.add(Song(title:'Primo Victoria',album:'https://images-na.ssl-images-amazon.com/images/I/81SSDwDXG%2BL._SL1400_.jpg',artist:'Sabaton',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
+
 
   }
 
@@ -97,16 +83,7 @@ class _State extends State<ShowList> {
                     return Card(
                       child: ListTile(
                         onTap:(){
-                          /*Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>  PlayerPage(indice,songs),
-                            ),
-                          );
-                          PlayerPage(
-                              indice:index,
-                              songs: songs);*/
-                          //_navigateHome(context,index);
+
                          Navigator.of(context).push(MaterialPageRoute(
                            builder: (context) => PlayerPage(songs: songs,indice: index),
 
@@ -114,9 +91,8 @@ class _State extends State<ShowList> {
                         },
 
                         leading: CircleAvatar(
-                         backgroundImage: AssetImage(
-                           'assets/${songs[index].album}'
-                         ),
+                         backgroundImage: NetworkImage('${songs[index].album}'),
+
                         ),
                         title: Text(songs[index].title),
                         subtitle: Text(songs[index].artist),
@@ -142,6 +118,7 @@ class _State extends State<ShowList> {
 
 
 }
+
 
 
 
