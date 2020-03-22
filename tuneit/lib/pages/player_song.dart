@@ -1,21 +1,14 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:tuneit/classes/Song.dart';
-
-import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/src/foundation/constants.dart';
+
 
 
 typedef void OnError(Exception exception);
 enum PlayerState { stopped, playing, paused }
 
-const kUrl2 = 'https://luan.xyz/files/audio/nasa_on_a_mission.mp3';
-const kUrl3 = 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1xtra_mf_p';
 
 
 class PlayerPage extends StatefulWidget {
@@ -65,7 +58,6 @@ class _PlayerPageState extends State<PlayerPage> {
   //----------------------------------------------------//
   String url;
   PlayerMode mode;
-  //int indice;
   bool second;
 
   AudioPlayer _audioPlayer;
@@ -104,6 +96,8 @@ class _PlayerPageState extends State<PlayerPage> {
     setState(() {
       url=songs[indice].url;
     });
+    _play(url);
+
 
   }
 
@@ -213,8 +207,8 @@ class _PlayerPageState extends State<PlayerPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                   child: Image(
-                    image: NetworkImage('https://elcultural.com/wp-content/uploads/2020/01/a-34-696x390.jpg'),
-                  ),
+                    image: NetworkImage('${songs[indice].album}'),
+            ),
 
               ),
               Padding(
