@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "418032159120",
+    "firebase_url": "https://flutter-clase-tunenit.firebaseio.com",
+    "project_id": "flutter-clase-tunenit",
+    "storage_bucket": "flutter-clase-tunenit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418032159120:android:da670d255b278d1966cb15",
+        "android_client_info": {
+          "package_name": "com.example.tuneit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418032159120-r0if7s3sqajirb9ea02gv38dhptudopj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tuneit",
+            "certificate_hash": "a91500384eb7f7f93b8767fe9a9cc11ea9cdf861"
+          }
+        },
+        {
+          "client_id": "418032159120-vuifk0ffr27fpu6d2n8epdispvrvtbda.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEiYdbdHQzTt95ESkCbqNZgaUXk7nQytk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418032159120-vuifk0ffr27fpu6d2n8epdispvrvtbda.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
