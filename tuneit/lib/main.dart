@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/pages/notificaciones.dart';
 import 'package:tuneit/pages/playlists.dart';
 import 'package:tuneit/pages/show_list.dart';
 import 'package:tuneit/pages/player_song.dart';
+import 'package:tuneit/classes/push_provider.dart';
 
 void main() => runApp(MyApp());
-
+final GlobalKey<NavigatorState> navigatorKey =
+new GlobalKey<NavigatorState>();
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       initialRoute: '/playlists',
+      navigatorKey: navigatorKey,
       routes:{
         '/list':(context) => ShowList(),
         '/playlists':(context) => PlayLists(),
+        '/notificaciones':(context) => Notificaciones(),
+
+
         /*'/player':(context) => PlayerPage(),*/
       },
       theme: ThemeData(
@@ -55,15 +64,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  void initState() {
+    super.initState();
+
+
+
+    //FUNCION PARA REACCIONAR A LAS NOTIFICACIONES
+    Reaccionar_notificacion();
+
+
   }
 
   @override
@@ -121,4 +130,68 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+
+
+
+
+
+
+
+
+  /**************************************************/
+  /**************************************************/
+  /**************************************************/
+
+  /**************************************************/
+  /**************************************************/
+  /**************************************************/
+  /**************************************************/
+  /**************************************************/
+
+  /**************************************************/
+  /**************************************************/
+
+
+
+
+
+
+  Future <void> almacenarMensaje(){
+
+  }
+
+
+  void Reaccionar_notificacion() async{
+    final pushProvider = new PushProvider();
+
+
+    pushProvider.initNotifications();
+
+    pushProvider.mensaje.listen((argumento) async{
+
+      String data = argumento.title;
+      String cuerpo = argumento.body;
+
+      //AQUI FALTARIA GUARDAR EL MENSAJE EN NUESTRA BASE DE DATOS
+      print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+      await almacenarMensaje();
+
+      navigatorKey.currentState.pushNamed('/notificaciones', arguments:{
+        'title': '${data}',
+        'body': '${cuerpo}',
+      } );
+
+      /*Navigator.pushNamed(context, '/notificaciones' ,arguments: {
+        'title': '${data}',
+        'body': '${cuerpo}',
+      });*/
+      //navigatorKey.currentState.pushNamed('/notificaciones',arguments: data);
+    });
+
+
+  }
+
+
 }
