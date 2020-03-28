@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+
 const baseURL = 'https://psoftware.herokuapp.com/list_lists';
 
 class Playlist {
@@ -22,26 +23,20 @@ class Playlist {
     );
   }
 
-/*Map toJson() {
-    return {'id': id, 'name': name, 'description': description, 'image': image};
-  }*/
 }
 
-Future<List<Playlist>> fetchPlaylists() async {
-  List<Playlist> list = List();
-  final response = await http.get(baseURL );
-  if (response.statusCode == 200) {
-    print(response.body);
-    list = (json.decode(response.body) as List)
-        .map((data) => new Playlist.fromJson(data))
-        .toList();
 
-    return list;
-  } else {
-    throw Exception('Failed to load playlists');
+  Future<List<Playlist>> fetchPlaylists() async {
+    List<Playlist> list = List();
+    final response = await http.get(baseURL);
+    if (response.statusCode == 200) {
+      print(response.body);
+      list = (json.decode(response.body) as List)
+          .map((data) => new Playlist.fromJson(data))
+          .toList();
+
+      return list;
+    } else {
+      throw Exception('Failed to load playlists');
+    }
   }
-}
-
-/**, headers: <String, String>{
-    'Content-Type': 'application/json',
-    }*/
