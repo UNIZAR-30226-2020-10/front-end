@@ -1,13 +1,21 @@
 import 'dart:async';
 import 'package:tuneit/classes/Song.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
+import 'package:flutter_exoplayer/audio_notification.dart';
+import 'package:flutter_exoplayer/audioplayer.dart';
+import 'package:flutter/material.dart';
+
+const imageUrl1 = "https://www.bensound.com/bensound-img/buddy.jpg";
+const imageUrl2 = "https://www.bensound.com/bensound-img/epic.jpg";
+const imageUrl3 = "https://www.bensound.com/bensound-img/onceagain.jpg";
+
+
 
 typedef void OnError(Exception exception);
-enum PlayerState { stopped, playing, paused }
+//enum PlayerState { stopped, playing, paused }
 
 
 
@@ -22,11 +30,6 @@ class PlayerPage extends StatefulWidget {
 }
 
 class _PlayerPageState extends State<PlayerPage> {
-  String url_cancion = 'https://luan.xyz/files/audio/ambient_c_motion.mp3';
-  String titulo_cancion;
-  String artista;
-  AudioPlayer advancedPlayer = AudioPlayer();
-  String url_imagen;
 
   _PlayerPageState(this.songs,this.indice);
 
@@ -57,24 +60,80 @@ class _PlayerPageState extends State<PlayerPage> {
   //----------------------------------------------------//
   //----------------------------------------------------//
   String url;
-  PlayerMode mode;
-  bool second;
+  List<String> urls;
 
   AudioPlayer _audioPlayer;
   Duration _duration;
   Duration _position;
+  int _currentIndex = 0;
 
-  PlayerState _playerState = PlayerState.stopped;
+  PlayerState _playerState = PlayerState.RELEASED;
   StreamSubscription _durationSubscription;
   StreamSubscription _positionSubscription;
   StreamSubscription _playerCompleteSubscription;
   StreamSubscription _playerErrorSubscription;
   StreamSubscription _playerStateSubscription;
+  StreamSubscription _playerIndexSubscription;
+  StreamSubscription _playerAudioSessionIdSubscription;
+  StreamSubscription _notificationActionCallbackSubscription;
 
-  get _isPlaying => _playerState == PlayerState.playing;
-  get _isPaused => _playerState == PlayerState.paused;
+
+
+  final List<AudioNotification> audioNotifications = [
+    AudioNotification(
+      smallIconFileName: "ic_launcher",
+      title: "title1",
+      subTitle: "artist1",
+      largeIconUrl: imageUrl1,
+      isLocal: false,
+      notificationDefaultActions: NotificationDefaultActions.ALL,
+      notificationCustomActions: NotificationCustomActions.TWO,
+    ),
+    AudioNotification(
+       smallIconFileName: "ic_launcher",
+        title: "title2",
+        subTitle: "artist2",
+        largeIconUrl: imageUrl2,
+        isLocal: false,
+        notificationDefaultActions: NotificationDefaultActions.ALL),
+    AudioNotification(
+        smallIconFileName: "ic_launcher",
+        title: "title3",
+        subTitle: "artist3",
+        largeIconUrl: imageUrl3,
+        isLocal: false,
+        notificationDefaultActions: NotificationDefaultActions.ALL),
+  ];
+
+  get _isPlaying => _playerState == PlayerState.PLAYING;
   get _durationText => _duration?.toString()?.split('.')?.first ?? '';
   get _positionText => _position?.toString()?.split('.')?.first ?? '';
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState((){
+      url=songs[indice].url;
+    });
+    _initAudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    _durationSubscription?.cancel();
+    _positionSubscription?.cancel();
+    _playerCompleteSubscription?.cancel();
+    _playerErrorSubscription?.cancel();
+    _playerStateSubscription?.cancel();
+    _playerIndexSubscription?.cancel();
+    _playerAudioSessionIdSubscription?.cancel();
+    _notificationActionCallbackSubscription?.cancel();
+    super.dispose();
+  }
 
 
   //#_PlayerWidgetState(this.url, this.mode,this.indice,this.second);
@@ -89,28 +148,6 @@ class _PlayerPageState extends State<PlayerPage> {
 
 
 
-  @override
-  void initState() {
-    super.initState();
-    _initAudioPlayer();
-    setState(() {
-      url=songs[indice].url;
-    });
-    _play(url);
-
-
-  }
-
-  @override
-  void dispose() {
-    _audioPlayer.stop();
-    _durationSubscription?.cancel();
-    _positionSubscription?.cancel();
-    _playerCompleteSubscription?.cancel();
-    _playerErrorSubscription?.cancel();
-    _playerStateSubscription?.cancel();
-    super.dispose();
-  }
 
   Future<void> _incrementCounter() async {
     await _stop();
@@ -127,7 +164,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
       url=songs[indice].url;
     });
-    _play(url);
+    _play();
 
 
 
@@ -153,7 +190,7 @@ class _PlayerPageState extends State<PlayerPage> {
       print(url);
       url=songs[indice].url;
     });
-    _play(url);
+    _play();
   }
 
 
@@ -161,13 +198,13 @@ class _PlayerPageState extends State<PlayerPage> {
   Widget build(BuildContext context) {
 
     funcion_auxiliar();
-    return MultiProvider(
+    return /*MultiProvider(
       providers: [
         StreamProvider<Duration>.value(
             initialData: Duration(),
             value: advancedPlayer.onAudioPositionChanged),
       ],
-      child: DefaultTabController(
+      child: */DefaultTabController(
         length: 5,
         child: Scaffold(
           appBar: AppBar()
@@ -235,7 +272,8 @@ class _PlayerPageState extends State<PlayerPage> {
 
                         IconButton(
                           onPressed:(){
-                            operacion();
+                            //operacion();
+                            _play();
                           },
                           iconSize: 64.0,
 
@@ -264,7 +302,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
                       ],
                     ),
-                   tiempo(),
+                  // tiempo(),
                   ],
                 ),
               ),
@@ -276,11 +314,11 @@ class _PlayerPageState extends State<PlayerPage> {
 
           ),
         ),
-      ),
-    );
+      );
+    //);
   }
 
-  Widget tiempo(){
+ /* Widget tiempo(){
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -324,94 +362,109 @@ class _PlayerPageState extends State<PlayerPage> {
 
     );
 
-  }
+  }*/
 
   void _initAudioPlayer() {
-    _audioPlayer = AudioPlayer(mode: mode);
-
+    _audioPlayer = AudioPlayer();
     _durationSubscription = _audioPlayer.onDurationChanged.listen((duration) {
-      setState(() => _duration = duration);
+      setState(() {
+        _duration = duration;
+      });
     });
-
-    _positionSubscription =
-        _audioPlayer.onAudioPositionChanged.listen((p) => setState(() {
-          _position = p;
-        }));
-
-    _playerCompleteSubscription =
-        _audioPlayer.onPlayerCompletion.listen((event) {
-          _onComplete();
+    _positionSubscription = _audioPlayer.onAudioPositionChanged.listen((pos) {
+      setState(() {
+        _position = pos;
+      });
+    });
+    _playerStateSubscription =
+        _audioPlayer.onPlayerStateChanged.listen((playerState) {
           setState(() {
-            _position = _duration;
+            _playerState = playerState;
+            print(_playerState);
           });
         });
-
-    _playerErrorSubscription = _audioPlayer.onPlayerError.listen((msg) {
-      print('audioPlayer error : $msg');
-      setState(() {
-        _playerState = PlayerState.stopped;
-        _duration = Duration(seconds: 0);
-        _position = Duration(seconds: 0);
-      });
+    _playerIndexSubscription =
+        _audioPlayer.onCurrentAudioIndexChanged.listen((index) {
+          setState(() {
+            _position = Duration(milliseconds: 0);
+            _currentIndex = index;
+          });
+        });
+    _playerAudioSessionIdSubscription =
+        _audioPlayer.onAudioSessionIdChange.listen((audioSessionId) {
+          print("audio Session Id: $audioSessionId");
+        });
+    _notificationActionCallbackSubscription = _audioPlayer
+        .onNotificationActionCallback
+        .listen((notificationActionName) {
+      //do something
+    });
+    _playerCompleteSubscription = _audioPlayer.onPlayerCompletion.listen((a) {
+      _position = Duration(milliseconds: 0);
+      print('Current player is completed');
     });
   }
 
-  Future<int> _play( String enlace) async {
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    final playPosition = (_position != null &&
-        _duration != null &&
-        _position.inMilliseconds > 0 &&
-        _position.inMilliseconds < _duration.inMilliseconds)
-        ? _position
-        : null;
-    final result = await _audioPlayer.play(enlace, position: playPosition);
-    if (result == 1) setState(() => _playerState = PlayerState.playing);
+  Future<void> _play() async {
+    if (url != null) {
+      final Result result = await _audioPlayer.play(
+        url,
+        repeatMode: true,
+        respectAudioFocus: false,
+        playerMode: PlayerMode.BACKGROUND,
+       // audioNotification: audioNotifications[1],
+      );
+      if (result == Result.ERROR) {
+        print("something went wrong in play method :(");
+      }
 
-    // default playback rate is 1.0
-    // this should be called after _audioPlayer.play() or _audioPlayer.resume()
-    // this can also be called everytime the user wants to change playback rate in the UI
-    _audioPlayer.setPlaybackRate(playbackRate: 1.0);
-    print("Termino");
 
-    return result;
   }
 
-  Future<int> _pause() async {
-    final result = await _audioPlayer.pause();
-    if (result == 1) setState(() => _playerState = PlayerState.paused);
-    return result;
-  }
-
-
-  Future<int> _stop() async {
-    final result = await _audioPlayer.stop();
-    if (result == 1) {
-      setState(() {
-        _playerState = PlayerState.stopped;
-        _position = Duration();
-      });
     }
-    return result;
-  }
 
-  Future<void> operacion()async{
-    if(_isPaused){
-      _play(url);
-    }
-    else{
-      _pause();
+  Future<void> _pause() async {
+
+    final Result result = await _audioPlayer.pause();
+    if (result == Result.FAIL) {
+      print(
+          "you tried to call audio conrolling methods on released audio player :(");
+    } else if (result == Result.ERROR) {
+      print("something went wrong in pause :(");
     }
   }
 
-  void _onComplete() {
-    setState(
-            () => _playerState = PlayerState.stopped
-
-               );
-    setState(() {
-      _incrementCounter();
-    });
+  Future<void> _stop() async {
+    final Result result = await _audioPlayer.stop();
+    if (result == Result.FAIL) {
+      print(
+          "you tried to call audio conrolling methods on released audio player :(");
+    } else if (result == Result.ERROR) {
+      print("something went wrong in stop :(");
+    }
   }
+
+
+  Future<void> _next() async {
+    final Result result = await _audioPlayer.next();
+    if (result == Result.FAIL) {
+      print(
+          "you tried to call audio conrolling methods on released audio player :(");
+    } else if (result == Result.ERROR) {
+      print("something went wrong in next :(");
+    }
+  }
+
+  Future<void> _previous() async {
+    final Result result = await _audioPlayer.previous();
+    if (result == Result.FAIL) {
+      print(
+          "you tried to call audio conrolling methods on released audio player :(");
+    } else if (result == Result.ERROR) {
+      print("something went wrong in previous :(");
+    }
+  }
+
 
 
 }

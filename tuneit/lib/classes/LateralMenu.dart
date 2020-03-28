@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import "package:tuneit/pages/playlists.dart";
-import "package:tuneit/pages/player_song.dart";
 import "package:tuneit/pages/profile.dart";
 import "package:tuneit/pages/equalizer.dart";
 import "package:tuneit/pages/friend_list.dart";
-import "package:tuneit/pages/notifications.dart";
+import "package:tuneit/pages/notificaciones.dart";
 class MenuLateral extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,7 @@ class MenuLateral extends StatelessWidget {
               Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => Notifications(),
+                  builder: (context) => Notificaciones(),
                 ),
               );
             }

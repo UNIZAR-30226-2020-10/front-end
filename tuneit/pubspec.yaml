@@ -21,10 +21,11 @@ dependencies:
     sdk: flutter
   http: ^0.12.0+2
   rxdart: ^0.23.1
-  just_audio: ^0.0.6
+  flutter_exoplayer: ^0.5.5
   bloc_pattern: 2.1.0
   path_provider: ^1.1.0
   path_provider_macos: ^0.0.1
+  firebase_messaging: ^6.0.13
   audioplayers: ^0.14.0
   provider: ^3.0.0+1
   audio_service:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/Song.dart';
 import 'package:tuneit/pages/player_song.dart';
 
+
 class ShowList extends StatefulWidget {
   @override
   _State createState() => _State();
@@ -83,6 +84,7 @@ class _State extends State<ShowList> {
                     return Card(
                       child: ListTile(
                         onTap:(){
+
 
                          Navigator.of(context).push(MaterialPageRoute(
                            builder: (context) => PlayerPage(songs: songs,indice: index),
