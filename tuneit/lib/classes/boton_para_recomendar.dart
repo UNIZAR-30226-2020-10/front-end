@@ -14,8 +14,7 @@ class  Boton_recomendar extends StatelessWidget {
 
     return  IconButton(
 
-          icon: Icon(Icons.volume_up),
-          tooltip: 'Increase volume by 10',
+          icon: Icon(Icons.send),
           onPressed: sendNotification
        );
   }
