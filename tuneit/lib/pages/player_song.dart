@@ -411,8 +411,8 @@ class _PlayerPageState extends State<PlayerPage> {
         url,
         repeatMode: true,
         respectAudioFocus: false,
-        playerMode: PlayerMode.BACKGROUND,
-       // audioNotification: audioNotifications[1],
+        playerMode: PlayerMode.FOREGROUND,
+        audioNotification: audioNotifications[1],
       );
       if (result == Result.ERROR) {
         print("something went wrong in play method :(");
