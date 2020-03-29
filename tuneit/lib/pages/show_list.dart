@@ -99,26 +99,9 @@ class _State extends State<ShowList> {
                       (index) {
                         // ignore: missing_return
                         return Card(
+                            key:ValueKey(index),
 
-                              child: ListTile(
-                              onTap:(){
-
-
-                              Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PlayerPage(songs: songs.songs,indice: index),
-
-                              ));
-                              },
-
-                              leading: CircleAvatar(
-                              backgroundImage: NetworkImage('${songs.songs[index].album}'),
-
-                              ),
-                              title: Text(songs.songs[index].title),
-                              subtitle: Text(juntarArtistas(songs.songs[index].artist)),
-
-
-                              ),
+                              child: song_card(songs.songs[index].image, juntarArtistas(songs.songs[index].artist), index)
                               );
 
                       },
@@ -161,9 +144,34 @@ class _State extends State<ShowList> {
   }
 
 
+  Widget song_card(String imagen, String artistas,index ){
+    if(imagen== null){
+      imagen="https://i.blogs.es/2596e6/sonic/450_1000.jpg";
+    }
+    return new ListTile(
+      onTap:(){
 
+
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PlayerPage(songs: songs.songs,indice: index),
+
+        ));
+      },
+
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(imagen),
+
+      ),
+      title: Text(songs.songs[index].title),
+      subtitle: Text(artistas),
+
+
+    );
+  }
 
 }
+
+
 
 
 

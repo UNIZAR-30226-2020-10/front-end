@@ -12,7 +12,8 @@ class Song{
   List<String> artist;
   String url;
   int id;
-  Song({this.title,this.album, this.artist,this.url,this.id});
+  final String image;
+  Song({this.title,this.album, this.artist,this.url,this.id,this.image});
   // [ {“ID”:, “Nombre” : x, “Artistas”:[], ”Album”: ,”URL”: }, Id2{}, …]
 
   factory Song.fromJson(Map<String, dynamic> parsedJson) {
@@ -28,6 +29,7 @@ class Song{
       album: parsedJson['Album'],
       artist: losartistas,
       url :parsedJson['URL'],
+      image: parsedJson['Imagen']
     );
   }
 

@@ -218,7 +218,7 @@ class _PlayerPageState extends State<PlayerPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                   child: Image(
-                    image: NetworkImage('${songs[indice].album}'),
+                    image: NetworkImage('${songs[indice].image}'),
             ),
 
               ),
