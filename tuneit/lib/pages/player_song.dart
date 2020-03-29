@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:tuneit/classes/Song.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -458,13 +459,23 @@ class _PlayerPageState extends State<PlayerPage> {
     for(int i = 0; i < songs.length; i++){
       audioNotifications.add( AudioNotification(
           smallIconFileName: "ic_launcher",
-          title:songs[i].title + "( " + songs[i].artist + " )",
-          subTitle: songs[i].artist,
+          title:songs[i].title,
+          subTitle: juntarArtistas(songs[i].artist),
           largeIconUrl: songs[i].album,
           isLocal: false,
           notificationDefaultActions: NotificationDefaultActions.ALL));
     }
   }
+}
+
+String juntarArtistas(List<String> datos){
+  String juntitos="";
+  for(int i=0;i<datos.length;i++){
+    juntitos+=datos[i] +",";
+
+  }
+  return juntitos;
+
 }
 
 
