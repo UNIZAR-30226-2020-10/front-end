@@ -18,7 +18,11 @@ class _PlayListsState extends State<PlayLists> {
 
 
   void obtener_datos() async{
-    list = await fetchPlaylists();
+
+      List<Playlist> lista = await fetchPlaylists();
+    setState(() {
+      list =lista;
+    });
 
   }
 
@@ -55,7 +59,13 @@ class _PlayListsState extends State<PlayLists> {
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return playlist_box(context, '/list', list[index].name, list[index].image,list[index].id);
+          if(list[index].image!=null){
+            return playlist_box(context, '/list', list[index].name, list[index].image,list[index].id.toString());
+          }
+          else{
+            return playlist_box(context, '/list', list[index].name, "https://i.blogs.es/2596e6/sonic/450_1000.jpg",list[index].id.toString());
+          }
+
         },
       ),
     );
@@ -83,7 +93,8 @@ Widget template_playlist (String image, String playlist_name) {
                     decoration: new BoxDecoration(
                       shape: BoxShape.circle,
                       image: new DecorationImage(
-                        image: new AssetImage(image),
+
+                        image: new NetworkImage(image),
                         fit: BoxFit.cover,
                       ),
                     ),

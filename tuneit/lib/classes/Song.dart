@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +11,13 @@ class Song{
   String album;
   List<String> artist;
   String url;
-  String id;
+  int id;
   Song({this.title,this.album, this.artist,this.url,this.id});
   // [ {“ID”:, “Nombre” : x, “Artistas”:[], ”Album”: ,”URL”: }, Id2{}, …]
 
   factory Song.fromJson(Map<String, dynamic> parsedJson) {
 
-    var streetsFromJson  = parsedJson['streets'];
+    var streetsFromJson  = parsedJson['Artistas'];
     //print(streetsFromJson.runtimeType);
     // List<String> streetsList = new List<String>.from(streetsFromJson);
     List<String> losartistas = streetsFromJson.cast<String>();
@@ -34,42 +35,44 @@ class Song{
 
 class SongLista{
 
-  final String id;
+  final int id;
   final String name;
   final String description;
   final String image;
-  List<Song> songs;
+  List<Song> songs= new List<Song>();
 
   SongLista({this.id, this.name, this.description, this.image,this.songs});
 
   factory SongLista.fromJson(Map<String, dynamic> parsedJson) {
 
-    var list = parsedJson['canciones'] as List;
-    List<Song> imagesList = list.map((i) =>Song.fromJson(i)).toList();
+    var list = parsedJson['Canciones'] as List;
+    List<Song> songsList = list.map((i) =>Song.fromJson(i)).toList();
 
     return SongLista(
-      id:parsedJson['id'],
-      name: parsedJson['name'],
-      description: parsedJson['description'],
-      image: parsedJson['image'],
-      songs:imagesList
+      id: parsedJson['ID'],
+      name: parsedJson['Nombre'],
+      description: parsedJson['Desc'],
+      image: parsedJson['Imagen'],
+      songs: songsList
     );
   }
 
 
 }
 
-String baseURL="https://psoftware.herokuapp.com/";
+const baseURL = 'psoftware.herokuapp.com';
 Future< SongLista> fetchSonglists(String id) async {
-  final response = await http.post(baseURL + '/list_lists', headers: <String, String>{
-    'Content-Type': 'application/json'} ,body:jsonEncode(<String,String>{
-      'list':id
-
-      }));
-
+  var queryParameters = {
+    'list' : id
+  };
+  var uri = Uri.https(baseURL,'/list_data' ,queryParameters);
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
   print(response.body);
-  if (response.statusCode == 201) {
-    return SongLista.fromJson(json.decode(response.body));
+  List <dynamic> datos =json.decode(response.body);
+  if (response.statusCode == 200) {
+    return SongLista.fromJson(datos[0]);
   } else {
     throw Exception('Failed to load playlists');
   }

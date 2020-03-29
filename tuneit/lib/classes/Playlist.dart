@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 const baseURL = 'https://psoftware.herokuapp.com/list_lists';
 
 class Playlist {
-  final String id;
+  final int id;
   final String name;
   final String description;
   final String image;
@@ -16,10 +16,10 @@ class Playlist {
 
   factory Playlist.fromJson(Map<String, dynamic> json) {
     return Playlist(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      image: json['image'],
+      id: json['ID'],
+      name: json['Nombre'],
+      description: json['Desc'],
+      image: json['Image'],
     );
   }
 

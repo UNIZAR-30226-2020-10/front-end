@@ -9,7 +9,7 @@ class ShowList extends StatefulWidget {
 }
 
 class _State extends State<ShowList> {
-  SongLista songs= new SongLista();
+  SongLista songs= SongLista();
   String list_title;
   int indice;
   String indetificadorLista;
@@ -21,15 +21,25 @@ class _State extends State<ShowList> {
 
   Future<void> fillthesongs () async{
 
-    SongLista list = await fetchSonglists(indetificadorLista);
+    /*final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    setState(() {
+      indetificadorLista=arguments['indetificadorLista'];
+
+    });*/
+    print("aaaaaaaaaa");
+    SongLista list = await fetchSonglists('1');
     setState(() {
       songs=list;
     });
+
+    print(songs.songs.length);
   }
 
 
   void ObtenerDatos() async{
-
+    print("aaaaaa");
+    await fillthesongs();
+    print("bbbbbb");
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
     setState(() {
       list_title=arguments['list_title'];
@@ -37,16 +47,14 @@ class _State extends State<ShowList> {
 
     });
 
-    await fillthesongs();
   }
 
 
 @override
   void initState(){
     // TODO: implement initState
-
-    super.initState();
     ObtenerDatos();
+    super.initState();
 
 
   }
@@ -91,6 +99,7 @@ class _State extends State<ShowList> {
                       (index) {
                         // ignore: missing_return
                         return Card(
+
                               child: ListTile(
                               onTap:(){
 
