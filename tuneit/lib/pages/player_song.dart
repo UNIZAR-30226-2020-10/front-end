@@ -60,12 +60,12 @@ class _PlayerPageState extends State<PlayerPage> {
   //----------------------------------------------------//
   //----------------------------------------------------//
   String url;
-  List<String> urls;
+  List<String> urls = new List<String>();
 
   AudioPlayer _audioPlayer;
   Duration _duration;
   Duration _position;
-  int _currentIndex = 0;
+  bool _playAll = false;
 
   PlayerState _playerState = PlayerState.RELEASED;
   StreamSubscription _durationSubscription;
@@ -79,31 +79,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
 
 
-  final List<AudioNotification> audioNotifications = [
-    AudioNotification(
-      smallIconFileName: "ic_launcher",
-      title: "title1",
-      subTitle: "artist1",
-      largeIconUrl: imageUrl1,
-      isLocal: false,
-      notificationDefaultActions: NotificationDefaultActions.ALL,
-      notificationCustomActions: NotificationCustomActions.TWO,
-    ),
-    AudioNotification(
-       smallIconFileName: "ic_launcher",
-        title: "title2",
-        subTitle: "artist2",
-        largeIconUrl: imageUrl2,
-        isLocal: false,
-        notificationDefaultActions: NotificationDefaultActions.ALL),
-    AudioNotification(
-        smallIconFileName: "ic_launcher",
-        title: "title3",
-        subTitle: "artist3",
-        largeIconUrl: imageUrl3,
-        isLocal: false,
-        notificationDefaultActions: NotificationDefaultActions.ALL),
-  ];
+  final List<AudioNotification> audioNotifications = new List<AudioNotification>();
 
   get _isPlaying => _playerState == PlayerState.PLAYING;
   get _durationText => _duration?.toString()?.split('.')?.first ?? '';
@@ -179,14 +155,10 @@ class _PlayerPageState extends State<PlayerPage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-
-
       indice--;
       if(indice<0){
         indice=0;
       }
-      //await _play(url);
-
       print(url);
       url=songs[indice].url;
     });
@@ -196,7 +168,8 @@ class _PlayerPageState extends State<PlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    _rellenarUrl();
+    _rellenarNotificaciones();
     funcion_auxiliar();
     return /*MultiProvider(
       providers: [
@@ -256,24 +229,21 @@ class _PlayerPageState extends State<PlayerPage> {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-
-
                         IconButton(
                             iconSize: 64,
                             icon: Icon(Icons.skip_previous),
                             onPressed: () {
-
-
-
-                              _decrementCounter();
-
-
+                              _previous();
                             }),
 
                         IconButton(
                           onPressed:(){
-                            //operacion();
-                            _play();
+                            if(!_isPlaying) {
+                              _play();
+                            }
+                            else{
+                              _pause();
+                            }
                           },
                           iconSize: 64.0,
 
@@ -282,24 +252,19 @@ class _PlayerPageState extends State<PlayerPage> {
                               : Icons.play_circle_filled),
                         ),
 
-
+                        IconButton(
+                          onPressed:(){
+                            _stop();
+                          },
+                          iconSize: 64.0,
+                          icon:  Icon(Icons.stop),
+                        ),
                         IconButton(
                             iconSize: 64.0,
                             icon: Icon(Icons.skip_next),
                             onPressed: () {
-
-
-
-
-                              _incrementCounter();
-
+                              _next();
                             }),
-
-
-
-
-
-
                       ],
                     ),
                   // tiempo(),
@@ -387,7 +352,7 @@ class _PlayerPageState extends State<PlayerPage> {
         _audioPlayer.onCurrentAudioIndexChanged.listen((index) {
           setState(() {
             _position = Duration(milliseconds: 0);
-            _currentIndex = index;
+            indice = index;
           });
         });
     _playerAudioSessionIdSubscription =
@@ -407,24 +372,30 @@ class _PlayerPageState extends State<PlayerPage> {
 
   Future<void> _play() async {
     if (url != null) {
-      final Result result = await _audioPlayer.play(
-        url,
-        repeatMode: true,
-        respectAudioFocus: false,
-        playerMode: PlayerMode.FOREGROUND,
-        audioNotification: audioNotifications[1],
-      );
-      if (result == Result.ERROR) {
-        print("something went wrong in play method :(");
+      if(!_playAll) {
+        final Result result = await _audioPlayer.playAll(urls,index: indice,
+          repeatMode: false,
+          respectAudioFocus: true,
+          playerMode: PlayerMode.FOREGROUND,
+          audioNotifications: audioNotifications,
+        );
+        _playAll = true;
+        if (result == Result.ERROR) {
+          print("something went wrong in play method :(");
+        }
+
       }
-
-
+      else{
+        final Result result = await _audioPlayer.resume();
+        if (result == Result.ERROR) {
+          print("something went wrong in play method :(");
+        }
+      }
   }
 
     }
 
   Future<void> _pause() async {
-
     final Result result = await _audioPlayer.pause();
     if (result == Result.FAIL) {
       print(
@@ -435,6 +406,7 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   Future<void> _stop() async {
+    indice = 0;
     final Result result = await _audioPlayer.stop();
     if (result == Result.FAIL) {
       print(
@@ -444,9 +416,14 @@ class _PlayerPageState extends State<PlayerPage> {
     }
   }
 
-
   Future<void> _next() async {
-    final Result result = await _audioPlayer.next();
+    if(indice == songs.length - 1) {
+      indice = 0;
+    }
+    else {
+      indice++;
+    }
+    final Result result = await _audioPlayer.seekIndex(indice);
     if (result == Result.FAIL) {
       print(
           "you tried to call audio conrolling methods on released audio player :(");
@@ -456,7 +433,13 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   Future<void> _previous() async {
-    final Result result = await _audioPlayer.previous();
+    if(indice == 0){
+      indice = songs.length - 1;
+    }
+    else{
+      indice--;
+    }
+    final Result result = await _audioPlayer.seekIndex(indice);
     if (result == Result.FAIL) {
       print(
           "you tried to call audio conrolling methods on released audio player :(");
@@ -465,8 +448,23 @@ class _PlayerPageState extends State<PlayerPage> {
     }
   }
 
+  void _rellenarUrl() {
+    for(int i = 0; i < songs.length; i++){
+      urls.add(songs[i].url);
+    }
+  }
 
-
+  void _rellenarNotificaciones(){
+    for(int i = 0; i < songs.length; i++){
+      audioNotifications.add( AudioNotification(
+          smallIconFileName: "ic_launcher",
+          title:songs[i].title + "( " + songs[i].artist + " )",
+          subTitle: songs[i].artist,
+          largeIconUrl: songs[i].album,
+          isLocal: false,
+          notificationDefaultActions: NotificationDefaultActions.ALL));
+    }
+  }
 }
 
 
