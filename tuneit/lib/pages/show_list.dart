@@ -9,32 +9,35 @@ class ShowList extends StatefulWidget {
 }
 
 class _State extends State<ShowList> {
-  List<Song> songs= new List<Song>();
+  SongLista songs= new SongLista();
   String list_title;
   int indice;
+  String indetificadorLista;
 
 
 
 
 
 
-  Future<void> fillthelist ( ) async{
+  Future<void> fillthesongs () async{
 
-      songs.add(Song(title:"I'll be there for you",album:'https://uh.gsstatic.es/sfAttachPlugin/1007229.jpg',artist:'The Rembrandts',url:'https://www.soundboard.com/mediafiles/22/223554-d1826dea-bfc3-477b-a316-20ded5e63e08.mp3'));
-      songs.add(Song(title:'All Shall Fall',album:'https://diablorock.com/wp-content/uploads/2018/07/immortal-northern-chaos-gods.jpg',artist:'Immortal',url:'https://www.soundboard.com/mediafiles/22/223554-d1826dea-bfc3-477b-a316-20ded5e63e08.mp3'));
-      songs.add(Song(title:'Primo Victoria',album:'https://images-na.ssl-images-amazon.com/images/I/81SSDwDXG%2BL._SL1400_.jpg',artist:'Sabaton',url:'https://luan.xyz/files/audio/nasa_on_a_mission.mp3'));
-
-
+    SongLista list = await fetchSonglists(indetificadorLista);
+    setState(() {
+      songs=list;
+    });
   }
 
 
   void ObtenerDatos() async{
-    await fillthelist();
+
     final Map arguments = ModalRoute.of(context).settings.arguments as Map;
     setState(() {
       list_title=arguments['list_title'];
+      indetificadorLista=arguments['indetificadorLista'];
 
     });
+
+    await fillthesongs();
   }
 
 
@@ -78,41 +81,73 @@ class _State extends State<ShowList> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                  itemCount: songs.length,
-                  itemBuilder:( context,index){
-                    return Card(
-                      child: ListTile(
-                        onTap:(){
+              child: ReorderableListView(
+
+                      onReorder: _onReorder,
+                      scrollDirection: Axis.vertical,
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      children: List.generate(
+                      songs.songs.length,
+                      (index) {
+                        // ignore: missing_return
+                        return Card(
+                              child: ListTile(
+                              onTap:(){
 
 
-                         Navigator.of(context).push(MaterialPageRoute(
-                           builder: (context) => PlayerPage(songs: songs,indice: index),
+                              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => PlayerPage(songs: songs.songs,indice: index),
 
-                         ));
-                        },
+                              ));
+                              },
 
-                        leading: CircleAvatar(
-                         backgroundImage: NetworkImage('${songs[index].album}'),
+                              leading: CircleAvatar(
+                              backgroundImage: NetworkImage('${songs.songs[index].album}'),
 
-                        ),
-                        title: Text(songs[index].title),
-                        subtitle: Text(songs[index].artist),
+                              ),
+                              title: Text(songs.songs[index].title),
+                              subtitle: Text(juntarArtistas(songs.songs[index].artist)),
 
 
+                              ),
+                              );
+
+                      },
                       ),
-                    );
-                  }
+                      ),
+
               ),
-            ),
 
 
 
           ],
+    ),
 
-        ),
+
 
       bottomNavigationBar: NewWidget(),
+    );
+  }
+
+  String juntarArtistas(List<String> datos){
+    String juntitos="";
+    for(int i=0;i<datos.length;i++){
+      juntitos+=datos[i] +",";
+
+    }
+    return juntitos;
+
+  }
+
+  void _onReorder(int oldIndex, int newIndex) {
+    setState(
+          () {
+        if (newIndex > oldIndex) {
+          newIndex -= 1;
+        }
+        final Song item = songs.songs.removeAt(oldIndex);
+        songs.songs.insert(newIndex, item);
+      },
     );
   }
 

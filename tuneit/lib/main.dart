@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/pages/login.dart';
+import 'package:tuneit/pages/main_view.dart';
 import 'package:tuneit/pages/notificaciones.dart';
 import 'package:tuneit/pages/playlists.dart';
+import 'package:tuneit/pages/register.dart';
 import 'package:tuneit/pages/show_list.dart';
 import 'package:tuneit/pages/player_song.dart';
 import 'package:tuneit/classes/push_provider.dart';
@@ -16,13 +19,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      initialRoute: '/playlists',
+      initialRoute: '/mainview',
       navigatorKey: navigatorKey,
       routes:{
+        '/mainview':(context) => MainView(),
         '/list':(context) => ShowList(),
         '/playlists':(context) => PlayLists(),
         '/notificaciones':(context) => Notificaciones(),
-
+        '/login':(context) => Login(),
+        '/register':(context) => Register(),
 
         /*'/player':(context) => PlayerPage(),*/
       },

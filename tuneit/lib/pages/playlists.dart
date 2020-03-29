@@ -13,31 +13,25 @@ class PlayLists extends StatefulWidget {
 
 class _PlayListsState extends State<PlayLists> {
 
-  Future<Playlist> futurePlaylist;
+  List<Playlist> list = List();
+  var isLoading = false;
+
+
+  void obtener_datos() async{
+    list = await fetchPlaylists();
+
+  }
 
   @override
   void initState() {
     super.initState();
-    futurePlaylist = fetchPlaylists();
+    obtener_datos();
+
+    /*.then((list) {
+      return list;
+    }) as List<Playlist>;*/
   }
 
-  //----------------------------------------------------//
-
-  //Cargar datos
-
-  Future<Playlist> fetchPlaylists() async {
-    final response = await http.get('https://jsonplaceholder.typicode.com/albums/1');
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response, then parse the JSON.
-      return Playlist.fromJson(json.decode(response.body));
-    } else {
-      // If the server did not return a 200 OK response, then throw an exception.
-      throw Exception('Failed to load playlists');
-    }
-  }
-
-  //----------------------------------------------------//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +41,7 @@ class _PlayListsState extends State<PlayLists> {
         centerTitle: true,
       ),
       drawer: MenuLateral(),
-      body: GridView.count(
+      /*body: GridView.count(
         crossAxisCount: 2,
         padding: const EdgeInsets.all(8),
         children: <Widget>[
@@ -56,6 +50,13 @@ class _PlayListsState extends State<PlayLists> {
           playlist_box(context, '/list', 'Favoritos', 'assets/1.jpg'),
           playlist_box(context, '/list', 'Mi lista', 'assets/2.jpeg'),
         ],
+      ),*/
+      body: GridView.builder(
+        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemCount: list.length,
+        itemBuilder: (BuildContext context, int index) {
+          return playlist_box(context, '/list', list[index].name, list[index].image,list[index].id);
+        },
       ),
     );
   }
@@ -105,33 +106,15 @@ Widget template_playlist (String image, String playlist_name) {
   );
 }
 
-Widget playlist_box (BuildContext context, String route, String playlist_name, String image) {
+Widget playlist_box (BuildContext context, String route, String playlist_name, String image, String id_lista) {
   return new GestureDetector(
     behavior: HitTestBehavior.opaque,
     onTap: () {
       Navigator.pushNamed(context, route ,arguments: {
-        'list_title': playlist_name
+        'list_title': playlist_name,
+        'indetificadorLista': id_lista
       });
     },
     child: template_playlist(image, playlist_name),
   );
 }
-/*
-  Ejemplo crear el widget con la peticion http GET:
-
-    body: Center(
-      child: FutureBuilder<Album>(
-        future: futureAlbum,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Text(snapshot.data.title);
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
-
-          // By default, show a loading spinner.
-          return CircularProgressIndicator();
-        },
-      ),
-
- */

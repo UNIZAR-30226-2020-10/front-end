@@ -1,15 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+
+const baseURL = 'https://psoftware.herokuapp.com/list_lists';
 
 class Playlist {
-  String titulo_lista;
-  String url_imagen;
+  final String id;
+  final String name;
+  final String description;
+  final String image;
 
-  Playlist({this.titulo_lista, this.url_imagen});
+  Playlist({this.id, this.name, this.description, this.image});
 
   factory Playlist.fromJson(Map<String, dynamic> json) {
     return Playlist(
-      titulo_lista: json['titulo_lista'],
-      url_imagen: json['url_imagen'],
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      image: json['image'],
     );
   }
+
 }
+
+
+  Future<List<Playlist>> fetchPlaylists() async {
+    List<Playlist> list = List();
+    final response = await http.get(baseURL);
+    if (response.statusCode == 200) {
+      print(response.body);
+      list = (json.decode(response.body) as List)
+          .map((data) => new Playlist.fromJson(data))
+          .toList();
+
+      return list;
+    } else {
+      throw Exception('Failed to load playlists');
+    }
+  }
