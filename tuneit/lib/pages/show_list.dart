@@ -18,7 +18,6 @@ class _State extends State<ShowList> {
 
 
 
-
   Future<void> fillthesongs () async{
 
     /*final Map arguments = ModalRoute.of(context).settings.arguments as Map;
@@ -89,23 +88,33 @@ class _State extends State<ShowList> {
               ),
             ),
             Expanded(
-              child: ReorderableListView(
+              child: ListView.builder(
 
-                      onReorder: _onReorder,
+                      padding: const EdgeInsets.all(8),
                       scrollDirection: Axis.vertical,
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      children: List.generate(
-                      songs.songs.length,
-                      (index) {
-                        // ignore: missing_return
-                        return Card(
-                            key:ValueKey(index),
+                      itemCount: songs.songs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                              child: new ListTile(
+                              onTap:(){
 
-                              child: song_card(songs.songs[index].image, juntarArtistas(songs.songs[index].artist), index)
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => PlayerPage(songs: songs.songs,indice: index),
+
+                              ));
+                              },
+
+                              leading: imagen_por_defecto(songs.songs[index].image),
+                              title: Text(songs.songs[index].title),
+                              subtitle: Text(juntarArtistas(songs.songs[index].artist)),
+
+
+                              ),
                               );
 
-                      },
-                      ),
+
+                          }
                       ),
 
               ),
@@ -119,54 +128,36 @@ class _State extends State<ShowList> {
 
       bottomNavigationBar: NewWidget(),
     );
+
+
   }
 
   String juntarArtistas(List<String> datos){
     String juntitos="";
     for(int i=0;i<datos.length;i++){
-      juntitos+=datos[i] +",";
+      juntitos+=datos[i] + ' ';
 
     }
     return juntitos;
 
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(
-          () {
-        if (newIndex > oldIndex) {
-          newIndex -= 1;
-        }
-        final Song item = songs.songs.removeAt(oldIndex);
-        songs.songs.insert(newIndex, item);
-      },
-    );
-  }
+  Widget imagen_por_defecto(String imagen){
 
 
-  Widget song_card(String imagen, String artistas,index ){
-    if(imagen== null){
-      imagen="https://i.blogs.es/2596e6/sonic/450_1000.jpg";
+    if (imagen== null){
+      return  new CircleAvatar( backgroundImage: AssetImage('assets/LogoApp.png'));
     }
-    return new ListTile(
-      onTap:(){
+    else{
 
-
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PlayerPage(songs: songs.songs,indice: index),
-
-        ));
-      },
-
-      leading: CircleAvatar(
+      CircleAvatar(
         backgroundImage: NetworkImage(imagen),
 
-      ),
-      title: Text(songs.songs[index].title),
-      subtitle: Text(artistas),
+      );
 
 
-    );
+    }
+
   }
 
 }

@@ -83,6 +83,9 @@ class _PlayerPageState extends State<PlayerPage> {
   final List<AudioNotification> audioNotifications = new List<AudioNotification>();
 
   get _isPlaying => _playerState == PlayerState.PLAYING;
+
+  //CON ESTO SE MUESTRA CÓMO VA LA CANCIÓN
+
   get _durationText => _duration?.toString()?.split('.')?.first ?? '';
   get _positionText => _position?.toString()?.split('.')?.first ?? '';
 
@@ -186,26 +189,30 @@ class _PlayerPageState extends State<PlayerPage> {
           body:  Column(
             children: [
 
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('${songs[indice].title}',
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold,
-                          fontSize: 32
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('${songs[indice].title}',
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontWeight: FontWeight.bold,
+                            fontSize: 32
+                        ),
                       ),
                     ),
                   ),
 
 
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${songs[indice].artist}',
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.bold,
-                      fontSize: 32
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(juntarArtistas(songs[indice].artist),
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontWeight: FontWeight.bold,
+                        fontSize: 32
+                    ),
                   ),
                 ),
               ),
@@ -215,61 +222,63 @@ class _PlayerPageState extends State<PlayerPage> {
 
 
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                  child: Image(
-                    image: NetworkImage('${songs[indice].image}'),
-            ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                    child: imagen_por_defecto(songs[indice].image),
 
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                            iconSize: 64,
-                            icon: Icon(Icons.skip_previous),
-                            onPressed: () {
-                              _previous();
-                            }),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                              iconSize: 64,
+                              icon: Icon(Icons.skip_previous),
+                              onPressed: () {
+                                _previous();
+                              }),
 
-                        IconButton(
-                          onPressed:(){
-                            if(!_isPlaying) {
-                              _play();
-                            }
-                            else{
-                              _pause();
-                            }
-                          },
-                          iconSize: 64.0,
-
-                          icon: Icon(_isPlaying
-                              ? Icons.pause_circle_filled
-                              : Icons.play_circle_filled),
-                        ),
-
-                        IconButton(
-                          onPressed:(){
-                            _stop();
-                          },
-                          iconSize: 64.0,
-                          icon:  Icon(Icons.stop),
-                        ),
-                        IconButton(
+                          IconButton(
+                            onPressed:(){
+                              if(!_isPlaying) {
+                                _play();
+                              }
+                              else{
+                                _pause();
+                              }
+                            },
                             iconSize: 64.0,
-                            icon: Icon(Icons.skip_next),
-                            onPressed: () {
-                              _next();
-                            }),
-                      ],
-                    ),
-                  // tiempo(),
-                  ],
+
+                            icon: Icon(_isPlaying
+                                ? Icons.pause_circle_filled
+                                : Icons.play_circle_filled),
+                          ),
+
+                          IconButton(
+                            onPressed:(){
+                              _stop();
+                            },
+                            iconSize: 64.0,
+                            icon:  Icon(Icons.stop),
+                          ),
+                          IconButton(
+                              iconSize: 64.0,
+                              icon: Icon(Icons.skip_next),
+                              onPressed: () {
+                                _next();
+                              }),
+                        ],
+                      ),
+                    // tiempo(),
+                    ],
+                  ),
                 ),
               ),
 
@@ -376,7 +385,7 @@ class _PlayerPageState extends State<PlayerPage> {
       if(!_playAll) {
         final Result result = await _audioPlayer.playAll(urls,index: indice,
           repeatMode: false,
-          respectAudioFocus: true,
+          respectAudioFocus: false,
           playerMode: PlayerMode.FOREGROUND,
           audioNotifications: audioNotifications,
         );
@@ -466,17 +475,38 @@ class _PlayerPageState extends State<PlayerPage> {
           notificationDefaultActions: NotificationDefaultActions.ALL));
     }
   }
+  
+  Widget imagen_por_defecto(String imagen){
+    if (imagen== null){
+      return  new Image(image: AssetImage('assets/LogoApp.png'),
+                        fit: BoxFit.fill,
+        width: 300,
+        height: 300);
+    }
+    else{
+     return new Image(
+          image: NetworkImage('${songs[indice].image}'),fit: BoxFit.fill,
+       width: 300,
+       height: 300,
+     );
+      
+    }
+    
+  }
 }
 
 String juntarArtistas(List<String> datos){
   String juntitos="";
   for(int i=0;i<datos.length;i++){
-    juntitos+=datos[i] +",";
+    juntitos+=datos[i] + ' ';
 
   }
   return juntitos;
 
 }
+
+
+
 
 
 

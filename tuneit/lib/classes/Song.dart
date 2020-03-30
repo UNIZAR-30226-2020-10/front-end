@@ -71,10 +71,8 @@ Future< SongLista> fetchSonglists(String id) async {
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
-  print(response.body);
-  List <dynamic> datos =json.decode(response.body);
   if (response.statusCode == 200) {
-    return SongLista.fromJson(datos[0]);
+    return SongLista.fromJson(json.decode(response.body));
   } else {
     throw Exception('Failed to load playlists');
   }
