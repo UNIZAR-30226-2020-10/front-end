@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:tuneit/classes/LateralMenu.dart';
 import 'package:tuneit/classes/Playlist.dart';
+import 'package:tuneit/pages/show_list.dart';
 
 
 class PlayLists extends StatefulWidget {
@@ -121,10 +122,11 @@ Widget playlist_box (BuildContext context, String route, String playlist_name, S
   return new GestureDetector(
     behavior: HitTestBehavior.opaque,
     onTap: () {
-      Navigator.pushNamed(context, route ,arguments: {
-        'list_title': playlist_name,
-        'indetificadorLista': id_lista
-      });
+
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ShowList(indetificadorLista: id_lista,list_title: playlist_name),
+
+      ));
     },
     child: template_playlist(image, playlist_name),
   );

@@ -5,7 +5,11 @@ import 'package:tuneit/pages/player_song.dart';
 
 class ShowList extends StatefulWidget {
   @override
-  _State createState() => _State();
+  _State createState() => _State(indetificadorLista,list_title);
+  String list_title;
+  String indetificadorLista;
+
+  ShowList({Key key, @required this.list_title,@required this.indetificadorLista}):super(key : key);
 }
 
 class _State extends State<ShowList> {
@@ -13,6 +17,7 @@ class _State extends State<ShowList> {
   String list_title;
   int indice;
   String indetificadorLista;
+  _State(this.indetificadorLista,this.list_title);
 
 
 
@@ -26,7 +31,8 @@ class _State extends State<ShowList> {
 
     });*/
     print("aaaaaaaaaa");
-    SongLista list = await fetchSonglists('1');
+    print(indetificadorLista);
+    SongLista list = await fetchSonglists(indetificadorLista);
     setState(() {
       songs=list;
     });
@@ -39,12 +45,12 @@ class _State extends State<ShowList> {
     print("aaaaaa");
     await fillthesongs();
     print("bbbbbb");
-    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
-    setState(() {
+    //final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    /*setState(() {
       list_title=arguments['list_title'];
       indetificadorLista=arguments['indetificadorLista'];
 
-    });
+    });*/
 
   }
 
@@ -100,7 +106,7 @@ class _State extends State<ShowList> {
 
 
                               Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PlayerPage(songs: songs.songs,indice: index),
+                               builder: (context) => PlayerPage(songs: songs.songs,indice: index),
 
                               ));
                               },
