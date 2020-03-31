@@ -7,6 +7,7 @@ import 'package:tuneit/pages/register.dart';
 import 'package:tuneit/pages/show_list.dart';
 import 'package:tuneit/pages/player_song.dart';
 import 'package:tuneit/classes/push_provider.dart';
+import 'package:tuneit/pages/show_podcast.dart';
 
 void main() => runApp(MyApp());
 final GlobalKey<NavigatorState> navigatorKey =
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/notificaciones':(context) => Notificaciones(),
         '/login':(context) => Login(),
         '/register':(context) => Register(),
+        '/list_podcast':(context) => ShowPodcast(),
 
         /*'/player':(context) => PlayerPage(),*/
       },

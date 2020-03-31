@@ -13,16 +13,11 @@ class Podcast{
   String image;
   String description;
   String web_link;
-  int total_episodes;
-  List<Podcast_Episode> episodes;
 
-  Podcast({this.id,this.title, this.image,this.description,this.web_link,this.total_episodes,this.episodes});
+  Podcast({this.id,this.title, this.image,this.description,this.web_link});
   // [ {“ID”:, “Nombre” : x, “Artistas”:[], ”Album”: ,”URL”: }, Id2{}, …]
 
   factory Podcast.fromJson(Map<String, dynamic> parsedJson) {
-
-    var episodesFromJson  = parsedJson['episodes'];
-    List<Podcast_Episode> _episodes = null; //episodesFromJson.cast<Podcast_Episode>();
 
     return Podcast(
         id: parsedJson['id'],
@@ -30,14 +25,11 @@ class Podcast{
         image: parsedJson['image'],
         description: parsedJson['description'],
         web_link: parsedJson['web_link'],
-        total_episodes: parsedJson['total_episodes'],
-        episodes: _episodes
     );
   }
 
 }
 
-// https://
 const baseURL = 'https://listen-api.listennotes.com/api/v2';
 Future<List<Podcast>> fetchBestPodcasts() async {
 

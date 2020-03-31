@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/LateralMenu.dart';
 import 'package:tuneit/classes/Playlist.dart';
 import 'package:tuneit/classes/Podcast.dart';
+import 'package:tuneit/classes/Podcast_Episode.dart';
 import 'package:tuneit/pages/show_list.dart';
+import 'package:tuneit/pages/show_podcast.dart';
 
 
 class PlayLists extends StatefulWidget {
@@ -114,17 +116,24 @@ class _PlayListsState extends State<PlayLists> {
     );
   }
 
-  Widget list_box (BuildContext context, String route, String playlist_name, String image, String id_lista) {
+  Widget list_box (
+      BuildContext context, bool musNpodc, String route, String name, String image, String id
+      ) {
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ShowList(indetificadorLista: id_lista,list_title: playlist_name),
-
-        ));
+        if(musNpodc) {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ShowList(indetificadorLista: id, list_title: name),
+          ));
+        }
+        else {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ShowPodcast(podc: id),
+          ));
+        }
       },
-      child: template_list(image, playlist_name),
+      child: template_list(image, name),
     );
   }
 
@@ -136,14 +145,14 @@ class _PlayListsState extends State<PlayLists> {
       itemBuilder: (BuildContext context, int index) {
         if(musNpodc) {
           if(list[index].image!=null){
-            return list_box(context, '/list', list[index].name, list[index].image,list[index].id.toString());
+            return list_box(context, musNpodc, '/list', list[index].name, list[index].image, list[index].id.toString());
           }
           else{
-            return list_box(context, '/list', list[index].name, "https://i.blogs.es/2596e6/sonic/450_1000.jpg",list[index].id.toString());
+            return list_box(context, musNpodc, '/list', list[index].name, "https://i.blogs.es/2596e6/sonic/450_1000.jpg", list[index].id.toString());
           }
         }
         else {
-          return list_box(context, '/list', list_p[index].title, list_p[index].image, list_p[index].id);
+          return list_box(context, musNpodc, '/list', list_p[index].title, list_p[index].image, list_p[index].id);
         }
       }
     );
