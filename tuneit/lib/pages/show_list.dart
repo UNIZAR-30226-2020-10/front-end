@@ -23,43 +23,19 @@ class _State extends State<ShowList> {
 
 
 
-  Future<void> fillthesongs () async{
-
-    /*final Map arguments = ModalRoute.of(context).settings.arguments as Map;
-    setState(() {
-      indetificadorLista=arguments['indetificadorLista'];
-
-    });*/
-    print("aaaaaaaaaa");
-    print(indetificadorLista);
-    SongLista list = await fetchSonglists(indetificadorLista);
-    setState(() {
-      songs=list;
-    });
-
-    print(songs.songs.length);
-  }
 
 
   void ObtenerDatos() async{
-    print("aaaaaa");
-    await fillthesongs();
-    print("bbbbbb");
-    //final Map arguments = ModalRoute.of(context).settings.arguments as Map;
-    /*setState(() {
-      list_title=arguments['list_title'];
-      indetificadorLista=arguments['indetificadorLista'];
-
-    });*/
-
+     await songs.fetchSonglists(indetificadorLista);
   }
 
 
 @override
   void initState(){
     // TODO: implement initState
-    ObtenerDatos();
+
     super.initState();
+    ObtenerDatos();
 
 
   }
@@ -94,34 +70,55 @@ class _State extends State<ShowList> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-
-                      padding: const EdgeInsets.all(8),
-                      scrollDirection: Axis.vertical,
-                      itemCount: songs.songs.length,
-                      itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                              child: new ListTile(
-                              onTap:(){
-
-
-                              Navigator.of(context).push(MaterialPageRoute(
-                               builder: (context) => PlayerPage(songs: songs.songs,indice: index),
-
-                              ));
-                              },
-
-                              leading: imagen_por_defecto(songs.songs[index].image),
-                              title: Text(songs.songs[index].title),
-                              subtitle: Text(juntarArtistas(songs.songs[index].artist)),
+              child:
+              StreamBuilder(
+                stream: songs.prueba,
+                builder: (context,snapshot){
+                  if(!snapshot.hasData){
+                    return Column(
+                      children: <Widget>[
+                      Image(image: AssetImage('assets/LogoApp.png'),
+                              fit: BoxFit.fill,
+                               width: 300,
+                                height: 300),
+                        Text("Buscando en nuestra base de datos las mejores canciones...")
 
 
-                              ),
-                              );
+                      ],
+                    );
+                  }
+                  else{
+                    return ListView.builder(
+
+                    padding: const EdgeInsets.all(8),
+                    scrollDirection: Axis.vertical,
+                    itemCount: snapshot.data.songs.length,
+                    itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                    child: new ListTile(
+                    onTap:(){
 
 
-                          }
-                      ),
+                    Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => PlayerPage(songs: snapshot.data.songs,indice: index),
+
+                    ));
+                    },
+
+                    leading: imagen_por_defecto(snapshot.data.songs[index].image),
+                    title: Text(snapshot.data.songs[index].title),
+                    subtitle: Text(juntarArtistas(snapshot.data.songs[index].artist)),
+
+
+                  ),
+                  );
+
+
+                  }
+                  );
+                  }
+    }
+              ),
 
               ),
 

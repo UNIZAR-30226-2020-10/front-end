@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+
+
 
 
 class Song{
@@ -34,6 +38,7 @@ class Song{
   }
 
 }
+const baseURL = 'psoftware.herokuapp.com';
 
 class SongLista{
 
@@ -60,21 +65,29 @@ class SongLista{
   }
 
 
+  final _cancionStreamController = StreamController<SongLista>.broadcast();
+  Stream<SongLista> get prueba => _cancionStreamController.stream;
+
+
+  Future< void> fetchSonglists(String id) async {
+
+
+    var queryParameters = {
+      'list' : id
+    };
+    var uri = Uri.https(baseURL,'/list_data' ,queryParameters);
+    final http.Response response = await http.get(uri, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    });
+    if (response.statusCode == 200) {
+      _cancionStreamController.sink.add(SongLista.fromJson(json.decode(response.body)));
+    } else {
+      throw Exception('Failed to load playlists');
+    }
+  }
+
+
 }
 
-const baseURL = 'psoftware.herokuapp.com';
-Future< SongLista> fetchSonglists(String id) async {
-  var queryParameters = {
-    'list' : id
-  };
-  var uri = Uri.https(baseURL,'/list_data' ,queryParameters);
-  final http.Response response = await http.get(uri, headers: {
-    HttpHeaders.contentTypeHeader: 'application/json',
-  });
-  if (response.statusCode == 200) {
-    return SongLista.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load playlists');
-  }
-}
+
 
