@@ -116,24 +116,26 @@ class _PlayListsState extends State<PlayLists> {
     );
   }
 
-  Widget list_box (
-      BuildContext context, bool musNpodc, String route, String name, String image, String id
-      ) {
+  Widget list_box (BuildContext context, bool musNpodc, index) {
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         if(musNpodc) {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ShowList(indetificadorLista: id, list_title: name),
+            builder: (context) => ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name),
           ));
         }
         else {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ShowPodcast(podc: id),
+            builder: (context) => ShowPodcast(podc: list_p[index].id),
           ));
         }
       },
-      child: template_list(image, name),
+      child: template_list(
+          musNpodc? (list[index].image != null? list[index].image : "https://i.blogs.es/2596e6/sonic/450_1000.jpg")
+              : list_p[index].image,
+          musNpodc? list[index].name : list_p[index].title
+      ),
     );
   }
 
@@ -143,17 +145,7 @@ class _PlayListsState extends State<PlayLists> {
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: musNpodc? list.length : list_p.length,
       itemBuilder: (BuildContext context, int index) {
-        if(musNpodc) {
-          if(list[index].image!=null){
-            return list_box(context, musNpodc, '/list', list[index].name, list[index].image, list[index].id.toString());
-          }
-          else{
-            return list_box(context, musNpodc, '/list', list[index].name, "https://i.blogs.es/2596e6/sonic/450_1000.jpg", list[index].id.toString());
-          }
-        }
-        else {
-          return list_box(context, musNpodc, '/list', list_p[index].title, list_p[index].image, list_p[index].id);
-        }
+        return list_box(context, musNpodc, index);
       }
     );
   }

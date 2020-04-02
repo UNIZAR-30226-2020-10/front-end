@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/LateralMenu.dart';
 import 'package:tuneit/classes/Podcast.dart';
 import 'package:tuneit/classes/Podcast_Episode.dart';
+import 'package:tuneit/pages/player_song.dart';
 
 class ShowPodcast extends StatefulWidget {
 
@@ -49,71 +50,69 @@ class _ShowPodcastState extends State<ShowPodcast> {
           gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           itemCount: list.length,
           itemBuilder: (BuildContext context, int index) {
-            return list_box(context, '/list', list[index].title, list[index].image, list[index].id);
+            return list_box(context, index);
           }
       ),
     );
   }
 
-}
+  Widget template_list (String image, String playlist_name) {
+    return new Container(
+      decoration: new BoxDecoration(
+          color: Colors.indigo[700],
+          borderRadius: new BorderRadius.only(
+            topLeft: const Radius.circular(8.0),
+            topRight: const Radius.circular(8.0),
+            bottomLeft: const Radius.circular(8.0),
+            bottomRight: const Radius.circular(8.0),
+          )
+      ),
+      child: Center(
+          child: Column(
+              children: <Widget>[
+                Flexible(
+                    flex: 5,
+                    child: new Container(
+                      margin: EdgeInsets.all(10.0),
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        image: new DecorationImage(
 
-Widget template_list (String image, String playlist_name) {
-  return new Container(
-    decoration: new BoxDecoration(
-        color: Colors.indigo[700],
-        borderRadius: new BorderRadius.only(
-          topLeft: const Radius.circular(8.0),
-          topRight: const Radius.circular(8.0),
-          bottomLeft: const Radius.circular(8.0),
-          bottomRight: const Radius.circular(8.0),
-        )
-    ),
-    child: Center(
-        child: Column(
-            children: <Widget>[
-              Flexible(
-                  flex: 5,
-                  child: new Container(
-                    margin: EdgeInsets.all(10.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      image: new DecorationImage(
-
-                        image: new NetworkImage(image),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  )
-              ),
-              Flexible(
-                flex: 1,
-                child: Center(
-                    child: FittedBox(
-                      child: Text(playlist_name,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
-                        textAlign: TextAlign.center,
+                          image: new NetworkImage(image),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     )
                 ),
-              ),
-            ]
-        )
-    ),
-    margin: const EdgeInsets.all(4.0),
-    padding: const EdgeInsets.all(1),
-  );
-}
+                Flexible(
+                  flex: 1,
+                  child: Center(
+                      child: FittedBox(
+                        child: Text(playlist_name,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                  ),
+                ),
+              ]
+          )
+      ),
+      margin: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(1),
+    );
+  }
 
-Widget list_box (
-    BuildContext context, String route, String name, String image, String id
-    ) {
-  return new GestureDetector(
-    behavior: HitTestBehavior.opaque,
-    onTap: () {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ShowPodcast(podc: id),
-      ));
-    },
-    child: template_list(image, name),
-  );
+  Widget list_box (BuildContext context, int index) {
+    return new GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        /*Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PlayerPage(songs: list, indice: index),
+        ));*/
+      },
+      child: template_list(list[index].image, list[index].title),
+    );
+  }
+
 }

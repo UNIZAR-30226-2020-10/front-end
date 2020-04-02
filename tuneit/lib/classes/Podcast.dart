@@ -24,17 +24,27 @@ class Podcast{
         title: parsedJson['title'],
         image: parsedJson['image'],
         description: parsedJson['description'],
-        web_link: parsedJson['web_link'],
+        web_link: parsedJson['link'],
+    );
+  }
+
+  factory Podcast.fromJson2(Map<String, dynamic> parsedJson) {
+
+    return Podcast(
+      id: parsedJson['id'],
+      title: parsedJson['title_original'],
+      image: parsedJson['image'],
+      description: parsedJson['description_original'],
+      web_link: parsedJson['website'],
     );
   }
 
 }
-
-const baseURL = 'https://listen-api.listennotes.com/api/v2';
+const baseURL = 'listen-api.listennotes.com';
 Future<List<Podcast>> fetchBestPodcasts() async {
-
+  var uri = Uri.https(baseURL, '/api/v2/best_podcasts');
   final http.Response response = await http.get(
-    baseURL + '/best_podcasts',
+    uri,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1'
@@ -54,3 +64,30 @@ Future<List<Podcast>> fetchBestPodcasts() async {
   }
 }
 
+Future<List<Podcast>> fetchPodcastByTitle(String title) async {
+  var queryParameters = {
+    "q" : title,
+    "type" : "podcast",
+    "language" : "Spanish"
+  };
+  var uri = Uri.https(baseURL, "/api/v2/search", queryParameters);
+  final http.Response response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1'
+    },
+  );
+
+  if (response.statusCode == 200) {
+
+    Map<String, dynamic> parsedJson = json.decode(response.body);
+    var list = parsedJson['results'] as List;
+    List<Podcast> podcastList = list.map((i) =>Podcast.fromJson2(i)).toList();
+
+    return podcastList;
+
+  } else {
+    throw Exception(response.statusCode.toString() + ': Failed to load podcasts');
+  }
+}
