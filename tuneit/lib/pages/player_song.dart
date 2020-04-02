@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:tuneit/classes/Song.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tuneit/classes/Audio.dart';
 
 
 import 'package:flutter_exoplayer/audio_notification.dart';
@@ -21,23 +22,25 @@ typedef void OnError(Exception exception);
 
 
 class PlayerPage extends StatefulWidget {
-  List<Song> songs;
+  List<Audio> audios;
   int indice;
+  bool escanciones;
 
-  PlayerPage({Key key, @required this.songs,@required this.indice}):super(key : key);
+  PlayerPage({Key key, @required this.audios,@required this.indice,@required this.escanciones}):super(key : key);
 
   @override
-  _PlayerPageState createState() => _PlayerPageState (songs,indice);
+  _PlayerPageState createState() => _PlayerPageState (audios,indice,escanciones);
 }
 
 class _PlayerPageState extends State<PlayerPage> {
 
-  _PlayerPageState(this.songs,this.indice);
+  _PlayerPageState(this.audios,this.indice,this.escanciones);
 
   //----------------------------------------------------//
 
-  List<Song> songs;
+  List<Audio> audios;
   int indice;
+  bool escanciones;
 
 
   //Cargar datos
@@ -96,7 +99,7 @@ class _PlayerPageState extends State<PlayerPage> {
     super.initState();
 
     setState((){
-      url=songs[indice].url;
+      url=audios[indice].devolverSonido();
     });
     _initAudioPlayer();
   }
@@ -138,11 +141,11 @@ class _PlayerPageState extends State<PlayerPage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       indice++;
-      if(indice>songs.length){
+      if(indice>audios.length){
         indice=0;
       }
 
-      url=songs[indice].url;
+      url=audios[indice].devolverSonido();
     });
     _play();
 
@@ -164,7 +167,7 @@ class _PlayerPageState extends State<PlayerPage> {
         indice=0;
       }
       print(url);
-      url=songs[indice].url;
+      url=audios[indice].devolverSonido();
     });
     _play();
   }
@@ -192,7 +195,7 @@ class _PlayerPageState extends State<PlayerPage> {
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('${songs[indice].title}',
+                      child: Text('${audios[indice].devolverTitulo()}',
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontWeight: FontWeight.bold,
@@ -207,7 +210,7 @@ class _PlayerPageState extends State<PlayerPage> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(juntarArtistas(songs[indice].artist),
+                  child: Text(audios[indice].devolverArtista(),
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontWeight: FontWeight.bold,
@@ -225,7 +228,7 @@ class _PlayerPageState extends State<PlayerPage> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                    child: imagen_por_defecto(songs[indice].image),
+                    child: imagen_por_defecto(audios[indice].devolverImagen()),
 
                 ),
               ),
@@ -292,52 +295,6 @@ class _PlayerPageState extends State<PlayerPage> {
       );
     //);
   }
-
- /* Widget tiempo(){
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Stack(
-            children: [
-              Slider(
-                onChanged: (v) {
-                  print("aaaaaaaaaaaaaa");
-                  final Position = v * _duration.inMilliseconds;
-                  _audioPlayer
-                      .seek(Duration(milliseconds: Position.round()));
-                    setState(() {
-                      if(_duration.inMilliseconds==_position.inMilliseconds){
-                          print("WWWWWWWWWWWWWWWWWWWWWWWWW");
-                          _incrementCounter();
-                      }
-
-                    });
-                },
-                value: (_position != null &&
-                    _duration != null &&
-                    _position.inMilliseconds > 0 &&
-                    _position.inMilliseconds < _duration.inMilliseconds)
-                    ? _position.inMilliseconds / _duration.inMilliseconds
-                    : 0.0,
-              ),
-            ],
-          ),
-        ),
-        Text(
-
-          _position != null
-              ? '${_positionText ?? ''} / ${_durationText ?? ''}'
-              : _duration != null ? _durationText : '',
-          style: TextStyle(fontSize: 24.0),
-        ),
-      ],
-
-    );
-
-  }*/
 
   void _initAudioPlayer() {
     _audioPlayer = AudioPlayer();
@@ -427,7 +384,7 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   Future<void> _next() async {
-    if(indice == songs.length - 1) {
+    if(indice == audios.length - 1) {
       indice = 0;
     }
     else {
@@ -444,7 +401,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
   Future<void> _previous() async {
     if(indice == 0){
-      indice = songs.length - 1;
+      indice = audios.length - 1;
     }
     else{
       indice--;
@@ -459,23 +416,26 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   void _rellenarUrl() {
-    for(int i = 0; i < songs.length; i++){
-      urls.add(songs[i].url);
+    for(int i = 0; i < audios.length; i++){
+      urls.add(audios[indice].devolverSonido());
     }
   }
 
   void _rellenarNotificaciones(){
-    for(int i = 0; i < songs.length; i++){
+    for(int i = 0; i < audios.length; i++){
       audioNotifications.add( AudioNotification(
           smallIconFileName: "ic_launcher",
-          title:songs[i].title,
-          subTitle: juntarArtistas(songs[i].artist),
-          largeIconUrl: songs[i].album,
+          title:audios[i].devolverTitulo(),
+          subTitle: audios[i].devolverArtista(),
+          largeIconUrl: audios[i].devolverImagen(),
           isLocal: false,
           notificationDefaultActions: NotificationDefaultActions.ALL));
     }
   }
-  
+
+
+
+
   Widget imagen_por_defecto(String imagen){
     if (imagen== null){
       return  new Image(image: AssetImage('assets/LogoApp.png'),
@@ -485,7 +445,7 @@ class _PlayerPageState extends State<PlayerPage> {
     }
     else{
      return new Image(
-          image: NetworkImage('${songs[indice].image}'),fit: BoxFit.fill,
+          image: NetworkImage(audios[indice].devolverImagen()),fit: BoxFit.fill,
        width: 300,
        height: 300,
      );
@@ -495,15 +455,7 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 }
 
-String juntarArtistas(List<String> datos){
-  String juntitos="";
-  for(int i=0;i<datos.length;i++){
-    juntitos+=datos[i] + ' ';
 
-  }
-  return juntitos;
-
-}
 
 
 

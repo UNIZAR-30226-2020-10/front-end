@@ -107,9 +107,9 @@ class _ShowPodcastState extends State<ShowPodcast> {
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        /*Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PlayerPage(songs: list, indice: index),
-        ));*/
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PlayerPage(audios: list, indice: index ,escanciones: false ),
+        ));
       },
       child: template_list(list[index].image, list[index].title),
     );

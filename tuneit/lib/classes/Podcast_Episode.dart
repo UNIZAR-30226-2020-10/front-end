@@ -3,16 +3,36 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tuneit/classes/Audio.dart';
 
 
-class Podcast_Episode{
+class Podcast_Episode extends Audio{
   String id;
   String title;
   String image;
   String description;
-  String audio;
+  String audio; //URL DEL ESPISODIO
   int audio_length_sec;
   String web_link;
+
+  @override
+  String devolverSonido(){
+    return audio;
+  }
+  @override
+  String devolverImagen(){
+    return image;
+  }
+  @override
+  String devolverTitulo(){
+    return title;
+  }
+  @override
+  String devolverArtista(){
+    return "Autor";
+  }
+
+
 
   Podcast_Episode({this.id,this.title, this.image,this.description,this.audio,this.audio_length_sec,this.web_link});
 

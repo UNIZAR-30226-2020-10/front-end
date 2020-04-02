@@ -100,7 +100,7 @@ class _State extends State<ShowList> {
 
 
                     Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => PlayerPage(songs: snapshot.data.songs,indice: index),
+                    builder: (context) => PlayerPage(audios: snapshot.data.songs,indice: index,escanciones: true),
 
                     ));
                     },

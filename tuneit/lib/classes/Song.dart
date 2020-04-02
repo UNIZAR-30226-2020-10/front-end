@@ -5,18 +5,49 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tuneit/classes/Audio.dart';
 
 
 
 
-
-class Song{
+class Song extends Audio{
   String title;
   String album;
   List<String> artist;
   String url;
   int id;
   final String image;
+
+  @override
+  String devolverSonido(){
+    return url;
+
+  }
+  @override
+  String devolverImagen(){
+    return image;
+  }
+
+  @override
+  String devolverTitulo(){
+    return title;
+  }
+
+  @override
+  String devolverArtista(){
+    return juntarArtistas(artist);
+  }
+
+  String juntarArtistas(List<String> datos){
+    String juntitos="";
+    for(int i=0;i<datos.length;i++){
+      juntitos+=datos[i] + ' ';
+
+    }
+    return juntitos;
+
+  }
+
   Song({this.title,this.album, this.artist,this.url,this.id,this.image});
   // [ {“ID”:, “Nombre” : x, “Artistas”:[], ”Album”: ,”URL”: }, Id2{}, …]
 
