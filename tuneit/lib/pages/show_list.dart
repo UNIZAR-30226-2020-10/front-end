@@ -8,6 +8,8 @@ class ShowList extends StatefulWidget {
   _State createState() => _State(indetificadorLista,list_title);
   String list_title;
   String indetificadorLista;
+  bool tipo;
+  String contenido;
 
   ShowList({Key key, @required this.list_title,@required this.indetificadorLista}):super(key : key);
 }
@@ -17,17 +19,15 @@ class _State extends State<ShowList> {
   String list_title;
   int indice;
   String indetificadorLista;
+
   _State(this.indetificadorLista,this.list_title);
 
 
-
-
-
-
-
   void ObtenerDatos() async{
-     await songs.fetchSonglists(indetificadorLista);
-  }
+          await songs.fetchSonglists(indetificadorLista);
+    }
+
+
 
 
 @override
@@ -72,7 +72,7 @@ class _State extends State<ShowList> {
             Expanded(
               child:
               StreamBuilder(
-                stream: songs.prueba,
+                stream: songs.buscar_canciones_1,
                 builder: (context,snapshot){
                   if(!snapshot.hasData){
                     return Column(

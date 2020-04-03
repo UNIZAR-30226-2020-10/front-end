@@ -4,16 +4,21 @@ import "package:tuneit/pages/profile.dart";
 import "package:tuneit/pages/equalizer.dart";
 import "package:tuneit/pages/friend_list.dart";
 import "package:tuneit/pages/notificaciones.dart";
+
+import 'Searcher.dart';
 class MenuLateral extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Drawer(
       child: ListView(
         children: <Widget>[
+        //  Image(image: AssetImage('assets/LogoAppName.png'),),
           new UserAccountsDrawerHeader(
+          currentAccountPicture: Image(image: AssetImage('assets/LogoAppName.png'),fit: BoxFit.contain),
             accountName: Text('TuneIt'),
             accountEmail: Text('tuneit@music.es'),
           ),
+          Searcher(),
           new ListTile(
             title: Text('Música'),
             onTap:(){
@@ -80,6 +85,7 @@ class MenuLateral extends StatelessWidget {
               );
             }
           ),
+
         ],
       ),
     );

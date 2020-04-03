@@ -97,7 +97,7 @@ class SongLista{
 
 
   final _cancionStreamController = StreamController<SongLista>.broadcast();
-  Stream<SongLista> get prueba => _cancionStreamController.stream;
+  Stream<SongLista> get buscar_canciones_1 => _cancionStreamController.stream;
 
 
   Future< void> fetchSonglists(String id) async {
@@ -117,8 +117,50 @@ class SongLista{
     }
   }
 
-
 }
+Future<List<Song>> buscar_canciones(String contenido_busqueda) async {
+
+  List<Song> list;
+  print(contenido_busqueda);
+
+  var queryParameters = {
+    'Nombre' : contenido_busqueda
+  };
+
+  var uri = Uri.https(baseURL,'/search' ,queryParameters);
+
+  print(uri);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+
+
+  if (response.statusCode == 200) {
+
+    print(response.body);
+
+    list = (json.decode(response.body) as List)
+        .map((data) => new Song.fromJson(data))
+        .toList();
+
+    return list;
+
+  } else {
+
+    print('Failed to load playlists');
+    return null;
+  }
+}
+/*“/search”
+Entrada:
+“Nombre” : nombre o parte del nombre de lo que sea
+Salida:
+[ {“ID”:, “Nombre” : x, “Artistas”:[], ”Album”: ,”URL”:, “Imagen” }, Id2{}, …]
+*/
+
+
+
 
 
 

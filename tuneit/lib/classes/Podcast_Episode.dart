@@ -19,14 +19,17 @@ class Podcast_Episode extends Audio{
   String devolverSonido(){
     return audio;
   }
+
   @override
   String devolverImagen(){
     return image;
   }
+
   @override
   String devolverTitulo(){
     return title;
   }
+
   @override
   String devolverArtista(){
     return "Autor";
