@@ -5,9 +5,13 @@ import 'package:tuneit/pages/notificaciones.dart';
 import 'package:tuneit/pages/playlists.dart';
 import 'package:tuneit/pages/register.dart';
 import 'package:tuneit/pages/show_list.dart';
-import 'package:tuneit/pages/player_song.dart';
+import 'package:tuneit/classes//Playlist.dart';
 import 'package:tuneit/classes/push_provider.dart';
 import 'package:tuneit/pages/show_podcast.dart';
+
+import 'package:tuneit/pages/playlists.dart';
+
+import 'classes/LateralMenu.dart';
 
 void main() => runApp(MyApp());
 final GlobalKey<NavigatorState> navigatorKey =
@@ -43,9 +47,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
       ),
-      home: MyHomePage(title: 'TUSA'),
+      home: MyHomePage(title: 'TuneIT'),
     );
   }
 }
@@ -69,7 +73,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+
+  InitialPlaylist cargar_datos = new InitialPlaylist();
 
   void initState() {
     super.initState();
@@ -78,69 +83,197 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //FUNCION PARA REACCIONAR A LAS NOTIFICACIONES
     Reaccionar_notificacion();
+    leer_datos();
 
 
+
+  }
+
+  void leer_datos()async{
+  await cargar_datos.fetchNewList();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
+
+
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      drawer: MenuLateral(),
+      body:Column(
+
+        children: <Widget>[
+
+          Text('Novedades'),
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+
+          Center(
+            child:
+            StreamBuilder(
+                stream: cargar_datos.buscar_listas_1,
+                builder: (context,snapshot){
+                  if(!snapshot.hasData){
+                    return Column(
+                      children: <Widget>[
+                        Image(image: AssetImage('assets/LogoApp.png'),
+                            fit: BoxFit.fill,),
+                        Text("Buscando en nuestra base de datos las mejores canciones...")
+
+
+                      ],
+                    );
+                  }
+                  else{
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return  list_box (context, index,snapshot.data);
+
+
+                          }
+                      ),
+                    );
+                  }
+                }
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+
+          ),
+
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+          //----------------------------------//
+
+          Text('Generos musicales'),
+
+          /*Center(
+            child:
+            StreamBuilder(
+                stream: cargar_datos.buscar_listas_1,
+                builder: (context,snapshot){
+                  if(!snapshot.hasData){
+                    return Column(
+                      children: <Widget>[
+                        Image(image: AssetImage('assets/LogoApp.png'),
+                          fit: BoxFit.fill,),
+                        Text("Buscando en nuestra base de datos las mejores canciones...")
+
+
+                      ],
+                    );
+                  }
+                  else{
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return  list_categories (context, index,snapshot.data);
+
+
+                          }
+                      ),
+                    );
+                  }
+                }
             ),
-          ],
+
+          ),*/
+
+
+
+        ],
+
+
+
         ),
+
+    );
+
+
+
+
+  }
+  /*Navigator.push(
+  context,
+  MaterialPageRoute(
+  builder: (context) => ResultSongList(lista_p,editingController.text),
+  ),
+  );*/
+
+
+
+
+  Widget template_list (String image, String playlist_name) {
+    return Column(
+      children: <Widget>[
+        new
+            CircleAvatar(
+              maxRadius: 60,
+              backgroundColor: Colors.brown.shade800,
+              backgroundImage: NetworkImage(image),
+              ),
+
+        Text(playlist_name),
+      ],
+    );
+
+  }
+
+  Widget list_box (BuildContext context, index, list) {
+
+
+    return new GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name),
+          ));
+      },
+      child: template_list(
+           (list[index].image != null? list[index].image : "https://i.blogs.es/2596e6/sonic/450_1000.jpg"),
+          list[index].name
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.pushNamed(context, '/playlists',arguments: {
-            'list_title':'Favoritos'
-          });
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
+  Widget list_categories (BuildContext context, index, list) {
 
 
-
+    return new GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name),
+        ));
+      },
+      child: template_list(
+          (list[index].image != null? list[index].image : "https://i.blogs.es/2596e6/sonic/450_1000.jpg"),
+          list[index].name
+      ),
+    );
+  }
 
 
 

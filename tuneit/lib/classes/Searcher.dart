@@ -17,7 +17,7 @@ class Searcher extends StatefulWidget {
 
 class _SearcherState extends State<Searcher> {
   TextEditingController editingController = TextEditingController();
-  bool muisca_podcast = false;
+  bool muisca_podcast = true;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class _SearcherState extends State<Searcher> {
 
 
 
-  var textHolder = 'Podcast';
+  var textHolder = 'Musica';
 
   void toggleSwitch(bool value) {
 
