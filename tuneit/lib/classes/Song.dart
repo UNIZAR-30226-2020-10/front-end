@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/Audio.dart';
@@ -49,13 +49,12 @@ class Song extends Audio{
   }
 
   Song({this.title,this.album, this.artist,this.url,this.id,this.image});
-  // [ {“ID”:, “Nombre” : x, “Artistas”:[], ”Album”: ,”URL”: }, Id2{}, …]
+
 
   factory Song.fromJson(Map<String, dynamic> parsedJson) {
 
     var streetsFromJson  = parsedJson['Artistas'];
-    //print(streetsFromJson.runtimeType);
-    // List<String> streetsList = new List<String>.from(streetsFromJson);
+
     List<String> losartistas = streetsFromJson.cast<String>();
 
     return Song(
@@ -152,13 +151,6 @@ Future<List<Song>> buscar_canciones(String contenido_busqueda) async {
     return null;
   }
 }
-/*“/search”
-Entrada:
-“Nombre” : nombre o parte del nombre de lo que sea
-Salida:
-[ {“ID”:, “Nombre” : x, “Artistas”:[], ”Album”: ,”URL”:, “Imagen” }, Id2{}, …]
-*/
-
 
 
 

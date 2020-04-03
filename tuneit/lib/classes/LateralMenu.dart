@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/pages/main_view.dart';
 import "package:tuneit/pages/playlists.dart";
 import "package:tuneit/pages/profile.dart";
 import "package:tuneit/pages/equalizer.dart";
 import "package:tuneit/pages/friend_list.dart";
 import "package:tuneit/pages/notificaciones.dart";
 
+import '../main.dart';
 import 'Searcher.dart';
 class MenuLateral extends StatelessWidget {
   @override
@@ -22,12 +24,12 @@ class MenuLateral extends StatelessWidget {
           new ListTile(
             title: Text('Música'),
             onTap:(){
-             /* Navigator.push(
+             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PlayerPage(),
+                  builder: (context) => MyHomePage(title: 'TuneIT'),
                 ),
-              );*/
+              );
             }
           ),
           new ListTile(
