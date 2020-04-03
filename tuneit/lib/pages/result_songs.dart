@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/Audio.dart';
 import 'package:tuneit/classes/Song.dart';
 import 'package:tuneit/pages/player_song.dart';
 
 
 
 class ResultSongList extends StatelessWidget {
-  List<Song> songs= new List<Song>();
+  List<Audio> songs= new List<Song>();
   String list_title;
   int indice;
   String indetificadorLista;
@@ -62,9 +63,9 @@ class ResultSongList extends StatelessWidget {
                                 ));
                               },
 
-                              leading: imagen_por_defecto(songs[index].image),
-                              title: Text(songs[index].title),
-                              subtitle: Text(juntarArtistas(songs[index].artist)),
+                              leading: imagen_por_defecto(songs[index].devolverImagen()),
+                              title: Text(songs[index].devolverTitulo()),
+                              subtitle: Text(songs[index].devolverArtista()),
 
 
                             ),

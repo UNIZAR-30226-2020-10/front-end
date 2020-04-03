@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/Playlist.dart';
+import 'package:tuneit/classes/Podcast_Episode.dart';
 import 'package:tuneit/pages/result_songs.dart';
 
 import 'Audio.dart';
@@ -74,13 +75,17 @@ class _SearcherState extends State<Searcher> {
                     //---------------------------------------------
                     //---------------------------------------------
 
-                    List<Playlist> lista_p = null;
+                    List<Podcast_Episode> lista_p = null;
 
                     if(lista_p==null){
 
-                    }
-                    else{
                       _showDialog();
+                    }
+
+                    else{
+
+                      ResultSongList(lista_p,editingController.text);
+
                     }
 
                   }
