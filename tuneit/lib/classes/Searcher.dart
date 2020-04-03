@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/Playlist.dart';
 import 'package:tuneit/classes/Podcast_Episode.dart';
 import 'package:tuneit/pages/result_songs.dart';
+import 'package:tuneit/pages/show_list.dart';
 
 import 'Audio.dart';
 import 'Song.dart';
@@ -51,10 +52,24 @@ class _SearcherState extends State<Searcher> {
                 suffixIcon: IconButton(icon: Icon(Icons.search),iconSize: 40, onPressed: ()async {
                   if(muisca_podcast){
 
+                    //Compruebo primero las canciones
                     List<Song> lista_p = await buscar_canciones(editingController.text);
 
-                  if(lista_p==null){
-                    _showDialog();
+                    // Si no hay ninguna cancion voy a comprobar las listas
+                  if(lista_p==null || lista_p.isEmpty){
+                    // Compruebo las listas
+
+                    Playlist lista_p = await buscar_una_lista(editingController.text);
+                    if(lista_p==null){
+                      //Si no hay nada pues error
+                      _showDialog();
+                    }
+                    else{
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ShowList(indetificadorLista: lista_p.id.toString(), list_title: lista_p.name),
+                      ));
+
+                    }
                   }
                   else{
                     print("Haz esto por favor");

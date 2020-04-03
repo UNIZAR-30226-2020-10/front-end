@@ -29,19 +29,43 @@ class Playlist {
 
 
   Future<List<Playlist>> fetchPlaylists() async {
-    List<Playlist> list = List();
-    final response = await http.get(baseURL);
-    if (response.statusCode == 200) {
-      print(response.body);
-      list = (json.decode(response.body) as List)
-          .map((data) => new Playlist.fromJson(data))
-          .toList();
+  List<Playlist> list = List();
+  final response = await http.get(baseURL);
+  if (response.statusCode == 200) {
+    print(response.body);
+    list = (json.decode(response.body) as List)
+        .map((data) => new Playlist.fromJson(data))
+        .toList();
 
-      return list;
-    } else {
-      throw Exception('Failed to load playlists');
-    }
+    return list;
+  } else {
+    throw Exception('Failed to load playlists');
   }
+}
+
+Future<Playlist> buscar_una_lista(String data) async {
+
+  var queryParameters = {
+    'Lista' : data
+  };
+
+  var uri = Uri.https('psoftware.herokuapp.com','/search_list' ,queryParameters);
+
+  print(uri);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+
+  if (response.statusCode == 200) {
+    print(response.body);
+    return Playlist.fromJson((json.decode(response.body)));
+
+  } else {
+    print('Failed to load playlists');
+    return null;
+  }
+}
 
 
 
