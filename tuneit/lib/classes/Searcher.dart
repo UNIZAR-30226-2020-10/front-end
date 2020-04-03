@@ -57,7 +57,13 @@ class _SearcherState extends State<Searcher> {
                     _showDialog();
                   }
                   else{
-                    ResultSongList(lista_p,editingController.text);
+                    print("Haz esto por favor");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultSongList(lista_p,editingController.text),
+                      ),
+                    );
                   }
                   }
                   else{
@@ -76,7 +82,12 @@ class _SearcherState extends State<Searcher> {
                     }
 
                     else{
-                      ResultSongList(lista_p,editingController.text);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResultSongList(lista_p,editingController.text),
+                        ),
+                      );
 
                     }
 
