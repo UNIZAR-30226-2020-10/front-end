@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/Audio.dart';
 
 
-class Podcast_Episode extends Audio{
+class Podcast_Episode extends Audio {
   String id;
   String title;
   String image;
@@ -72,6 +72,34 @@ Future<List<Podcast_Episode>> fetchEpisodes(String podc) async {
     List<Podcast_Episode> episodesList = list.map((i) =>Podcast_Episode.fromJson(i)).toList();
 
     return episodesList;
+
+  } else {
+    throw Exception(response.statusCode.toString() + ': Failed to load episodes');
+  }
+}
+
+Future<List<Podcast_Episode>> fetchEpisodeByTitle(String title) async {
+  var queryParameters = {
+    "q" : title,
+    "type" : "episode",
+    "language" : "Spanish"
+  };
+  var uri = Uri.https(baseURL, "/api/v2/search", queryParameters);
+  final http.Response response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1'
+    },
+  );
+
+  if (response.statusCode == 200) {
+
+    Map<String, dynamic> parsedJson = json.decode(response.body);
+    var list = parsedJson['results'] as List;
+    List<Podcast_Episode> episodeList = list.map((i) =>Podcast_Episode.fromJson(i)).toList();
+
+    return episodeList;
 
   } else {
     throw Exception(response.statusCode.toString() + ': Failed to load episodes');
