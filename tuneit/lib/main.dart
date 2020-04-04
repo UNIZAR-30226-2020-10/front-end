@@ -8,9 +8,6 @@ import 'package:tuneit/pages/show_list.dart';
 import 'package:tuneit/classes//Playlist.dart';
 import 'package:tuneit/classes/push_provider.dart';
 import 'package:tuneit/pages/show_podcast.dart';
-
-import 'package:tuneit/pages/playlists.dart';
-
 import 'classes/LateralMenu.dart';
 
 void main() => runApp(MyApp());
@@ -200,17 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
 
-
-
   }
-  /*Navigator.push(
-  context,
-  MaterialPageRoute(
-  builder: (context) => ResultSongList(lista_p,editingController.text),
-  ),
-  );*/
-
-
 
 
   Widget template_list (String image, String playlist_name) {

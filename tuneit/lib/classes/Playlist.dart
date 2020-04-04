@@ -43,7 +43,9 @@ class Playlist {
   }
 }
 
-Future<Playlist> buscar_una_lista(String data) async {
+Future<List<Playlist>> buscar_una_lista(String data) async {
+
+  List<Playlist> list = List();
 
   var queryParameters = {
     'Lista' : data
@@ -59,7 +61,11 @@ Future<Playlist> buscar_una_lista(String data) async {
 
   if (response.statusCode == 200) {
     print(response.body);
-    return Playlist.fromJson((json.decode(response.body)));
+    list = (json.decode(response.body) as List)
+        .map((data) => new Playlist.fromJson(data))
+        .toList();
+
+    return list;
 
   } else {
     print('Failed to load playlists');

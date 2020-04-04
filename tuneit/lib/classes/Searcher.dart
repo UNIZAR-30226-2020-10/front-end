@@ -4,7 +4,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/Playlist.dart';
+import 'package:tuneit/classes/Podcast.dart';
 import 'package:tuneit/classes/Podcast_Episode.dart';
+import 'package:tuneit/pages/result_playlist.dart';
+import 'package:tuneit/pages/result_podcasts.dart';
 import 'package:tuneit/pages/result_songs.dart';
 import 'package:tuneit/pages/show_list.dart';
 
@@ -59,14 +62,15 @@ class _SearcherState extends State<Searcher> {
                   if(lista_p==null || lista_p.isEmpty){
                     // Compruebo las listas
 
-                    Playlist lista_p = await buscar_una_lista(editingController.text);
+                    List<Playlist> lista_p = await buscar_una_lista(editingController.text);
+
                     if(lista_p==null){
                       //Si no hay nada pues error
                       _showDialog();
                     }
                     else{
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ShowList(indetificadorLista: lista_p.id.toString(), list_title: lista_p.name),
+                        builder: (context) => ResultListPlaylist(list_title: editingController.text,list: lista_p,),
                       ));
 
                     }
@@ -82,16 +86,13 @@ class _SearcherState extends State<Searcher> {
                   }
                   }
                   else{
-                    //---------------------------------------------
-                    //---------------------------------------------
-                    //---------------------------------------------
-                    //AQUI ES DONDE BUSCARIA LOS PODCAST
-                    //---------------------------------------------
-                    //---------------------------------------------
-                    List<Podcast_Episode> lista_p = null;
+
+                    List<Podcast> lista_p = await fetchPodcastByTitle(editingController.text);
                     //Haz que sino encuentra nada devuelva null
 
-                    if(lista_p==null){
+                    print(lista_p.length);
+
+                    if(lista_p==null|| lista_p.isEmpty){
 
                       _showDialog();
                     }
@@ -100,7 +101,7 @@ class _SearcherState extends State<Searcher> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ResultSongList(lista_p,editingController.text),
+                          builder: (context) => ResultListPodcast(list_p: lista_p,list_title: editingController.text),
                         ),
                       );
 
