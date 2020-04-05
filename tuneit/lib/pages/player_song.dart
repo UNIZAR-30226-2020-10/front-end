@@ -70,6 +70,7 @@ class _PlayerPageState extends State<PlayerPage> {
   Duration _duration;
   Duration _position;
   bool _playAll = false;
+  bool _repeatMode = false;
 
   PlayerState _playerState = PlayerState.RELEASED;
   StreamSubscription _durationSubscription;
@@ -144,7 +145,6 @@ class _PlayerPageState extends State<PlayerPage> {
       if(indice>audios.length){
         indice=0;
       }
-
       url=audios[indice].devolverSonido();
     });
     _play();
@@ -154,7 +154,6 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   void _decrementCounter() async{
-
     await _stop();
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -266,10 +265,20 @@ class _PlayerPageState extends State<PlayerPage> {
 
                           IconButton(
                             onPressed:(){
-                              _stop();
+                              if(_repeatMode){
+                                _repeatMode = false;
+                              }
+                              else{
+                                _repeatMode = true;
+                              }
+                              _repeat();
                             },
                             iconSize: 64.0,
-                            icon:  Icon(Icons.stop),
+                            icon:  Icon(Icons.repeat,
+                                color:(_repeatMode)
+                                    ? Colors.blue
+                                    : Colors.black
+                            ),
                           ),
                           IconButton(
                               iconSize: 64.0,
@@ -282,14 +291,53 @@ class _PlayerPageState extends State<PlayerPage> {
                     // tiempo(),
                     ],
                   ),
-                ),
+                )
+                ,
               ),
-
-
-                ],
-
-
-
+              SizedBox(
+                  width: 400,
+                  height: 30,
+                  child: SliderTheme(
+                    data: SliderThemeData(
+                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
+                      trackHeight: 3,
+                      thumbColor: Colors.pink,
+                      inactiveTrackColor: Colors.grey,
+                      activeTrackColor: Colors.pink,
+                      overlayColor: Colors.transparent,
+                    ),
+                    child: Slider(
+                      value:
+                      _position != null ? _position.inMilliseconds.toDouble() : 0.0,
+                      min: 0.0,
+                      max:
+                      _duration != null ? _duration.inMilliseconds.toDouble() : 0.0,
+                      onChanged: (double value) async {
+                        final Result result = await _audioPlayer
+                            .seekPosition(Duration(milliseconds: value.toInt()));
+                        if (result == Result.FAIL) {
+                          print(
+                              "you tried to call audio conrolling methods on released audio player :(");
+                        } else if (result == Result.ERROR) {
+                          print("something went wrong in seek :(");
+                        }
+                        _position = Duration(milliseconds: value.toInt());
+                      },
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _position != null
+                          ? '${_positionText ?? ''} / ${_durationText ?? ''}'
+                          : _duration != null ? _durationText : '',
+                      style: TextStyle(fontSize: 24.0),
+                    ),
+                  ],
+                ),
+            ],
           ),
         ),
       );
@@ -383,6 +431,16 @@ class _PlayerPageState extends State<PlayerPage> {
     }
   }
 
+  Future<void> _repeat() async {
+    final Result result = await _audioPlayer.setRepeatMode(_repeatMode);
+    if (result == Result.FAIL) {
+      print(
+          "you tried to call audio conrolling methods on released audio player :(");
+    } else if (result == Result.ERROR) {
+      print("something went wrong in stop :(");
+    }
+  }
+
   Future<void> _next() async {
     if(indice == audios.length - 1) {
       indice = 0;
@@ -417,7 +475,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
   void _rellenarUrl() {
     for(int i = 0; i < audios.length; i++){
-      urls.add(audios[indice].devolverSonido());
+      urls.add(audios[i].devolverSonido());
     }
   }
 
