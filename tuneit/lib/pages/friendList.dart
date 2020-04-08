@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/LateralMenu.dart';
+import 'package:tuneit/classes/components/LateralMenu.dart';
 
 class Friend_List extends StatefulWidget {
   @override

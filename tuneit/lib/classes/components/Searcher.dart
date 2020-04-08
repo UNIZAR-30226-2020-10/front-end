@@ -3,9 +3,9 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/Playlist.dart';
-import 'package:tuneit/classes/Podcast.dart';
-import 'package:tuneit/classes/PodcastEpisode.dart';
+import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/components/Podcast.dart';
+import 'package:tuneit/classes/components/PodcastEpisode.dart';
 import 'package:tuneit/pages/resultPlaylist.dart';
 import 'package:tuneit/pages/resultPodcasts.dart';
 import 'package:tuneit/pages/resultSongs.dart';

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/Playlist.dart';
-import 'package:tuneit/classes/Podcast.dart';
-import 'package:tuneit/pages/playlists.dart';
-import 'package:tuneit/pages/showList.dart';
+import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/pages/showPodcast.dart';
 class ResultListPodcast extends StatelessWidget {
 
@@ -115,7 +112,7 @@ Widget list_box (BuildContext context, index) {
     },
     child: template_list(
          list_p[index].image,
-        list_p[index].title
+        list_p[index].name
     ),
   );
 }

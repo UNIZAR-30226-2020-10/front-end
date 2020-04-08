@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/Audio.dart';
-import 'package:tuneit/classes/Song.dart';
+import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/pages/audioPlayer.dart';
 
 

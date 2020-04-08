@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:tuneit/classes/Audio.dart';
+import 'package:tuneit/classes/components/Audio.dart';
 
 
 class PodcastEpisode extends Audio {

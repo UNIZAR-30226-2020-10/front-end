@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/Song.dart';
+import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/pages/audioPlayer.dart';
 
 
@@ -106,7 +106,7 @@ class _State extends State<ShowList> {
                     },
 
                     leading: imagen_por_defecto(snapshot.data.songs[index].image),
-                    title: Text(snapshot.data.songs[index].title),
+                    title: Text(snapshot.data.songs[index].name),
                     subtitle: Text(juntarArtistas(snapshot.data.songs[index].artist)),
 
 

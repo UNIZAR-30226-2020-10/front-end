@@ -6,7 +6,7 @@ import "package:tuneit/pages/equalizer.dart";
 import "package:tuneit/pages/friendList.dart";
 import "package:tuneit/pages/notificaciones.dart";
 
-import '../main.dart';
+import '../../main.dart';
 import 'Searcher.dart';
 class LateralMenu extends StatelessWidget {
   @override

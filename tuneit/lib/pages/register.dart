@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:tuneit/classes/User.dart';
+import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/widgets/buttons.dart';
+import 'package:tuneit/widgets/textFields.dart';
 
 import 'login.dart';
 
@@ -96,61 +98,14 @@ class _RegisterState extends State<Register> {
                       height: 30,
                       color: Colors.transparent,
                     ),
-                    TextFormField(
-                      controller: _controller1,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'RobotoMono'
-                      ),
-                      decoration: field('Nombre de usuario', Icons.alternate_email),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Este campo no puede estar vacio';
-                        }
-                      },
-                    ),
-                    TextFormField(
-                      controller: _controller2,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'RobotoMono'
-                      ),
-                      decoration: field('Correo electrónico', Icons.mail_outline),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Este campo no puede estar vacio';
-                        }
-                      },
-                      /*onSaved: (val) =>
-                      setState(() => _user.firstName = val),*/
-                    ),
-                    TextFormField(
-                      controller: _controller3,
-                      obscureText: true,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'RobotoMono'
-                      ),
-                      decoration: field('Contraseña', Icons.lock_outline),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Este campo no puede estar vacio';
-                        }
-                      },
-                    ),
-                    TextFormField(
-                      controller: _controller4,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'RobotoMono'
-                      ),
-                      decoration: field('País de nacimiento', Icons.place),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Este campo no puede estar vacio';
-                        }
-                      },
-                    ),
+                    textField(_controller1, false, 'Nombre de usuario',
+                        Icons.alternate_email),
+                    textField(_controller2, false, 'Correo electrónico',
+                        Icons.mail_outline),
+                    textField(_controller3, true, 'Contraseña',
+                        Icons.lock_outline),
+                    textField(_controller4, false, 'País de nacimiento',
+                        Icons.place),
                     RaisedButton(
                       color: Colors.transparent,
                       child: Column(
@@ -206,52 +161,9 @@ class _RegisterState extends State<Register> {
                       height: 30,
                       color: Colors.transparent,
                     ),
-                    RaisedButton(
-                        onPressed: () {
-                          setState(() {
-                            registerUser(
-                                _controller1.text, _controller2.text, _controller3.text,  _controller4.text,  _date.toString()
-                            ).then((value) {
-                              if (value) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => Login()),
-                                );
-                              }
-                              else {
-
-                              }
-                            });
-                          });
-                        },
-                        color: Colors.transparent,
-                        child: SizedBox(
-                          height: 50,
-                          width: 200.0,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: new BorderRadius.only(
-                                    topLeft: const Radius.circular(25.0),
-                                    topRight: const Radius.circular(25.0),
-                                    bottomLeft: const Radius.circular(25.0),
-                                    bottomRight: const Radius.circular(25.0),
-                                  ),
-                                  color: Colors.transparent,
-                                  border: Border.all(color: Colors.white, width: 4)
-                              ),
-                              child: Center(
-                                child: Text(
-                                    'REGISTRARSE',
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.white,
-                                        fontFamily: 'RobotoMono'
-                                    )
-                                ),
-                              )
-                          ),
-                        )
-                    )
+                    solidButton(context, tryRegister,
+                        [_controller1.text, _controller2.text, _controller3.text,  _controller4.text,  _date.toString()],
+                        'REGISTRARSE'),
                   ],
                 ),
               )
@@ -259,28 +171,22 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
-}
 
-InputDecoration field(String text, IconData ic) {
-  return InputDecoration(
-    hintText: text,
-    prefixIcon: Padding(
-      padding: EdgeInsets.all(0.0),
-      child: Icon(
-        ic,
-        color: Colors.grey,
-      ), // icon is 48px widget.
-    ),
-    hintStyle: TextStyle(
-        fontSize: 15,
-        color: Colors.white60,
-        fontFamily: 'RobotoMono'
-    ),
-    enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.white),
-    ),
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color(0xFF5350a7)),
-    ),
-  );
+  void tryRegister (String nick, String email, String password, String pais, String fecha) {
+    setState(() {
+      registerUser(
+          nick, email, password, pais, fecha
+      ).then((value) {
+        if (value) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Login()),
+          );
+        }
+        else {
+
+        }
+      });
+    });
+  }
 }

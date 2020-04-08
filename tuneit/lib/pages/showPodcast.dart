@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import 'package:tuneit/classes/LateralMenu.dart';
-import 'package:tuneit/classes/Podcast.dart';
-import 'package:tuneit/classes/PodcastEpisode.dart';
+import 'package:tuneit/classes/components/LateralMenu.dart';
+import 'package:tuneit/classes/components/Podcast.dart';
+import 'package:tuneit/classes/components/PodcastEpisode.dart';
 import 'package:tuneit/pages/audioPlayer.dart';
 
 class ShowPodcast extends StatefulWidget {

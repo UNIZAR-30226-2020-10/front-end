@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:tuneit/classes/Song.dart';
+import 'package:tuneit/classes/components/Song.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tuneit/classes/Audio.dart';
+import 'package:tuneit/classes/components/Audio.dart';
 
 
 import 'package:flutter_exoplayer/audio_notification.dart';

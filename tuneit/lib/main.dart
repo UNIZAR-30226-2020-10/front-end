@@ -5,10 +5,10 @@ import 'package:tuneit/pages/notificaciones.dart';
 import 'package:tuneit/pages/playlists.dart';
 import 'package:tuneit/pages/register.dart';
 import 'package:tuneit/pages/showList.dart';
-import 'package:tuneit/classes//Playlist.dart';
-import 'package:tuneit/classes/PushProvider.dart';
+import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/components/PushProvider.dart';
 import 'package:tuneit/pages/showPodcast.dart';
-import 'classes/LateralMenu.dart';
+import 'classes/components/LateralMenu.dart';
 
 void main() => runApp(MyApp());
 
@@ -160,11 +160,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future <void> almacenarMensaje(){
+  Future <void> almacenarMensaje() {
 
   }
 
-  void reaccionarNotificacion() async{
+  void reaccionarNotificacion() async {
 
     final pushProvider = new PushProvider();
     pushProvider.initNotifications();

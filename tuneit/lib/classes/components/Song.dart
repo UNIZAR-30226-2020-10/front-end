@@ -5,13 +5,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:tuneit/classes/Audio.dart';
+import 'package:tuneit/classes/components/Audio.dart';
 
 
 
 
 class Song extends Audio{
-  String title;
+  String name;
   String album;
   List<String> artist;
   String url;
@@ -30,7 +30,7 @@ class Song extends Audio{
 
   @override
   String devolverTitulo(){
-    return title;
+    return name;
   }
 
   @override
@@ -48,7 +48,7 @@ class Song extends Audio{
 
   }
 
-  Song({this.title,this.album, this.artist,this.url,this.id,this.image});
+  Song({this.name,this.album, this.artist,this.url,this.id,this.image});
 
 
   factory Song.fromJson(Map<String, dynamic> parsedJson) {
@@ -59,7 +59,7 @@ class Song extends Audio{
 
     return Song(
       id: parsedJson['ID'],
-      title: parsedJson['Nombre'],
+      name: parsedJson['Nombre'],
       album: parsedJson['Album'],
       artist: losartistas,
       url :parsedJson['URL'],

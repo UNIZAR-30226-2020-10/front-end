@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/Playlist.dart';
-import 'package:tuneit/classes/Podcast.dart';
+import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/pages/playlists.dart';
 import 'package:tuneit/pages/showList.dart';
 import 'package:tuneit/pages/showPodcast.dart';

@@ -9,19 +9,19 @@ import 'PodcastEpisode.dart';
 
 class Podcast {
   String id;
-  String title;
+  String name;
   String image;
   String description;
   String web_link;
 
-  Podcast({this.id,this.title, this.image,this.description,this.web_link});
+  Podcast({this.id,this.name, this.image,this.description,this.web_link});
   // [ {“ID”:, “Nombre” : x, “Artistas”:[], ”Album”: ,”URL”: }, Id2{}, …]
 
   factory Podcast.fromJson(Map<String, dynamic> parsedJson) {
 
     return Podcast(
         id: parsedJson['id'],
-        title: parsedJson['title'],
+        name: parsedJson['title'],
         image: parsedJson['image'],
         description: parsedJson['description'],
         web_link: parsedJson['link'],
@@ -32,7 +32,7 @@ class Podcast {
 
     return Podcast(
       id: parsedJson['id'],
-      title: parsedJson['title_original'],
+      name: parsedJson['title_original'],
       image: parsedJson['image'],
       description: parsedJson['description_original'],
       web_link: parsedJson['website'],
