@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tuneit/api/messaging.dart';
 
-class  Boton_recomendar extends StatelessWidget {
+class  BotonRecomendar extends StatelessWidget {
   String titulo_cancion;
   String mensaje;
   String usuario_recomienda;
   String usuario_recomendado;
 
-  Boton_recomendar({this.usuario_recomendado,this.titulo_cancion,this.mensaje,this.usuario_recomienda});
+  BotonRecomendar({this.usuario_recomendado,this.titulo_cancion,this.mensaje,this.usuario_recomienda});
   @override
   Widget build(BuildContext context) {
 

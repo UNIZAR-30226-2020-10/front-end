@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/Audio.dart';
 
 
-class Podcast_Episode extends Audio {
+class PodcastEpisode extends Audio {
   String id;
   String title;
   String image;
@@ -37,11 +37,11 @@ class Podcast_Episode extends Audio {
 
 
 
-  Podcast_Episode({this.id,this.title, this.image,this.description,this.audio,this.audio_length_sec,this.web_link});
+  PodcastEpisode({this.id,this.title, this.image,this.description,this.audio,this.audio_length_sec,this.web_link});
 
-  factory Podcast_Episode.fromJson(Map<String, dynamic> parsedJson) {
+  factory PodcastEpisode.fromJson(Map<String, dynamic> parsedJson) {
 
-    return Podcast_Episode(
+    return PodcastEpisode(
         id: parsedJson['id'],
         title: parsedJson['title'],
         image: parsedJson['image'],
@@ -55,7 +55,7 @@ class Podcast_Episode extends Audio {
 }
 
 const baseURL = 'listen-api.listennotes.com';
-Future<List<Podcast_Episode>> fetchEpisodes(String podc) async {
+Future<List<PodcastEpisode>> fetchEpisodes(String podc) async {
   var uri = Uri.https(baseURL, '/api/v2/podcasts/${podc}');
   final http.Response response = await http.get(
     uri,
@@ -69,7 +69,7 @@ Future<List<Podcast_Episode>> fetchEpisodes(String podc) async {
 
     Map<String, dynamic> parsedJson = json.decode(response.body);
     var list = parsedJson['episodes'] as List;
-    List<Podcast_Episode> episodesList = list.map((i) =>Podcast_Episode.fromJson(i)).toList();
+    List<PodcastEpisode> episodesList = list.map((i) =>PodcastEpisode.fromJson(i)).toList();
 
     return episodesList;
 
@@ -78,7 +78,7 @@ Future<List<Podcast_Episode>> fetchEpisodes(String podc) async {
   }
 }
 
-Future<List<Podcast_Episode>> fetchEpisodeByTitle(String title) async {
+Future<List<PodcastEpisode>> fetchEpisodeByTitle(String title) async {
   var queryParameters = {
     "q" : title,
     "type" : "episode",
@@ -97,7 +97,7 @@ Future<List<Podcast_Episode>> fetchEpisodeByTitle(String title) async {
 
     Map<String, dynamic> parsedJson = json.decode(response.body);
     var list = parsedJson['results'] as List;
-    List<Podcast_Episode> episodeList = list.map((i) =>Podcast_Episode.fromJson(i)).toList();
+    List<PodcastEpisode> episodeList = list.map((i) =>PodcastEpisode.fromJson(i)).toList();
 
     return episodeList;
 

@@ -32,7 +32,7 @@ class _ProfilePageState extends State<Profile> {
         title: Text('Perfil'),
         centerTitle: true,
       ),
-      drawer: MenuLateral(),
+      drawer: LateralMenu(),
          // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/Song.dart';
-import 'package:tuneit/pages/player_song.dart';
+import 'package:tuneit/pages/audioPlayer.dart';
 
 
 class ShowList extends StatefulWidget {

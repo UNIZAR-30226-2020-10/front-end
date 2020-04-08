@@ -32,7 +32,7 @@ class _EqualizerPageState extends State<Equalizer> {
         title: Text('Ecualizador'),
         centerTitle: true,
       ),
-      drawer: MenuLateral(),
+      drawer: LateralMenu(),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

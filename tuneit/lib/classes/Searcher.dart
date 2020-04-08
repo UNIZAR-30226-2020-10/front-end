@@ -5,11 +5,11 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/Playlist.dart';
 import 'package:tuneit/classes/Podcast.dart';
-import 'package:tuneit/classes/Podcast_Episode.dart';
-import 'package:tuneit/pages/result_playlist.dart';
-import 'package:tuneit/pages/result_podcasts.dart';
-import 'package:tuneit/pages/result_songs.dart';
-import 'package:tuneit/pages/show_list.dart';
+import 'package:tuneit/classes/PodcastEpisode.dart';
+import 'package:tuneit/pages/resultPlaylist.dart';
+import 'package:tuneit/pages/resultPodcasts.dart';
+import 'package:tuneit/pages/resultSongs.dart';
+import 'package:tuneit/pages/showList.dart';
 
 import 'Audio.dart';
 import 'Song.dart';
@@ -62,15 +62,15 @@ class _SearcherState extends State<Searcher> {
                   if(lista_p==null || lista_p.isEmpty){
                     // Compruebo las listas
 
-                    List<Playlist> lista_p = await buscar_una_lista(editingController.text);
+                    List<Playlist> listaP = await buscar_una_lista(editingController.text);
 
-                    if(lista_p==null){
+                    if(listaP==null){
                       //Si no hay nada pues error
                       _showDialog();
                     }
                     else{
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ResultListPlaylist(list_title: editingController.text,list: lista_p,),
+                        builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
                       ));
 
                     }

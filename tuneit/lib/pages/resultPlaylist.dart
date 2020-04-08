@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/Playlist.dart';
 import 'package:tuneit/classes/Podcast.dart';
 import 'package:tuneit/pages/playlists.dart';
-import 'package:tuneit/pages/show_list.dart';
-import 'package:tuneit/pages/show_podcast.dart';
+import 'package:tuneit/pages/showList.dart';
+import 'package:tuneit/pages/showPodcast.dart';
 class ResultListPlaylist extends StatelessWidget {
 
   List<Playlist> list = List();

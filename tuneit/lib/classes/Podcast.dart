@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'Podcast_Episode.dart';
+import 'PodcastEpisode.dart';
 
 
-class Podcast{
+class Podcast {
   String id;
   String title;
   String image;

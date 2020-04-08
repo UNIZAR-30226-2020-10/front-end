@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/LateralMenu.dart';
 import 'package:tuneit/classes/Playlist.dart';
 import 'package:tuneit/classes/Podcast.dart';
-import 'package:tuneit/classes/Podcast_Episode.dart';
-import 'package:tuneit/pages/show_list.dart';
-import 'package:tuneit/pages/show_podcast.dart';
+import 'package:tuneit/classes/PodcastEpisode.dart';
+import 'package:tuneit/pages/showList.dart';
+import 'package:tuneit/pages/showPodcast.dart';
 
 
 class PlayLists extends StatefulWidget {
@@ -44,7 +44,7 @@ class _PlayListsState extends State<PlayLists> {
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.indigo[900],
-        drawer: MenuLateral(),
+        drawer: LateralMenu(),
         appBar: AppBar(
           title: Text('Lista de reproduccion'),
           centerTitle: true,

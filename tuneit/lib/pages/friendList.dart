@@ -32,7 +32,7 @@ class _FriendListPageState extends State<Friend_List> {
         title: Text('Lista de Amigos'),
         centerTitle: true,
       ),
-      drawer: MenuLateral(),
+      drawer: LateralMenu(),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

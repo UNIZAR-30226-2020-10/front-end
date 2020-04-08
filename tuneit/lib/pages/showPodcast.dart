@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:tuneit/classes/LateralMenu.dart';
 import 'package:tuneit/classes/Podcast.dart';
-import 'package:tuneit/classes/Podcast_Episode.dart';
-import 'package:tuneit/pages/player_song.dart';
+import 'package:tuneit/classes/PodcastEpisode.dart';
+import 'package:tuneit/pages/audioPlayer.dart';
 
 class ShowPodcast extends StatefulWidget {
 
@@ -20,12 +20,12 @@ class ShowPodcast extends StatefulWidget {
 class _ShowPodcastState extends State<ShowPodcast> {
 
   String podc;
-  List<Podcast_Episode> list = List();
+  List<PodcastEpisode> list = List();
 
   _ShowPodcastState(this.podc);
 
   void obtener_datos() async{
-    List<Podcast_Episode> lista = await fetchEpisodes(podc);
+    List<PodcastEpisode> lista = await fetchEpisodes(podc);
     setState(() {
       list = lista;
     });
