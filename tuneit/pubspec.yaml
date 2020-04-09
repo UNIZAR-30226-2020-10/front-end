@@ -28,6 +28,7 @@ dependencies:
   firebase_messaging: ^6.0.13
   audioplayers: ^0.14.0
   provider: ^3.0.0+1
+  stack: ^0.0.1
   audio_service:
     git:
       url: https://github.com/ryanheise/audio_service.git

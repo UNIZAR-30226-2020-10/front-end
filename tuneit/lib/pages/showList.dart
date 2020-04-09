@@ -126,9 +126,6 @@ class _State extends State<ShowList> {
 
           ],
     ),
-
-
-
       bottomNavigationBar: NewWidget(),
     );
 
@@ -190,6 +187,8 @@ class _NewWidgetState extends State<NewWidget> {
   }
   @override
   Widget build(BuildContext context) {
+    Duration _position;
+    Duration _duration;
     return new BottomAppBar(
       child: Card(
 
@@ -202,18 +201,56 @@ class _NewWidgetState extends State<NewWidget> {
 
             leading: Icon(Icons.album, size: 50),
 
-            title: Text('Heart Shaker'),
+            title: Text('Nombre de la Canción Correspondiente'),
 
-            subtitle: Text('TWICE'),
+            subtitle: Text('Artista de la canción correspondiente'),
 
             ),
-
-          ],
+            SizedBox(
+              child: SliderTheme(
+                data: SliderThemeData(
+                  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
+                  trackHeight: 3,
+                  thumbColor: Colors.pink,
+                  inactiveTrackColor: Colors.grey,
+                  activeTrackColor: Colors.pink,
+                  overlayColor: Colors.transparent,
+                ),
+                child: Slider(
+                  value:
+                  _position != null ? _position.inMilliseconds.toDouble() : 0.0,
+                  min: 0.0,
+                  max:
+                  _duration != null ? _duration.inMilliseconds.toDouble() : 0.0,
+                  onChanged: (double value) async {
+                    //final Result result = await _audioPlayer
+                    //    .seekPosition(Duration(milliseconds: value.toInt()));
+                    //if (result == Result.FAIL) {
+                    //  print(
+                    //      "you tried to call audio conrolling methods on released audio player :(");
+                    //} else if (result == Result.ERROR) {
+                    //  print("something went wrong in seek :(");
+                    //}
+                    //_position = Duration(milliseconds: value.toInt());
+                  },
+                ),
+              ),
+            ),
+          new Row(mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(icon: Icon(Icons.skip_previous), onPressed: () {},),
+              IconButton(icon: Icon(Icons.repeat), onPressed: () {},),
+              IconButton(icon: Icon(Icons.play_circle_filled), onPressed: () {},),
+              IconButton(icon: Icon(Icons.shuffle), onPressed: () {},),
+              IconButton(icon: Icon(Icons.skip_next), onPressed: () {},)
+            ],
 
         ),
 
-    ),
+    ]),
 
+    )
     );
   }
 }

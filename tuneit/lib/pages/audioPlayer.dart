@@ -40,6 +40,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
   List<Audio> audios;
   int indice;
+  int indiceShuffle;
   bool escanciones;
 
 
@@ -66,11 +67,15 @@ class _PlayerPageState extends State<PlayerPage> {
   String url;
   List<String> urls = new List<String>();
 
+  List<int> audiosShuffle = new List<int>();
+  int primera = 0;
+
   AudioPlayer _audioPlayer;
   Duration _duration;
   Duration _position;
   bool _playAll = false;
   bool _repeatMode = false;
+  bool _shuffleMode = false;
 
   PlayerState _playerState = PlayerState.RELEASED;
   StreamSubscription _durationSubscription;
@@ -119,58 +124,10 @@ class _PlayerPageState extends State<PlayerPage> {
     super.dispose();
   }
 
-
-  //#_PlayerWidgetState(this.url, this.mode,this.indice,this.second);
-
   //----------------------------------------------------//
   //----------------------------------------------------//
   //----------------------------------------------------//
   //----------------------------------------------------//
-
-
-
-
-
-
-
-  Future<void> _incrementCounter() async {
-    await _stop();
-    setState((){
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      indice++;
-      if(indice>audios.length){
-        indice=0;
-      }
-      url=audios[indice].devolverSonido();
-    });
-    _play();
-
-
-
-  }
-
-  void _decrementCounter() async{
-    await _stop();
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      indice--;
-      if(indice<0){
-        indice=0;
-      }
-      print(url);
-      url=audios[indice].devolverSonido();
-    });
-    _play();
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -246,23 +203,6 @@ class _PlayerPageState extends State<PlayerPage> {
                               onPressed: () {
                                 _previous();
                               }),
-
-                          IconButton(
-                            onPressed:(){
-                              if(!_isPlaying) {
-                                _play();
-                              }
-                              else{
-                                _pause();
-                              }
-                            },
-                            iconSize: 64.0,
-
-                            icon: Icon(_isPlaying
-                                ? Icons.pause_circle_filled
-                                : Icons.play_circle_filled),
-                          ),
-
                           IconButton(
                             onPressed:(){
                               if(_repeatMode){
@@ -273,7 +213,7 @@ class _PlayerPageState extends State<PlayerPage> {
                               }
                               _repeat();
                             },
-                            iconSize: 64.0,
+                            iconSize: 60.0,
                             icon:  Icon(Icons.repeat,
                                 color:(_repeatMode)
                                     ? Colors.blue
@@ -281,14 +221,44 @@ class _PlayerPageState extends State<PlayerPage> {
                             ),
                           ),
                           IconButton(
-                              iconSize: 64.0,
+                            onPressed:(){
+                              if(!_isPlaying) {
+                                _play(urls);
+                              }
+                              else{
+                                _pause();
+                              }
+                            },
+                            iconSize: 60.0,
+
+                            icon: Icon(_isPlaying
+                                ? Icons.pause_circle_filled
+                                : Icons.play_circle_filled),
+                          ),
+                          IconButton(
+                              iconSize: 60.0,
+                              icon: Icon(Icons.shuffle),
+                              color:(_shuffleMode)
+                                  ? Colors.blue
+                                  : Colors.black,
+                              onPressed: () {
+                                if(!_shuffleMode){
+                                  _shuffleMode = true;
+                                  _shuffle();
+                                }
+                                else{
+                                  _shuffleMode = false;
+                                }
+                              }),
+                          IconButton(
+                              iconSize: 60.0,
                               icon: Icon(Icons.skip_next),
                               onPressed: () {
                                 _next();
                               }),
+
                         ],
                       ),
-                    // tiempo(),
                     ],
                   ),
                 )
@@ -385,8 +355,8 @@ class _PlayerPageState extends State<PlayerPage> {
     });
   }
 
-  Future<void> _play() async {
-    if (url != null) {
+  Future<void> _play(List<String> urls) async {
+    if (urls != null) {
       if(!_playAll) {
         final Result result = await _audioPlayer.playAll(urls,index: indice,
           repeatMode: false,
@@ -442,34 +412,72 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   Future<void> _next() async {
-    if(indice == audios.length - 1) {
-      indice = 0;
+    if(!_shuffleMode) {
+      if (indice == audios.length - 1) {
+        indice = 0;
+      }
+      else {
+        indice++;
+      }
+      final Result result = await _audioPlayer.seekIndex(indice);
+      if (result == Result.FAIL) {
+        print(
+            "you tried to call audio conrolling methods on released audio player :(");
+      } else if (result == Result.ERROR) {
+        print("something went wrong in next :(");
+      }
     }
-    else {
-      indice++;
-    }
-    final Result result = await _audioPlayer.seekIndex(indice);
-    if (result == Result.FAIL) {
-      print(
-          "you tried to call audio conrolling methods on released audio player :(");
-    } else if (result == Result.ERROR) {
-      print("something went wrong in next :(");
+    else{
+      if(indiceShuffle == audiosShuffle.length - 1){
+        indice = audiosShuffle.elementAt(0);
+        indiceShuffle = 0;
+      }
+      else{
+        indiceShuffle++;
+        indice = audiosShuffle.elementAt(indiceShuffle);
+      }
+      final Result result = await _audioPlayer.seekIndex(indice);
+      if (result == Result.FAIL) {
+        print(
+            "you tried to call audio conrolling methods on released audio player :(");
+      } else if (result == Result.ERROR) {
+        print("something went wrong in previous :(");
+      }
     }
   }
 
   Future<void> _previous() async {
-    if(indice == 0){
-      indice = audios.length - 1;
+    if(!_shuffleMode) {
+      if (indice == 0) {
+        indice = audios.length - 1;
+      }
+      else {
+        indice--;
+      }
+      final Result result = await _audioPlayer.seekIndex(indice);
+      if (result == Result.FAIL) {
+        print(
+            "you tried to call audio conrolling methods on released audio player :(");
+      } else if (result == Result.ERROR) {
+        print("something went wrong in previous :(");
+      }
     }
     else{
-      indice--;
-    }
-    final Result result = await _audioPlayer.seekIndex(indice);
-    if (result == Result.FAIL) {
-      print(
-          "you tried to call audio conrolling methods on released audio player :(");
-    } else if (result == Result.ERROR) {
-      print("something went wrong in previous :(");
+     if(indiceShuffle == 0){
+        indice = audiosShuffle.elementAt(audiosShuffle.length - 1);
+        indiceShuffle = audiosShuffle.length - 1;
+      }
+      else{
+        indiceShuffle--;
+        indice =audiosShuffle.elementAt(indiceShuffle);
+      }
+      final Result result = await _audioPlayer.seekIndex(indice);
+      if (result == Result.FAIL) {
+        print(
+            "you tried to call audio conrolling methods on released audio player :(");
+      } else if (result == Result.ERROR) {
+        print("something went wrong in previous :(");
+      }
     }
   }
 
@@ -491,9 +499,6 @@ class _PlayerPageState extends State<PlayerPage> {
     }
   }
 
-
-
-
   Widget imagen_por_defecto(String imagen){
     if (imagen== null){
       return  new Image(image: AssetImage('assets/LogoApp.png'),
@@ -511,6 +516,19 @@ class _PlayerPageState extends State<PlayerPage> {
     }
     
   }
+  Future<void> _shuffle() async {
+
+    for(int i = 0; i < audios.length ; i++){
+      audiosShuffle.add(i);
+      print(i);
+    }
+    audiosShuffle.shuffle();
+    primera = await _audioPlayer.getCurrentPlayingAudioIndex();
+    audiosShuffle[primera] = 0;
+    audiosShuffle[0] = primera;
+    indiceShuffle = 0;
+  }
+
 }
 
 
