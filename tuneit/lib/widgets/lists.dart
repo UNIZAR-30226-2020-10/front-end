@@ -67,6 +67,8 @@ Widget elementOfList (BuildContext context, Function func, List arguments, Strin
 // Ejemplo en pages/playlists.dart
 Widget completeList (List lista, Function func, List arguments) {
   return GridView.builder(
+      //scrollDirection: Axis.vertical,
+      //shrinkWrap: true,
       padding: const EdgeInsets.all(8.0),
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: lista.length,

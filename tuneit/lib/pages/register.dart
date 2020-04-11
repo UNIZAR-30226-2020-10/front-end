@@ -66,16 +66,9 @@ class _RegisterState extends State<Register> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-
-                    Container(
-                      height: 20,
-                      color: Colors.transparent,
-                    ),
+                    SizedBox(height: 20),
                     Image.asset('assets/LogoAppName.png'),
-                    Container(
-                      height: 30,
-                      color: Colors.transparent,
-                    ),
+                    SizedBox(height: 30),
                     Container(
                       height: 3,
                       decoration: BoxDecoration(
@@ -94,10 +87,7 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                     ),
-                    Container(
-                      height: 30,
-                      color: Colors.transparent,
-                    ),
+                    SizedBox(height: 30),
                     textField(_controller1, false, 'Nombre de usuario',
                         Icons.alternate_email),
                     textField(_controller2, false, 'Correo electrónico',
@@ -110,10 +100,7 @@ class _RegisterState extends State<Register> {
                       color: Colors.transparent,
                       child: Column(
                         children: <Widget>[
-                          Container(
-                            color: Colors.transparent,
-                            height: 10,
-                          ),
+                          SizedBox(height: 10),
                           Row(
                             children: <Widget>[
                               Flexible(
@@ -124,10 +111,7 @@ class _RegisterState extends State<Register> {
                                 ),
                               ),
                               Flexible(
-                                child: Container(
-                                  width: 15,
-                                  color: Colors.transparent,
-                                ),
+                                child: SizedBox(width: 15),
                               ),
                               Flexible(
                                 flex: 8,
@@ -142,10 +126,7 @@ class _RegisterState extends State<Register> {
                               )
                             ],
                           ),
-                          Container(
-                            color: Colors.transparent,
-                            height: 10,
-                          ),
+                          SizedBox(height: 10),
                         ],
                       ),
                       onPressed: () {
@@ -157,10 +138,7 @@ class _RegisterState extends State<Register> {
                       width: 400,
                       height: 1,
                     ),
-                    Container(
-                      height: 30,
-                      color: Colors.transparent,
-                    ),
+                    SizedBox(height: 30),
                     solidButton(context, tryRegister,
                         [_controller1.text, _controller2.text, _controller3.text,  _controller4.text,  _date.toString()],
                         'REGISTRARSE'),

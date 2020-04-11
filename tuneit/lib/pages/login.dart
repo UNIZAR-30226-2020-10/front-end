@@ -35,15 +35,9 @@ class _LoginState extends State<Login> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Container(
-                      height: 20,
-                      color: Colors.transparent,
-                    ),
+                    SizedBox(height: 20),
                     Image.asset('assets/LogoAppName.png'),
-                    Container(
-                      height: 30,
-                      color: Colors.transparent,
-                    ),
+                    SizedBox(height: 30),
                     Container(
                       height: 3,
                       decoration: BoxDecoration(
@@ -62,18 +56,12 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    Container(
-                      height: 30,
-                      color: Colors.transparent,
-                    ),
+                    SizedBox(height: 30),
                     textField(_controller1, false, 'Correo electrónico',
                         Icons.mail_outline),
                     textField(
                         _controller2, true, 'Contraseña', Icons.lock_outline),
-                    Container(
-                      height: 100,
-                      color: Colors.transparent,
-                    ),
+                    SizedBox(height: 100),
                     solidButton(context, tryLogin,
                         [_controller1.text, _controller2.text], 'ENTRAR'),
                   ],
@@ -90,7 +78,7 @@ class _LoginState extends State<Login> {
         if (value) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PlayLists()),
+            MaterialPageRoute(builder: (context) => PlayLists(true)),
           );
         }
         else {

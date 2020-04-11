@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/pages/mainView.dart';
 import "package:tuneit/pages/playlists.dart";
 import "package:tuneit/pages/profile.dart";
 import "package:tuneit/pages/equalizer.dart";
@@ -20,17 +19,27 @@ class LateralMenu extends StatelessWidget {
             accountName: Text('TuneIt'),
             accountEmail: Text('tuneit@music.es'),
           ),
-          Searcher(),
           new ListTile(
             title: Text('Música'),
             onTap:(){
              Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyHomePage(title: 'TuneIT'),
+                  builder: (context) => PlayLists(true),
                 ),
               );
             }
+          ),
+          new ListTile(
+              title: Text('Podcasts'),
+              onTap:(){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PlayLists(false),
+                  ),
+                );
+              }
           ),
           new ListTile(
             title: Text('Listas de reproducción'),
@@ -38,7 +47,7 @@ class LateralMenu extends StatelessWidget {
               Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => PlayLists(),
+                  builder: (context) => PlayLists(true),
                 ),
               );
             }

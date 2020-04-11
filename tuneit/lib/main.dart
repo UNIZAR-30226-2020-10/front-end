@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       routes:{
         '/mainview':(context) => MainView(),
         '/list':(context) => ShowList(),
-        '/playlists':(context) => PlayLists(),
+        //'/playlists':(context) => PlayLists(),
         '/notificaciones':(context) => Notificaciones(),
         '/login':(context) => Login(),
         '/register':(context) => Register(),
