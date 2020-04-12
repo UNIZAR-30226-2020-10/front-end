@@ -35,6 +35,10 @@ class PodcastEpisode extends Audio {
     return "Autor";
   }
 
+  String devolverID(){
+    return id;
+  }
+
 
 
   PodcastEpisode({this.id,this.title, this.image,this.description,this.audio,this.audio_length_sec,this.web_link});

@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
@@ -54,7 +56,7 @@ class _SearcherState extends State<Searcher> {
               if(lista_p==null || lista_p.isEmpty){
                 // Compruebo las listas
                 List<Playlist> listaP = await buscar_una_lista(editingController.text);
-                if(listaP==null || lista_p.isEmpty){
+                if(listaP==null || listaP.isEmpty){
                   //Si no hay nada pues error
                   _showDialog(editingController.text);
                 }

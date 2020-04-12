@@ -20,12 +20,12 @@ class LateralMenu extends StatelessWidget {
             accountEmail: Text('tuneit@music.es'),
           ),
           new ListTile(
-            title: Text('Música'),
+            title: Text('Home'),
             onTap:(){
              Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PlayLists(true),
+                  builder: (context) => MyHomePage(),
                 ),
               );
             }
@@ -42,7 +42,7 @@ class LateralMenu extends StatelessWidget {
               }
           ),
           new ListTile(
-            title: Text('Listas de reproducción'),
+            title: Text('Musica'),
             onTap:() {
               Navigator.push(
               context,

@@ -70,6 +70,9 @@ Future<List<Playlist>> buscar_una_lista(String data) async {
         .map((data) => new Playlist.fromJson(data))
         .toList();
 
+    print("aaaaaaaaaaaaaaa");
+    print(list[0].name);
+
     return list;
 
   } else {

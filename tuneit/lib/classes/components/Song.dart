@@ -37,6 +37,10 @@ class Song extends Audio{
   String devolverArtista(){
     return juntarArtistas(artist);
   }
+  String devolverID(){
+    return id.toString();
+  }
+
 
   String juntarArtistas(List<String> datos){
     String juntitos="";
@@ -116,11 +120,52 @@ class SongLista{
     }
   }
 
-  void eliminarCancion(int indice) {
+
+  Future<void> eliminarCancion(String id_lista, String id_song) async {
+    final http.Response response = await http.post(
+      'https://psoftware.herokuapp.com/delete_from_list',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'cancion': id_song,
+        'list': id_lista
+      }),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      print(response.body);
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
 
   }
 
-  void agregarCancion(int id, int indice_song) {
+  void agregarCancion( String  id_lista, String id_song) async{
+
+    final http.Response response = await http.post(
+      'https://psoftware.herokuapp.com/add_to_list',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'cancion': id_song,
+        'list': id_lista
+      }),
+    );
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      print(response.body);
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
 
   }
 

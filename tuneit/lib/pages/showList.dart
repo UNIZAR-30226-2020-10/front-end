@@ -3,6 +3,7 @@ import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/pages/audioPlayer.dart';
+import 'package:tuneit/widgets/OptionSongs.dart';
 
 
 class ShowList extends StatefulWidget {
@@ -82,8 +83,8 @@ class _State extends State<ShowList> {
                       children: <Widget>[
                       Image(image: AssetImage('assets/LogoApp.png'),
                               fit: BoxFit.fill,
-                               width: 300,
-                                height: 300),
+                               width: 200,
+                                height: 200),
                         Text("Buscando en nuestra base de datos las mejores canciones...")
 
 
@@ -116,7 +117,7 @@ class _State extends State<ShowList> {
                             itemBuilder: (BuildContext context){
                               return optionMenuSong.map((String choice){
                                 return PopupMenuItem<String>(
-                                  value: (choice + "--"+index.toString()),
+                                  value: (choice + "--"+snapshot.data.songs[index].id.toString()+"--"+indetificadorLista),
                                   child: Text(choice),
                                 );
 
@@ -180,8 +181,9 @@ class _State extends State<ShowList> {
   void choiceAction(String choice) async{
     List<String> hola=choice.split("--");
     choice=hola[0];
-    int indice_song=int.parse(hola[1]);
-    print(indice);
+    int id_song=int.parse(hola[1]);
+    int id_lista=int.parse(hola[2]);
+
 
 
     if(choice == optionMenuSong[0]){
@@ -189,7 +191,7 @@ class _State extends State<ShowList> {
 
       List<Playlist>listas=await fetchPlaylists();
 
-      mostrarListas(listas,indice_song);
+      mostrarListas(context,listas,id_song);
     }
     else if(choice ==optionMenuSong[1]){
       print("Compartir");
@@ -197,7 +199,7 @@ class _State extends State<ShowList> {
     }
     else if(choice ==optionMenuSong[2]){
       print("Eliminar");
-      _showEliminar(indice_song);
+      eliminarCancion(context,id_lista,id_song);
 
     }
     else{
@@ -206,154 +208,6 @@ class _State extends State<ShowList> {
     }
 
   }
-
-  // user defined function
-  void _showEliminar(int indice_song) {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return GestureDetector(
-
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: AlertDialog(
-            title: new Text("¿Desea eliminar la canción?"),
-            content: new Text("La canción se borrará de la lista"),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              new FlatButton(
-                child: new Text("Confirmar"),
-                onPressed: () {
-                  songs.eliminarCancion(indice_song);
-                },
-              ),
-              new FlatButton(
-                onPressed: (){
-                  Navigator.pop(context);
-                  _cancelada();
-                },
-                child: new Text("Cancelar"),)
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void _cancelada() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return GestureDetector(
-
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-
-          child: AlertDialog(
-            title: new Text("Operacion cancelada"),
-
-          ),
-        );
-      },
-    );
-  }
-
-  void _agregada() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return GestureDetector(
-
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-
-          child: AlertDialog(
-            title: new Text("Cancion añadida"),
-
-          ),
-        );
-      },
-    );
-  }
-
-
-  void mostrarListas(List<Playlist> listas, int indice_song)async{
-
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return GestureDetector(
-            onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-            },
-            child: AlertDialog(
-              content:Container(
-                width: double.maxFinite,
-                child: Column(
-                    children: <Widget>[
-                            //itemCount: snapshot.data.songs.length,
-                            ListView.builder(
-
-                                padding: const EdgeInsets.all(8),
-                                scrollDirection: Axis.vertical,
-                                itemCount: listas.length,
-                                shrinkWrap: true,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Card(
-                                    child: new ListTile(
-                                      onTap:(){
-                                        songs.agregarCancion(listas[index].id,indice_song);
-                                        Navigator.pop(context);
-                                        _agregada();
-
-
-                                      },
-                                      title: Text(listas[index].name),
-                                    ),
-                                  );
-
-                        },
-                            ),
-
-                    ]
-                ),
-              ),
-            ),
-          );
-        }
-    );
-
-  }
-
-
-
-
 
 
 
