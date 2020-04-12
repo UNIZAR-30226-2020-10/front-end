@@ -66,7 +66,7 @@ class _ResultSongListState extends State<ResultSongList> {
       appBar:AppBar(
         title:Text( 'TuneIT'),
         centerTitle: true,
-        backgroundColor: Colors.red[500],
+        backgroundColor: Colors.purple,
       ),
 
       body: Column(

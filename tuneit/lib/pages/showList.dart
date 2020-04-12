@@ -51,7 +51,7 @@ class _State extends State<ShowList> {
       appBar:AppBar(
         title:Text( 'TuneIT'),
         centerTitle: true,
-        backgroundColor: Colors.red[500],
+        backgroundColor: Colors.purple,
       ),
 
       body: Column(
