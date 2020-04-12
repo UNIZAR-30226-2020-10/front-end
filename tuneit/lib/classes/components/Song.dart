@@ -116,6 +116,14 @@ class SongLista{
     }
   }
 
+  void eliminarCancion(int indice) {
+
+  }
+
+  void agregarCancion(int id, int indice_song) {
+
+  }
+
 }
 Future<List<Song>> buscar_canciones(String contenido_busqueda) async {
 

@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Center(
             child:
             StreamBuilder(
-                stream: cargarDatos.buscar_listas_1,
+                stream: cargarDatos.seleccionar_listas,
                 builder: (context,snapshot){
                   if(!snapshot.hasData){
                     return Column(
@@ -98,9 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: MediaQuery.of(context).size.height * 0.35,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data.length,
+                          itemCount: snapshot.data.listas.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return  listBox (context, index,snapshot.data);
+                            return  listBox (context, index,snapshot.data.listas);
                           }
                       ),
                     );

@@ -14,11 +14,8 @@ import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 public final class GeneratedPluginRegistrant {
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
     ShimPluginRegistry shimPluginRegistry = new ShimPluginRegistry(flutterEngine);
-    flutterEngine.getPlugins().add(new com.ryanheise.audioservice.AudioServicePlugin());
-      xyz.luan.audioplayers.AudioplayersPlugin.registerWith(shimPluginRegistry.registrarFor("xyz.luan.audioplayers.AudioplayersPlugin"));
     flutterEngine.getPlugins().add(new io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin());
       danielr2001.audioplayer.AudioPlayerPlugin.registerWith(shimPluginRegistry.registrarFor("danielr2001.audioplayer.AudioPlayerPlugin"));
-      com.rmawatson.flutterisolate.FlutterIsolatePlugin.registerWith(shimPluginRegistry.registrarFor("com.rmawatson.flutterisolate.FlutterIsolatePlugin"));
     flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
   }
 }

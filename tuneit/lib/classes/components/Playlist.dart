@@ -8,6 +8,10 @@ import 'package:http/http.dart' as http;
 
 const baseURL = 'https://psoftware.herokuapp.com/list_lists';
 
+
+
+
+
 class Playlist {
   final int id;
   final String name;
@@ -42,6 +46,7 @@ class Playlist {
     throw Exception('Failed to load playlists');
   }
 }
+
 
 Future<List<Playlist>> buscar_una_lista(String data) async {
 
@@ -81,27 +86,43 @@ Future<List<Playlist>> buscar_una_lista(String data) async {
 class InitialPlaylist{
 
 
-  final listas1_StreamController = StreamController<List<Playlist>>.broadcast();
-  Stream<List<Playlist>> get buscar_listas_1 => listas1_StreamController.stream;
+  final listas_usuario = StreamController<InitialPlaylist>.broadcast();
+  Stream<InitialPlaylist> get seleccionar_listas => listas_usuario.stream;
 
 
-  Future< void> fetchNewList() async {
+  List<Playlist> listas=new List<Playlist>();
+
+  InitialPlaylist({this.listas});
+
+  factory InitialPlaylist.fromJson(Map<String, dynamic> parsedJson) {
+
+    var list = parsedJson['Canciones'] as List;
+    List<Playlist> songsList = list.map((i) =>Playlist.fromJson(i)).toList();
+
+    return InitialPlaylist(
+        listas: songsList
+    );
+  }
+
+  Future<void> fetchNewList() async {
     List<Playlist> list = List();
-
     final response = await http.get(baseURL);
-
     if (response.statusCode == 200) {
+      print(response.body);
+
+      print("aaaaaaaa");
 
       list = (json.decode(response.body) as List)
           .map((data) => new Playlist.fromJson(data))
           .toList();
+      InitialPlaylist odin = new InitialPlaylist(listas: list);
+      print (odin.listas[0].name);
 
-      listas1_StreamController.sink.add(list);
+      listas_usuario.sink.add(odin);
     } else {
       throw Exception('Failed to load playlists');
     }
   }
-
 
 
 

@@ -26,11 +26,7 @@ dependencies:
   path_provider: ^1.1.0
   path_provider_macos: ^0.0.1
   firebase_messaging: ^6.0.13
-  audioplayers: ^0.14.0
   provider: ^3.0.0+1
-  audio_service:
-    git:
-      url: https://github.com/ryanheise/audio_service.git
 
 
 

@@ -54,9 +54,9 @@ class _SearcherState extends State<Searcher> {
               if(lista_p==null || lista_p.isEmpty){
                 // Compruebo las listas
                 List<Playlist> listaP = await buscar_una_lista(editingController.text);
-                if(listaP==null){
+                if(listaP==null || lista_p.isEmpty){
                   //Si no hay nada pues error
-                  _showDialog();
+                  _showDialog(editingController.text);
                 }
                 else{
                   Navigator.of(context).push(MaterialPageRoute(
@@ -77,7 +77,7 @@ class _SearcherState extends State<Searcher> {
               List<Podcast> lista_p = await fetchPodcastByTitle(editingController.text);
               //Haz que sino encuentra nada devuelva null
               if(lista_p==null|| lista_p.isEmpty){
-                _showDialog();
+                _showDialog(editingController.text);
               }
               else{
                 Navigator.push(
@@ -95,24 +95,33 @@ class _SearcherState extends State<Searcher> {
   }
 
   // user defined function
-  void _showDialog() {
+  void _showDialog(String mensaje) {
     // flutter defined function
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Error de Busqueda"),
-          content: new Text("No se ha encontrado lo que estaba buscando"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+        return GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: AlertDialog(
+            title: new Text("Error de Busqueda"),
+            content: new Text("No se ha encontrado "+ "${mensaje}"),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new FlatButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
         );
       },
     );
