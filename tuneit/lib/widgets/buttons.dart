@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/valors/ColorSets.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
 
 //------------------------------------------------------------------------------
 // Widget del botón con degradado de colores sin comportamiento (NO USAR)

@@ -1,168 +1,129 @@
 
 
-
-
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
-import 'package:tuneit/classes/components/PodcastEpisode.dart';
 import 'package:tuneit/pages/resultPlaylist.dart';
 import 'package:tuneit/pages/resultPodcasts.dart';
 import 'package:tuneit/pages/resultSongs.dart';
-import 'package:tuneit/pages/showList.dart';
 
 import 'Audio.dart';
 import 'Song.dart';
 
 class Searcher extends StatefulWidget {
+
+  final bool musNpod;
+
   @override
-  _SearcherState createState() => _SearcherState();
+  _SearcherState createState() => _SearcherState(musNpod);
+
+  Searcher(this.musNpod);
 }
 
 class _SearcherState extends State<Searcher> {
   TextEditingController editingController = TextEditingController();
-  bool muisca_podcast = true;
+  final bool musNpod;
+
+  _SearcherState(this.musNpod);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-          Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:[ Transform.scale(
-                  scale: 1,
-                  child: Switch(
-                    onChanged: toggleSwitch,
-                    value: muisca_podcast,
-                    activeColor: Colors.blue,
-                    activeTrackColor: Colors.green,
-                    inactiveThumbColor: Colors.white,
-                    inactiveTrackColor: Colors.grey,
-                  )
-              ),
-
-                Text('$textHolder', style: TextStyle(fontSize: 24),)
-
-              ]),
-        TextField(
-          onChanged: (value) {
-            //filterSearchResults(value);
-              },
-                controller: editingController,
-                decoration: InputDecoration(
-                labelText: "Search",
-                hintText: "Search",
-                suffixIcon: IconButton(icon: Icon(Icons.search),iconSize: 40, onPressed: ()async {
-                  if(muisca_podcast){
-
-                    //Compruebo primero las canciones
-                    List<Song> lista_p = await buscar_canciones(editingController.text);
-
-                    // Si no hay ninguna cancion voy a comprobar las listas
-                  if(lista_p==null || lista_p.isEmpty){
-                    // Compruebo las listas
-
-                    List<Playlist> listaP = await buscar_una_lista(editingController.text);
-
-                    if(listaP==null){
-                      //Si no hay nada pues error
-                      _showDialog();
-                    }
-                    else{
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
-                      ));
-
-                    }
-                  }
-                  else{
-                    print("Haz esto por favor");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResultSongList(lista_p,editingController.text),
-                      ),
-                    );
-                  }
-                  }
-                  else{
-
-                    List<Podcast> lista_p = await fetchPodcastByTitle(editingController.text);
-                    //Haz que sino encuentra nada devuelva null
-
-                    print(lista_p.length);
-
-                    if(lista_p==null|| lista_p.isEmpty){
-
-                      _showDialog();
-                    }
-
-                    else{
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ResultListPodcast(list_p: lista_p,list_title: editingController.text),
-                        ),
-                      );
-
-                    }
-
-                  }
-
-    }),
-                border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25.0)))),
-                ),
-      ],
+    return Container(
+      width: 380,
+      height: 45,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(30.0)),
+      ),
+      child: TextField(
+        onChanged: (value) {
+          //filterSearchResults(value);
+        },
+        controller: editingController,
+        decoration: InputDecoration(
+          hintText: "Buscador de contenido",
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+          ),
+          prefixIcon: IconButton(icon: Icon(Icons.search),iconSize: 30, onPressed: ()async {
+            if(musNpod){
+              //Compruebo primero las canciones
+              List<Song> lista_p = await buscar_canciones(editingController.text);
+              // Si no hay ninguna cancion voy a comprobar las listas
+              if(lista_p==null || lista_p.isEmpty){
+                // Compruebo las listas
+                List<Playlist> listaP = await buscar_una_lista(editingController.text);
+                if(listaP==null || listaP.isEmpty){
+                  //Si no hay nada pues error
+                  _showDialog(editingController.text);
+                }
+                else{
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
+                  ));
+                }
+              }
+              else{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultSongList(lista_p,editingController.text),
+                  ),
+                );
+              }
+            }
+            else{
+              List<Podcast> lista_p = await fetchPodcastByTitle(editingController.text);
+              //Haz que sino encuentra nada devuelva null
+              if(lista_p==null|| lista_p.isEmpty){
+                _showDialog(editingController.text);
+              }
+              else{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultListPodcast(list_p: lista_p,list_title: editingController.text),
+                  ),
+                );
+              }
+            }
+          }),
+        ),
+      ),
     );
   }
 
-
-
-  var textHolder = 'Musica';
-
-  void toggleSwitch(bool value) {
-
-    if(muisca_podcast == false)
-    {
-      setState(() {
-        muisca_podcast = true;
-        textHolder = 'Musica';
-      });
-      print('Musica');
-      // Put your code here which you want to execute on Switch ON event.
-
-    }
-    else
-    {
-      setState(() {
-        muisca_podcast = false;
-        textHolder = 'Podcast';
-      });
-      print('Podcast');
-      // Put your code here which you want to execute on Switch OFF event.
-    }
-  }
-
   // user defined function
-  void _showDialog() {
+  void _showDialog(String mensaje) {
     // flutter defined function
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Error de Busqueda"),
-          content: new Text("No se ha encontrado lo que estaba buscando"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+        return GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: AlertDialog(
+            title: new Text("Error de Busqueda"),
+            content: new Text("No se ha encontrado "+ "${mensaje}"),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new FlatButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
         );
       },
     );

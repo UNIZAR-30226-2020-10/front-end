@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/pages/audioPlayer.dart';
+import 'package:tuneit/widgets/OptionSongs.dart';
 
 
 class ShowList extends StatefulWidget {
@@ -21,6 +24,7 @@ class _State extends State<ShowList> {
   String indetificadorLista;
 
   _State(this.indetificadorLista,this.list_title);
+
 
 
   void ObtenerDatos() async{
@@ -47,7 +51,7 @@ class _State extends State<ShowList> {
       appBar:AppBar(
         title:Text( 'TuneIT'),
         centerTitle: true,
-        backgroundColor: Colors.red[500],
+        backgroundColor: Colors.purple,
       ),
 
       body: Column(
@@ -79,8 +83,8 @@ class _State extends State<ShowList> {
                       children: <Widget>[
                       Image(image: AssetImage('assets/LogoApp.png'),
                               fit: BoxFit.fill,
-                               width: 300,
-                                height: 300),
+                               width: 200,
+                                height: 200),
                         Text("Buscando en nuestra base de datos las mejores canciones...")
 
 
@@ -94,23 +98,34 @@ class _State extends State<ShowList> {
                     scrollDirection: Axis.vertical,
                     itemCount: snapshot.data.songs.length,
                     itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                    child: new ListTile(
-                    onTap:(){
+                      return Card(
+                        child: new ListTile(
+                         onTap:(){
 
 
-                    Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => PlayerPage(audios: snapshot.data.songs,indice: index,escanciones: true),
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PlayerPage(audios: snapshot.data.songs,indice: index,escanciones: true),
 
-                    ));
-                    },
+                          ));
+                         },
 
-                    leading: imagen_por_defecto(snapshot.data.songs[index].image),
-                    title: Text(snapshot.data.songs[index].name),
-                    subtitle: Text(juntarArtistas(snapshot.data.songs[index].artist)),
+                          leading: imagen_por_defecto(snapshot.data.songs[index].image),
+                          title: Text(snapshot.data.songs[index].name),
+                          subtitle: Text(juntarArtistas(snapshot.data.songs[index].artist)),
+                          trailing: PopupMenuButton<String>(
+                            onSelected: choiceAction,
+                            itemBuilder: (BuildContext context){
+                              return optionMenuSong.map((String choice){
+                                return PopupMenuItem<String>(
+                                  value: (choice + "--"+snapshot.data.songs[index].id.toString()+"--"+indetificadorLista),
+                                  child: Text(choice),
+                                );
 
+                              }).toList();
+                            },
+                          ),
 
-                  ),
+                        ),
                   );
 
 
@@ -159,6 +174,39 @@ class _State extends State<ShowList> {
     }
 
   }
+
+  void choiceAction(String choice) async{
+    List<String> hola=choice.split("--");
+    choice=hola[0];
+    int id_song=int.parse(hola[1]);
+    int id_lista=int.parse(hola[2]);
+
+
+
+    if(choice == optionMenuSong[0]){
+      print("Agregar");
+
+      List<Playlist>listas=await fetchPlaylists();
+
+      mostrarListas(context,listas,id_song);
+    }
+    else if(choice ==optionMenuSong[1]){
+      print("Compartir");
+
+    }
+    else if(choice ==optionMenuSong[2]){
+      print("Eliminar");
+      eliminarCancion(context,id_lista,id_song);
+
+    }
+    else{
+      print ("Correct option was not found");
+
+    }
+
+  }
+
+
 
 }
 

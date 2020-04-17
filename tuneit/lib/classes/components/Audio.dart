@@ -7,6 +7,8 @@ abstract class  Audio{
  String devolverTitulo();
 
  String devolverArtista();
+
+ String devolverID();
  //songs[i].title,
 // smallIconFileName: "ic_launcher",
  //title:songs[i].title,

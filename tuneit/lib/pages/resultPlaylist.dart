@@ -17,7 +17,7 @@ ResultListPlaylist({this.list,this.list_title});
       appBar:AppBar(
       title:Text( 'TuneIT'),
       centerTitle: true,
-      backgroundColor: Colors.red[500],
+      backgroundColor: Colors.purple,
       ),
 
       body: Column(

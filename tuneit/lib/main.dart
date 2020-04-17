@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       routes:{
         '/mainview':(context) => MainView(),
         '/list':(context) => ShowList(),
-        '/playlists':(context) => PlayLists(),
+        //'/playlists':(context) => PlayLists(),
         '/notificaciones':(context) => Notificaciones(),
         '/login':(context) => Login(),
         '/register':(context) => Register(),
@@ -34,16 +34,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: MyHomePage(title: 'TuneIT'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
 
-  final String title;
-
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -70,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('TuneIT'),
       ),
       drawer: LateralMenu(),
       body:Column(
@@ -81,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Center(
             child:
             StreamBuilder(
-                stream: cargarDatos.buscar_listas_1,
+                stream: cargarDatos.seleccionar_listas,
                 builder: (context,snapshot){
                   if(!snapshot.hasData){
                     return Column(
@@ -98,9 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: MediaQuery.of(context).size.height * 0.35,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data.length,
+                          itemCount: snapshot.data.listas.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return  listBox (context, index,snapshot.data);
+                            return  listBox (context, index,snapshot.data.listas);
                           }
                       ),
                     );
