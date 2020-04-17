@@ -4,6 +4,7 @@ import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/pages/audioPlayer.dart';
 import 'package:tuneit/widgets/OptionSongs.dart';
+import 'package:tuneit/widgets/PlaylistOption.dart';
 
 
 class ShowList extends StatefulWidget {
@@ -49,30 +50,31 @@ class _State extends State<ShowList> {
 
     return Scaffold(
       appBar:AppBar(
-        title:Text( 'TuneIT'),
+        title:Text( '$list_title'),
         centerTitle: true,
         backgroundColor: Colors.purple,
+        actions: <Widget>[
+
+          PopupMenuButton<String>(
+            onSelected: ActionPlaylist,
+            itemBuilder: (BuildContext context){
+              return optionPlayList.map((String choice){
+                return PopupMenuItem<String>(
+                  value: (indetificadorLista),
+                  child: Text(choice),
+                );
+
+              }).toList();
+            },
+          ),
+
+
+
+        ],
       ),
 
       body: Column(
           children: <Widget>[
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Title(
-                child: Text('$list_title',
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.bold,
-                      fontSize: 32
-                  ),
-                ),
-                color:Colors.black,
-
-
-
-              ),
-            ),
             Expanded(
               child:
               StreamBuilder(
@@ -178,6 +180,12 @@ class _State extends State<ShowList> {
 
   }
 
+  void ActionPlaylist(String lista) async{
+
+    eliminarPlaylist(context,lista);
+
+  }
+
   void choiceAction(String choice) async{
     List<String> hola=choice.split("--");
     choice=hola[0];
@@ -199,7 +207,8 @@ class _State extends State<ShowList> {
     }
     else if(choice ==optionMenuSong[2]){
       print("Eliminar");
-      eliminarCancion(context,id_lista,id_song);
+      //(BuildContext context,String nombre_lista,id_lista,int id_song)
+      eliminarCancion(context,list_title,id_lista,id_song);
 
     }
     else{
@@ -212,8 +221,6 @@ class _State extends State<ShowList> {
 
 
 }
-
-
 
 
 

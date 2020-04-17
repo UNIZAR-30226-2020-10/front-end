@@ -81,6 +81,66 @@ Future<List<Playlist>> buscar_una_lista(String data) async {
   }
 }
 
+Future<void> nuevaLista(String nombre, String desc) async {
+
+  print(nombre);
+  print(desc);
+  final http.Response response = await http.post(
+    'https://psoftware.herokuapp.com/create_list',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+
+    /*        ◦ “list”: nombre de la lista
+        ◦ “desc”: descripción*/
+    body: jsonEncode(<String, String>{
+      'list': nombre,
+      'desc': desc
+    }),
+  );
+  print(response.statusCode);
+  print(response.body);
+  if (response.statusCode == 200) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    print(response.body);
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create a new list');
+  }
+
+}
+
+Future<void> borrarLista(String id) async {
+
+  print(id);
+  final http.Response response = await http.post(
+    'https://psoftware.herokuapp.com/delete_list',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+
+    /*        ◦ “list”: nombre de la lista
+        ◦ “desc”: descripción*/
+    body: jsonEncode(<String, String>{
+      'list': id,
+    }),
+  );
+  print(response.statusCode);
+  print(response.body);
+  if (response.statusCode == 200) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    print(response.body);
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create a new list');
+  }
+
+}
+
 
 
 

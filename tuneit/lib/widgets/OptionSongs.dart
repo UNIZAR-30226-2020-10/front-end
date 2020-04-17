@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/pages/showList.dart';
 
 
 
@@ -12,7 +13,7 @@ import 'package:tuneit/classes/components/Song.dart';
 
 
 // user defined function
-void eliminarCancion(BuildContext context,id_lista,int id_song) {
+void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_song) {
   // flutter defined function
   SongLista songs= new SongLista();
   showDialog(
@@ -35,18 +36,22 @@ void eliminarCancion(BuildContext context,id_lista,int id_song) {
             // usually buttons at the bottom of the dialog
             new FlatButton(
               child: new Text("Confirmar"),
-              onPressed: () {
-                songs.eliminarCancion(id_lista.toString(),id_song.toString());
+              onPressed: () async {
+                await songs.eliminarCancion(id_lista.toString(),id_song.toString());
                 Navigator.pop(context);
-                _eliminada(context);
+                Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ShowList(indetificadorLista: id_lista.toString(), list_title: nombre_lista),
+                ));
+                //_eliminada(context,nombre_lista,id_lista.toString());
               },
             ),
             new FlatButton(
               onPressed: (){
                 Navigator.pop(context);
-                _cancelada(context);
+                operacionCancelada(context);
               },
-              child: new Text("Cancelar"),)
+              child: new Text("Cancelar"))
           ],
         ),
       );
@@ -54,7 +59,7 @@ void eliminarCancion(BuildContext context,id_lista,int id_song) {
   );
 }
 
-void _cancelada(BuildContext context) {
+void operacionCancelada(BuildContext context) {
   // flutter defined function
   showDialog(
     context: context,
@@ -79,7 +84,7 @@ void _cancelada(BuildContext context) {
   );
 }
 
-void _eliminada(BuildContext context) {
+void _agregada(BuildContext context,String id_lista,String title) {
   // flutter defined function
   showDialog(
     context: context,
@@ -89,34 +94,13 @@ void _eliminada(BuildContext context) {
 
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
+          onTapReload (context,id_lista,title);
+
 
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
-          }
-        },
+            onTapReload(context,id_lista,title);
 
-        child: AlertDialog(
-          title: new Text("Cancion eliminada"),
-
-        ),
-      );
-    },
-  );
-}
-
-void _agregada(BuildContext context) {
-  // flutter defined function
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      // return object of type Dialog
-      return GestureDetector(
-
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
           }
         },
 
@@ -128,6 +112,21 @@ void _agregada(BuildContext context) {
     },
   );
 }
+
+
+
+
+
+void onTapReload (BuildContext context,String id_lista,String title) {
+  Navigator.pop(context);
+  Navigator.pop(context);
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) => ShowList(indetificadorLista: id_lista, list_title: title),
+  ));
+}
+
+
+
 
 
 void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async{
@@ -145,9 +144,10 @@ void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async
             }
           },
           child: AlertDialog(
-            content:Container(
+              content:Container(
+
               width: double.maxFinite,
-              child: Column(
+               child: Column(
                   children: <Widget>[
                     //itemCount: snapshot.data.songs.length,
                     ListView.builder(
@@ -162,7 +162,7 @@ void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async
                             onTap:(){
                               songs.agregarCancion(listas[index].id.toString(),id_song.toString());
                               Navigator.pop(context);
-                              _agregada(context);
+                              _agregada(context,listas[index].id.toString(),listas[index].name);
 
 
                             },

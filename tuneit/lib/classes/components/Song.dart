@@ -104,6 +104,7 @@ class SongLista{
 
 
   Future< void> fetchSonglists(String id) async {
+    print(id);
 
 
     var queryParameters = {
@@ -113,6 +114,8 @@ class SongLista{
     final http.Response response = await http.get(uri, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
     });
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       _cancionStreamController.sink.add(SongLista.fromJson(json.decode(response.body)));
     } else {
@@ -140,7 +143,7 @@ class SongLista{
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
-      throw Exception('Failed to load album');
+      throw Exception('Failed to delete a song');
     }
 
   }

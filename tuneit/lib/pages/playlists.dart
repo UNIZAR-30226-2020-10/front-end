@@ -6,6 +6,7 @@ import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/Searcher.dart';
 import 'package:tuneit/pages/showList.dart';
 import 'package:tuneit/pages/showPodcast.dart';
+import 'package:tuneit/widgets/PlaylistOption.dart';
 import 'package:tuneit/widgets/lists.dart';
 
 
@@ -65,6 +66,7 @@ class _PlayListsState extends State<PlayLists> {
             new SizedBox(height: 10),
             Searcher(musNpod),
             new SizedBox(height: 10),
+            musNpod?  crearListaRep(context) : new Container(width: 0, height: 0),
             new Expanded(
               child: musNpod?
               completeList (listaPlaylists, onTapPlaylists, [])

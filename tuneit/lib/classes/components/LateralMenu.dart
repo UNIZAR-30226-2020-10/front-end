@@ -15,9 +15,9 @@ class LateralMenu extends StatelessWidget {
         children: <Widget>[
         //  Image(image: AssetImage('assets/LogoAppName.png'),),
           new UserAccountsDrawerHeader(
-          currentAccountPicture: Image(image: AssetImage('assets/LogoAppName.png'),fit: BoxFit.contain),
-            accountName: Text('TuneIt'),
-            accountEmail: Text('tuneit@music.es'),
+            currentAccountPicture: Image(image: AssetImage('assets/LogoAppName.png'),fit: BoxFit.contain),
+              accountName: Text('TuneIt'),
+              accountEmail: Text('tuneit@music.es'),
           ),
           new ListTile(
             title: Text('Home'),

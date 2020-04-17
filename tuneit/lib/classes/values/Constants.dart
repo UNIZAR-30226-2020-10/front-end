@@ -9,3 +9,9 @@ const List<String> optionMenuSong =<String>[
   ];
 
 
+const List<String> optionPlayList =<String>[
+  eliminar
+];
+
+
+
