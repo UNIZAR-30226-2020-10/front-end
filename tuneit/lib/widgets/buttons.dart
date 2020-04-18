@@ -22,7 +22,7 @@ SizedBox gradientButton2 (String title) {
                 Color(0xAA1c4c8b),
               ],
             ),
-            border: Border.all(color: Colors.white, width: 4)
+            border: Border.all(color: Colors.white, width: 2)
         ),
         child: Center(
           child: Text(
@@ -48,6 +48,7 @@ Widget gradientButton (BuildContext context, Function func, List arguments, Stri
         Function.apply(func, arguments);
       },
       color: Colors.transparent,
+      elevation: 0.0,
       child: gradientButton2(text)
   );
 }
@@ -63,6 +64,7 @@ Widget solidButton (BuildContext context, Function func, List arguments, String 
         Function.apply(func, arguments);
       },
       color: Colors.transparent,
+      elevation: 0.0,
       child: SizedBox(
         height: 50,
         width: 200.0,

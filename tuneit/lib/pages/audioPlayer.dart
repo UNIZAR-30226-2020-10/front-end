@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:tuneit/classes/components/Song.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 
 
@@ -10,16 +7,8 @@ import 'package:flutter_exoplayer/audio_notification.dart';
 import 'package:flutter_exoplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 
-const imageUrl1 = "https://www.bensound.com/bensound-img/buddy.jpg";
-const imageUrl2 = "https://www.bensound.com/bensound-img/epic.jpg";
-const imageUrl3 = "https://www.bensound.com/bensound-img/onceagain.jpg";
-
-
-
 typedef void OnError(Exception exception);
 //enum PlayerState { stopped, playing, paused }
-
-
 
 class PlayerPage extends StatefulWidget {
   List<Audio> audios;
@@ -217,8 +206,8 @@ class _PlayerPageState extends State<PlayerPage> {
                             iconSize: 60.0,
                             icon:  Icon(Icons.repeat,
                                 color:(_repeatMode)
-                                    ? Colors.blue
-                                    : Colors.black
+                                    ? Colors.white70
+                                    : Colors.deepPurple
                             ),
                           ),
                           IconButton(
@@ -240,8 +229,8 @@ class _PlayerPageState extends State<PlayerPage> {
                               iconSize: 60.0,
                               icon: Icon(Icons.shuffle),
                               color:(_shuffleMode)
-                                  ? Colors.blue
-                                  : Colors.black,
+                                  ? Colors.white
+                                  : Colors.deepPurple,
                               onPressed: () {
                                 if(!_shuffleMode){
                                   _shuffleMode = true;

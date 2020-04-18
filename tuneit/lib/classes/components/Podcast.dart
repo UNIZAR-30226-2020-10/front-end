@@ -91,3 +91,49 @@ Future<List<Podcast>> fetchPodcastByTitle(String title) async {
     throw Exception(response.statusCode.toString() + ': Failed to load podcasts');
   }
 }
+
+const baseURLBD = 'psoftware.herokuapp.com/';
+Future<bool> askFav(String id) async {
+  var queryParameters = {
+    'id' : id,
+  };
+  var uri = Uri.https(baseURLBD, '/PodcastFav', queryParameters);
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+
+  if (response.statusCode == 200) {
+
+    Map<String, dynamic> parsedJson = json.decode(response.body);
+    var fav = parsedJson['fav'] as bool;
+
+    return fav;
+
+  } else {
+    throw Exception(response.statusCode.toString() + ': Failed to check favourite podcast');
+  }
+}
+
+Future<bool> changeFav(String id) async {
+  var queryParameters = {
+    'id' : id,
+  };
+  var uri = Uri.https(baseURLBD, '/PodcastFav', queryParameters);
+  final http.Response response = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+  );
+
+  if (response.statusCode == 200) {
+
+    Map<String, dynamic> parsedJson = json.decode(response.body);
+    var fav = parsedJson['fav'] as bool;
+
+    return fav;
+
+  } else {
+    throw Exception(response.statusCode.toString() + ': Failed to check favourite podcast');
+  }
+}

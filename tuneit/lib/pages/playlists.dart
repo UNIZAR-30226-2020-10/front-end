@@ -55,18 +55,57 @@ class _PlayListsState extends State<PlayLists> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.indigo[900],
         drawer: LateralMenu(),
         appBar: AppBar(
-          title: Text(musNpod? 'Música' : 'Podcasts'),
+          title: Text(musNpod? 'MUSICA' : 'PODCASTS'),
           centerTitle: true,
         ),
         body: Column(
           children: <Widget>[
             new SizedBox(height: 10),
-            Searcher(musNpod),
+            musNpod?
+
+            (new Row(
+              children: <Widget>[
+                Expanded(
+                  flex:  4,
+                  child: SizedBox(
+                  ),
+                ),
+                Expanded(
+                  flex: 70,
+                  child: Searcher(musNpod),
+                ),
+                Expanded(
+                  flex: 20,
+                  child: musNpod?  crearListaRep(context) : new Container(width: 0, height: 0),
+                ),
+              ],
+            ))
+
+            :
+
+            (new Row(
+              children: <Widget>[
+                Expanded(
+                  flex:  4,
+                  child: SizedBox(
+                  ),
+                ),
+                Expanded(
+                  flex: 70,
+                  child: Searcher(musNpod),
+                ),
+                Expanded(
+                  flex:  4,
+                  child: SizedBox(
+                  ),
+                ),
+              ],
+            )),
+
             new SizedBox(height: 10),
-            musNpod?  crearListaRep(context) : new Container(width: 0, height: 0),
+
             new Expanded(
               child: musNpod?
               completeList (listaPlaylists, onTapPlaylists, [])
@@ -87,7 +126,7 @@ class _PlayListsState extends State<PlayLists> {
 
   void onTapPodcasts (int index) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ShowPodcast(podc: listaPodcast[index].id),
+      builder: (context) => ShowPodcast(podc: listaPodcast[index].id, name: listaPodcast[index].name),
     ));
   }
 }

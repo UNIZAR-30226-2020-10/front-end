@@ -20,7 +20,7 @@ class LateralMenu extends StatelessWidget {
               accountEmail: Text('tuneit@music.es'),
           ),
           new ListTile(
-            title: Text('Home'),
+            title: Text('PAGINA PRINCIPAL'),
             onTap:(){
              Navigator.push(
                 context,
@@ -31,7 +31,18 @@ class LateralMenu extends StatelessWidget {
             }
           ),
           new ListTile(
-              title: Text('Podcasts'),
+              title: Text('MUSICA'),
+              onTap:() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PlayLists(true),
+                  ),
+                );
+              }
+          ),
+          new ListTile(
+              title: Text('PODCASTS'),
               onTap:(){
                 Navigator.push(
                   context,
@@ -42,18 +53,7 @@ class LateralMenu extends StatelessWidget {
               }
           ),
           new ListTile(
-            title: Text('Musica'),
-            onTap:() {
-              Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PlayLists(true),
-                ),
-              );
-            }
-          ),
-          new ListTile(
-            title: Text('Notificaciones'),
+            title: Text('NOTIFICACIONES'),
             onTap:() {
               Navigator.push(
               context,
@@ -64,7 +64,7 @@ class LateralMenu extends StatelessWidget {
             }
           ),
           new ListTile(
-              title: Text('Amigos'),
+              title: Text('AMIGOS'),
               onTap:() {
                 Navigator.push(
                 context,
@@ -75,7 +75,7 @@ class LateralMenu extends StatelessWidget {
               }
           ),
           new ListTile(
-              title: Text('Perfil'),
+              title: Text('PERFIL'),
               onTap:() {
                 Navigator.push(
                 context,
@@ -85,18 +85,17 @@ class LateralMenu extends StatelessWidget {
                 );
               }
           ),
-        new ListTile(
-            title: Text('Ecualizador'),
-            onTap:() {
-              Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Equalizer(),
-                ),
-              );
-            }
-          ),
-
+          new ListTile(
+              title: Text('ECUALIZADOR'),
+              onTap:() {
+                Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Equalizer(),
+                  ),
+                );
+              }
+            ),
         ],
       ),
     );

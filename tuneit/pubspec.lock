@@ -22,22 +22,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
-  audio_service:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "59392e0c2f453520b99d3a7cdf7255fa88cc5f18"
-      url: "https://github.com/ryanheise/audio_service.git"
-    source: git
-    version: "0.6.2"
-  audioplayers:
-    dependency: "direct main"
-    description:
-      name: audioplayers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.14.2"
   bloc_pattern:
     dependency: "direct main"
     description:
@@ -106,20 +90,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.5"
-  flutter_isolate:
-    dependency: transitive
-    description:
-      name: flutter_isolate
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0+11"
   flutter_test:
     dependency: "direct dev"
-    description: flutter
-    source: sdk
-    version: "0.0.0"
-  flutter_web_plugins:
-    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"

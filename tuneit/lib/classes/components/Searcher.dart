@@ -32,7 +32,7 @@ class _SearcherState extends State<Searcher> {
       width: 380,
       height: 45,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white10,
         borderRadius: BorderRadius.all(Radius.circular(30.0)),
       ),
       child: TextField(
@@ -41,56 +41,60 @@ class _SearcherState extends State<Searcher> {
         },
         controller: editingController,
         decoration: InputDecoration(
-          hintText: "Buscador de contenido",
+          hintText: "Buscar contenido",
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),
           ),
-          prefixIcon: IconButton(icon: Icon(Icons.search),iconSize: 30, onPressed: ()async {
-            if(musNpod){
-              //Compruebo primero las canciones
-              List<Song> lista_p = await buscar_canciones(editingController.text);
-              // Si no hay ninguna cancion voy a comprobar las listas
-              if(lista_p==null || lista_p.isEmpty){
-                // Compruebo las listas
-                List<Playlist> listaP = await buscar_una_lista(editingController.text);
-                if(listaP==null || listaP.isEmpty){
-                  //Si no hay nada pues error
-                  _showDialog(editingController.text);
+          prefixIcon: IconButton(
+              icon: Icon(Icons.search, color: Colors.white70,),
+              iconSize: 30,
+              onPressed: ()async {
+                if(musNpod){
+                  //Compruebo primero las canciones
+                  List<Song> lista_p = await buscar_canciones(editingController.text);
+                  // Si no hay ninguna cancion voy a comprobar las listas
+                  if(lista_p==null || lista_p.isEmpty){
+                    // Compruebo las listas
+                    List<Playlist> listaP = await buscar_una_lista(editingController.text);
+                    if(listaP==null || listaP.isEmpty){
+                      //Si no hay nada pues error
+                      _showDialog(editingController.text);
+                    }
+                    else{
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
+                      ));
+                    }
+                  }
+                  else{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultSongList(lista_p,editingController.text),
+                      ),
+                    );
+                  }
                 }
                 else{
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
-                  ));
+                  List<Podcast> listaPodcasts = await fetchPodcastByTitle(editingController.text);
+                  //Haz que sino encuentra nada devuelva null
+                  if(listaPodcasts==null|| listaPodcasts.isEmpty){
+                    _showDialog(editingController.text);
+                  }
+                  else{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultPodcasts(listaPodcasts, editingController.text),
+                      ),
+                    );
+                  }
                 }
               }
-              else{
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResultSongList(lista_p,editingController.text),
-                  ),
-                );
-              }
-            }
-            else{
-              List<Podcast> lista_p = await fetchPodcastByTitle(editingController.text);
-              //Haz que sino encuentra nada devuelva null
-              if(lista_p==null|| lista_p.isEmpty){
-                _showDialog(editingController.text);
-              }
-              else{
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResultListPodcast(list_p: lista_p,list_title: editingController.text),
-                  ),
-                );
-              }
-            }
-          }),
+          ),
         ),
       ),
     );

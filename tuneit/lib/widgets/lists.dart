@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 Widget elementOfList2 (String image, String name) {
   return new Container(
     decoration: new BoxDecoration(
-        color: Colors.indigo[700],
+        color: Colors.white10,
         borderRadius: new BorderRadius.only(
           topLeft: const Radius.circular(8.0),
           topRight: const Radius.circular(8.0),
@@ -23,10 +23,15 @@ Widget elementOfList2 (String image, String name) {
                     decoration: new BoxDecoration(
                       shape: BoxShape.rectangle,
                       image: new DecorationImage(
-
                         image: image == null? new AssetImage('assets/PorDefecto.png') : new NetworkImage(image),
                         fit: BoxFit.cover,
                       ),
+                      borderRadius: new BorderRadius.only(
+                        topLeft: const Radius.circular(8.0),
+                        topRight: const Radius.circular(8.0),
+                        bottomLeft: const Radius.circular(8.0),
+                        bottomRight: const Radius.circular(8.0),
+                      )
                     ),
                   )
               ),
@@ -44,7 +49,7 @@ Widget elementOfList2 (String image, String name) {
             ]
         )
     ),
-    margin: const EdgeInsets.all(4.0),
+    margin: const EdgeInsets.all(8.0),
     padding: const EdgeInsets.all(1),
   );
 }
@@ -69,7 +74,7 @@ Widget completeList (List lista, Function func, List arguments) {
   return GridView.builder(
       //scrollDirection: Axis.vertical,
       //shrinkWrap: true,
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 8.0),
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: lista.length,
       itemBuilder: (BuildContext context, int index) {

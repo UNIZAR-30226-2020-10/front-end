@@ -1,131 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/pages/showPodcast.dart';
-class ResultListPodcast extends StatelessWidget {
+import 'package:tuneit/widgets/lists.dart';
 
+class ResultPodcasts extends StatefulWidget {
 
-  List<Podcast> list_p = List();
-String list_title;
+  List<Podcast> listPodcasts = List();
+  String title;
 
-ResultListPodcast({this.list_p,this.list_title});
+  @override
+  _ResultPodcastsState createState() => _ResultPodcastsState(listPodcasts, title);
+
+  ResultPodcasts(this.listPodcasts,this.title);
+}
+
+class _ResultPodcastsState extends State<ResultPodcasts> {
+
+  List<Podcast> listPodcasts = List();
+  String title;
+
+  _ResultPodcastsState(this.listPodcasts,this.title);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        title:Text( 'TuneIT'),
+        title:Text('BUSQUEDA: ' + title),
         centerTitle: true,
-        backgroundColor: Colors.purple,
       ),
 
       body: Column(
-      children: <Widget>[
-
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Title(
-              child: Text('Resultados de la busqueda de: $list_title',
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.bold,
-              fontSize: 32
-              ),
-            ),
-            color:Colors.black,
-            ),
-          ),
-
-        content_list(),
-        ]
-      ),
-      );
-
-    }
-
-
-
-
-
-
-
-
-Widget template_list (String image, String playlist_name) {
-  return new Container(
-    decoration: new BoxDecoration(
-        color: Colors.indigo[700],
-        borderRadius: new BorderRadius.only(
-          topLeft: const Radius.circular(8.0),
-          topRight: const Radius.circular(8.0),
-          bottomLeft: const Radius.circular(8.0),
-          bottomRight: const Radius.circular(8.0),
-        )
-    ),
-    child: Center(
-        child: Column(
-            children: <Widget>[
-              Flexible(
-                  flex: 5,
-                  child: new Container(
-                    margin: EdgeInsets.all(10.0),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      image: new DecorationImage(
-
-                        image: new NetworkImage(image),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  )
-              ),
-              Flexible(
-                flex: 1,
-                child: Center(
-                    child: FittedBox(
-                      child: Text(playlist_name,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(left: 15, top: 10, bottom: 7),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Resultados',
+                  style: Theme.of(context).textTheme.title,
                 ),
               ),
-            ]
-        )
-    ),
-    margin: const EdgeInsets.all(4.0),
-    padding: const EdgeInsets.all(1),
-  );
-}
+            ),
+            Expanded(
+              child: completeList(listPodcasts, onTap, []),
+            )
+          ]
+      ),
+    );
+  }
 
-Widget list_box (BuildContext context, index) {
-  return new GestureDetector(
-    behavior: HitTestBehavior.opaque,
-    onTap: () {
-
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ShowPodcast(podc: list_p[index].id),
-        ));
-
-    },
-    child: template_list(
-         list_p[index].image,
-        list_p[index].name
-    ),
-  );
-}
-
-Widget content_list() {
-  return Expanded(
-    child: GridView.builder(
-        padding: const EdgeInsets.all(8.0),
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount:  list_p.length,
-        itemBuilder: (BuildContext context, int index) {
-          return list_box(context,index);
-        }
-    ),
-  );
-}
-
-
-
+  void onTap (int index) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ShowPodcast(podc: listPodcasts[index].id),
+    ));
+  }
 }

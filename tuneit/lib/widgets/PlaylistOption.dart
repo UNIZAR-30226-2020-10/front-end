@@ -2,47 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/pages/playlists.dart';
-import 'package:tuneit/widgets/textFields.dart';
 import 'package:tuneit/widgets/OptionSongs.dart';
+import 'package:tuneit/widgets/textFields.dart';
+
+import 'buttons.dart';
 
 Widget crearListaRep(BuildContext context) {
-  return RaisedButton(
-    onPressed: () {
-  _mostrarInforme(context);
-    },
-    color: Colors.transparent,
-    child: new SizedBox(
-      height: 60,
-      width: 230.0,
-      child: Container(
-          decoration: BoxDecoration(
-              borderRadius: new BorderRadius.only(
-                topLeft: const Radius.circular(25.0),
-                topRight: const Radius.circular(25.0),
-                bottomLeft: const Radius.circular(25.0),
-                bottomRight: const Radius.circular(25.0),
-              ),
-              gradient: LinearGradient(
-                colors: <Color>[
-                  ColorSets.colorprimaryPink,
-                  Color(0xAA5350a7),
-                  Color(0xAA1c4c8b),
-                ],
-              ),
-              border: Border.all(color: Colors.white, width: 4)
-          ),
-          child: Center(
-            child: Text(
-                'Crear nueva',
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontFamily: 'RobotoMono'
-                )
-            ),
-          )
-      ),
+  return RawMaterialButton(
+    child: IconButton(
+        icon: Icon(Icons.add, color: Colors.white70,),
+        iconSize: 30,
+        onPressed: (){_mostrarInforme(context);}
     ),
+    shape: new CircleBorder(),
+    onPressed: (){_mostrarInforme(context);},
+    fillColor: Colors.white10,
   );
 }
 
@@ -57,7 +31,6 @@ void _mostrarInforme(BuildContext context) {
     builder: (BuildContext context) {
       // return object of type Dialog
       return GestureDetector(
-
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
 
@@ -67,7 +40,10 @@ void _mostrarInforme(BuildContext context) {
         },
 
         child: AlertDialog(
-          title: new Text("Crear nueva lista"),
+          title: Text(
+            'Crear nueva lista',
+            style: Theme.of(context).textTheme.title,
+          ),
           content: Center(
               child: Container(
                   width: 350,
@@ -79,26 +55,11 @@ void _mostrarInforme(BuildContext context) {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        TextField(
-                          autofocus: true,
-                          controller: _titulo,
-                          decoration: InputDecoration(
-                              hintText: "Titulo",
-                              hintStyle: TextStyle(fontWeight: FontWeight.w300, color: Colors.deepPurple)
-                          ),
-                        ),
-                        TextField(
-                          autofocus: true,
-                          decoration: InputDecoration(
-                              hintText: "Descripcion",
-                              hintStyle: TextStyle(fontWeight: FontWeight.w300, color: Colors.deepPurple)
-                          ),
-                          controller: _descp,
-                        ),
+                        textField(_titulo, false, 'Título', Icons.title),
+                        textField(_descp, false, 'Descripción', Icons.description),
+                        SizedBox(height: 15,),
                         RaisedButton(
                           onPressed: () async {
-
-
                             await nuevaLista(_titulo.text, _descp.text);
                             Navigator.pop(context);
                             Navigator.pop(context);
@@ -108,10 +69,9 @@ void _mostrarInforme(BuildContext context) {
                                 builder: (context) => PlayLists(true),
                               ),
                             );
-
                           },
-                          child: Text("Crear"),
-
+                          color: Colors.deepPurple,
+                          child: Text("CREAR"),
                         ),
                       ],
                     ),

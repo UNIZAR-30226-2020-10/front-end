@@ -8,12 +8,13 @@ import 'package:tuneit/classes/components/Audio.dart';
 
 class PodcastEpisode extends Audio {
   String id;
-  String title;
+  String name;
   String image;
   String description;
   String audio; //URL DEL ESPISODIO
   int audio_length_sec;
   String web_link;
+  String publisher;
 
   @override
   String devolverSonido(){
@@ -27,33 +28,35 @@ class PodcastEpisode extends Audio {
 
   @override
   String devolverTitulo(){
-    return title;
+    return name;
   }
 
   @override
   String devolverArtista(){
-    return "Autor";
+    return publisher;
   }
 
   String devolverID(){
     return id;
   }
 
-
-
-  PodcastEpisode({this.id,this.title, this.image,this.description,this.audio,this.audio_length_sec,this.web_link});
+  PodcastEpisode({this.id,this.name, this.image,this.description,this.audio,this.audio_length_sec,this.web_link});
 
   factory PodcastEpisode.fromJson(Map<String, dynamic> parsedJson) {
 
     return PodcastEpisode(
         id: parsedJson['id'],
-        title: parsedJson['title'],
+        name: parsedJson['title'],
         image: parsedJson['image'],
         description: parsedJson['description'],
         audio :parsedJson['audio'],
         audio_length_sec: parsedJson['audio_length_sec'],
         web_link: parsedJson['link']
     );
+  }
+
+  void setPublisher (String pub) {
+    publisher = pub;
   }
 
 }
@@ -73,9 +76,13 @@ Future<List<PodcastEpisode>> fetchEpisodes(String podc) async {
 
     Map<String, dynamic> parsedJson = json.decode(response.body);
     var list = parsedJson['episodes'] as List;
-    List<PodcastEpisode> episodesList = list.map((i) =>PodcastEpisode.fromJson(i)).toList();
+    List<PodcastEpisode> episodesList = list.map((i) => PodcastEpisode.fromJson(i)).toList();
 
-    return episodesList;
+    for(int i = 0; i < episodesList.length; i++) {
+      episodesList[i].setPublisher(parsedJson['publisher'] as String);
+    }
+
+      return episodesList;
 
   } else {
     throw Exception(response.statusCode.toString() + ': Failed to load episodes');

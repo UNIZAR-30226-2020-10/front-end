@@ -58,8 +58,6 @@ Future<List<Playlist>> buscar_una_lista(String data) async {
 
   var uri = Uri.https('psoftware.herokuapp.com','/search_list' ,queryParameters);
 
-  print(uri);
-
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });

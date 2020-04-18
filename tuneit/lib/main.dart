@@ -32,7 +32,14 @@ class MyApp extends StatelessWidget {
         '/list_podcast':(context) => ShowPodcast(),
       },
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        brightness: Brightness.dark,
+        primaryColor: Colors.deepPurple,
+        fontFamily: 'RobotoMono',
+        textTheme: TextTheme(
+          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          title: TextStyle(fontSize: 25.0, fontStyle: FontStyle.italic),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'RobotoMono'),
+        ),
       ),
       home: MyHomePage(),
     );
@@ -68,49 +75,64 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TuneIT'),
+        title: Text('PAGINA PRINCIPAL'),
+        centerTitle: true,
+        backgroundColor: Colors.deepPurple,
+        elevation: 0.0,
       ),
       drawer: LateralMenu(),
-      body:Column(
-        children: <Widget>[
-          Center(
-            child: Text('Novedades'),
-          ),
-          Center(
-            child:
-            StreamBuilder(
-                stream: cargarDatos.seleccionar_listas,
-                builder: (context,snapshot){
-                  if(!snapshot.hasData){
-                    return Column(
-                      children: <Widget>[
-                        Image(image: AssetImage('assets/LogoApp.png'),
-                            fit: BoxFit.fill,),
-                        Text("Buscando en nuestra base de datos las mejores canciones...")
-                      ],
-                    );
-                  }
-                  else{
-                    return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                      height: MediaQuery.of(context).size.height * 0.35,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data.listas.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return  listBox (context, index,snapshot.data.listas);
-                          }
-                      ),
-                    );
-                  }
-                }
+      body: Container(
+        margin: EdgeInsets.all(10),
+        child: Column(
+
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Novedades',
+                style: Theme.of(context).textTheme.title,
+              ),
             ),
-          ),
-          Center(
-            child: Text('Generos musicales'),
-          ),
-         ],
+            Center(
+              child:
+              StreamBuilder(
+                  stream: cargarDatos.seleccionar_listas,
+                  builder: (context,snapshot){
+                    if(!snapshot.hasData){
+                      return Column(
+                        children: <Widget>[
+                          Image(image: AssetImage('assets/LogoApp.png'),
+                            fit: BoxFit.fill,),
+                          Text("Buscando en la base de datos las mejores canciones...")
+                        ],
+                      );
+                    }
+                    else{
+                      return Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                        height: MediaQuery.of(context).size.height * 0.35,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data.listas.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return  listBox (context, index,snapshot.data.listas);
+                            }
+                        ),
+                      );
+                    }
+                  }
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Generos',
+                style: Theme.of(context).textTheme.title,
+              ),
+            ),
+          ],
         ),
+      )
     );
   }
 
