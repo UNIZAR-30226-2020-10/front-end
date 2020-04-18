@@ -69,8 +69,6 @@ Future<List<Playlist>> buscar_una_lista(String data) async {
         .toList();
 
     print("aaaaaaaaaaaaaaa");
-    print(list[0].name);
-
     return list;
 
   } else {
