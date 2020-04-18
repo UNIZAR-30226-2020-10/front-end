@@ -51,7 +51,7 @@ class _ResultPodcastsState extends State<ResultPodcasts> {
 
   void onTap (int index) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ShowPodcast(podc: listPodcasts[index].id),
+      builder: (context) => ShowPodcast(podc: listPodcasts[index].id, name: listPodcasts[index].name,),
     ));
   }
 }
