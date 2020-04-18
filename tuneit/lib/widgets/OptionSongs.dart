@@ -147,8 +147,7 @@ void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async
               content:Container(
 
               width: double.maxFinite,
-               child: Column(
-                  children: <Widget>[
+               child:
                     //itemCount: snapshot.data.songs.length,
                     ListView.builder(
 
@@ -173,8 +172,6 @@ void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async
                       },
                     ),
 
-                  ]
-              ),
             ),
           ),
         );
