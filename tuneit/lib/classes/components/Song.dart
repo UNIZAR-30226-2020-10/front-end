@@ -103,7 +103,7 @@ class SongLista{
   Stream<SongLista> get buscar_canciones_1 => _cancionStreamController.stream;
 
 
-  Future< void> fetchSonglists(String id) async {
+  Future< SongLista> fetchSonglists(String id) async {
     print(id);
 
 
@@ -118,6 +118,7 @@ class SongLista{
     print(response.body);
     if (response.statusCode == 200) {
       _cancionStreamController.sink.add(SongLista.fromJson(json.decode(response.body)));
+      return SongLista.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load playlists');
     }
@@ -173,6 +174,30 @@ class SongLista{
   }
 
 }
+
+
+Future< SongLista> fetchSonglists(String id) async {
+  print(id);
+
+
+  var queryParameters = {
+    'list' : id
+  };
+  var uri = Uri.https(baseURL,'/list_data' ,queryParameters);
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+  print(response.statusCode);
+  print(response.body);
+  if (response.statusCode == 200) {
+   // _cancionStreamController.sink.add(SongLista.fromJson(json.decode(response.body)));
+    return SongLista.fromJson(json.decode(response.body));
+  } else {
+    throw Exception('Failed to load playlists');
+  }
+}
+
+
 Future<List<Song>> buscar_canciones(String contenido_busqueda) async {
 
   List<Song> list;

@@ -29,6 +29,12 @@ class _State extends State<ShowList> {
 
 
   void ObtenerDatos() async{
+
+          SongLista canciones =await fetchSonglists(indetificadorLista);
+          setState(() {
+            songs=canciones;
+          });
+
           await songs.fetchSonglists(indetificadorLista);
     }
 
@@ -77,76 +83,95 @@ class _State extends State<ShowList> {
           children: <Widget>[
             Expanded(
               child:
-              StreamBuilder(
-                stream: songs.buscar_canciones_1,
-                builder: (context,snapshot){
-                  if(!snapshot.hasData){
-                    return Column(
-                      children: <Widget>[
-                      Image(image: AssetImage('assets/LogoApp.png'),
-                              fit: BoxFit.fill,
-                               width: 200,
-                                height: 200),
-                        Text("Buscando en nuestra base de datos las mejores canciones...")
+                   StreamBuilder<Object>(
+                     stream: songs.buscar_canciones_1,
+                     builder: (context, snapshot) {
+
+                       if(!snapshot.hasData){
+                         return Column(
+                           children: <Widget>[
+                             Image(image: AssetImage('assets/LogoApp.png'),
+                                 fit: BoxFit.fill,
+                                 width: 200,
+                                 height: 200),
+                             Text("Buscando en nuestra base de datos las mejores canciones...")
 
 
-                      ],
-                    );
-                  }
-                  else{
-                    return ListView.builder(
+                           ],
+                         );
+                       }
+                       else{
+                         return ReorderableListView(
 
-                    padding: const EdgeInsets.all(8),
-                    scrollDirection: Axis.vertical,
-                    itemCount: snapshot.data.songs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: new ListTile(
-                         onTap:(){
+                           padding: const EdgeInsets.all(8),
+                           scrollDirection: Axis.vertical,
+                           onReorder: _onReorder,
 
+                           children: List.generate(
+                             songs.songs.length,
+                                 (index) {
+                               return
+                                 Card(
+                                   key: Key('$index'),
+                                   child: new ListTile(
+                                     onTap:(){
+                                       Navigator.of(context).push(MaterialPageRoute(
+                                         builder: (context) => PlayerPage(audios: songs.songs,indice: index,escanciones: true),
 
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PlayerPage(audios: snapshot.data.songs,indice: index,escanciones: true),
+                                       ));
+                                     },
 
-                          ));
-                         },
+                                     leading: imagen_por_defecto(songs.songs[index].image),
+                                     title: Text(songs.songs[index].name),
+                                     subtitle: Text(juntarArtistas(songs.songs[index].artist)),
+                                     trailing: PopupMenuButton<String>(
+                                       onSelected: choiceAction,
+                                       itemBuilder: (BuildContext context){
+                                         return optionMenuSong.map((String choice){
+                                           return PopupMenuItem<String>(
+                                             value: (choice + "--"+songs.songs[index].id.toString()+"--"+indetificadorLista),
+                                             child: Text(choice),
+                                           );
 
-                          leading: imagen_por_defecto(snapshot.data.songs[index].image),
-                          title: Text(snapshot.data.songs[index].name),
-                          subtitle: Text(juntarArtistas(snapshot.data.songs[index].artist)),
-                          trailing: PopupMenuButton<String>(
-                            onSelected: choiceAction,
-                            itemBuilder: (BuildContext context){
-                              return optionMenuSong.map((String choice){
-                                return PopupMenuItem<String>(
-                                  value: (choice + "--"+snapshot.data.songs[index].id.toString()+"--"+indetificadorLista),
-                                  child: Text(choice),
-                                );
+                                         }).toList();
+                                       },
+                                     ),
 
-                              }).toList();
-                            },
-                          ),
+                                   ),
+                                 );
 
-                        ),
-                  );
-
-
-                  }
-                  );
-                  }
-    }
-              ),
-
-              ),
+                             },
+                           ),
 
 
-
-          ],
+                         );
+                       }
+                     }
+                   ),
     ),
+
+
+
+    ]
+
+
+              ),
       bottomNavigationBar: NewWidget(),
+  );
+
+
+  }
+
+  void _onReorder(int oldIndex, int newIndex) {
+    setState(
+          () {
+        if (newIndex > oldIndex) {
+          newIndex -= 1;
+        }
+        final Song item = songs.songs.removeAt(oldIndex);
+        songs.songs.insert(newIndex, item);
+      },
     );
-
-
   }
 
   String juntarArtistas(List<String> datos){

@@ -112,7 +112,8 @@ class _PlayerPageState extends State<PlayerPage> {
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
+    print("hell");
+   _audioPlayer.dispose();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
     _playerCompleteSubscription?.cancel();
