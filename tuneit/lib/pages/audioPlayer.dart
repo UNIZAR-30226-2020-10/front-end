@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:tuneit/classes/components/Song.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 
 
@@ -7,8 +10,16 @@ import 'package:flutter_exoplayer/audio_notification.dart';
 import 'package:flutter_exoplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 
+const imageUrl1 = "https://www.bensound.com/bensound-img/buddy.jpg";
+const imageUrl2 = "https://www.bensound.com/bensound-img/epic.jpg";
+const imageUrl3 = "https://www.bensound.com/bensound-img/onceagain.jpg";
+
+
+
 typedef void OnError(Exception exception);
 //enum PlayerState { stopped, playing, paused }
+
+
 
 class PlayerPage extends StatefulWidget {
   List<Audio> audios;
@@ -88,6 +99,8 @@ class _PlayerPageState extends State<PlayerPage> {
   get _positionText => _position?.toString()?.split('.')?.first ?? '';
 
 
+  final _playerStreamController = StreamController<AudioPlayer>.broadcast();
+  Stream<AudioPlayer> get devolverPlayer => _playerStreamController.stream;
 
   @override
   void initState() {
@@ -97,12 +110,12 @@ class _PlayerPageState extends State<PlayerPage> {
       url=audios[indice].devolverSonido();
     });
     _initAudioPlayer();
+    _playerStreamController.sink.add(_audioPlayer);
   }
 
   @override
-  void dispose() {
-    print("hell");
-   _audioPlayer.dispose();
+  Future<void> dispose() async {
+    _audioPlayer.dispose();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
     _playerCompleteSubscription?.cancel();
@@ -112,6 +125,7 @@ class _PlayerPageState extends State<PlayerPage> {
     _playerAudioSessionIdSubscription?.cancel();
     _notificationActionCallbackSubscription?.cancel();
     super.dispose();
+
   }
 
   //----------------------------------------------------//
@@ -206,8 +220,8 @@ class _PlayerPageState extends State<PlayerPage> {
                             iconSize: 60.0,
                             icon:  Icon(Icons.repeat,
                                 color:(_repeatMode)
-                                    ? Colors.white70
-                                    : Colors.deepPurple
+                                    ? Colors.blue
+                                    : Colors.black
                             ),
                           ),
                           IconButton(
@@ -229,8 +243,8 @@ class _PlayerPageState extends State<PlayerPage> {
                               iconSize: 60.0,
                               icon: Icon(Icons.shuffle),
                               color:(_shuffleMode)
-                                  ? Colors.white
-                                  : Colors.deepPurple,
+                                  ? Colors.blue
+                                  : Colors.black,
                               onPressed: () {
                                 if(!_shuffleMode){
                                   _shuffleMode = true;
@@ -299,6 +313,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 ),
             ],
           ),
+
         ),
       );
     //);
@@ -514,7 +529,9 @@ class _PlayerPageState extends State<PlayerPage> {
     }
     audiosShuffle.shuffle();
     primera = await _audioPlayer.getCurrentPlayingAudioIndex();
-    audiosShuffle[primera] = 0;
+    int index_primera_shuffle = audiosShuffle.indexOf(primera);
+    int valor_index_0 = audiosShuffle.elementAt(0);
+    audiosShuffle[index_primera_shuffle] = valor_index_0;
     audiosShuffle[0] = primera;
     indiceShuffle = 0;
   }

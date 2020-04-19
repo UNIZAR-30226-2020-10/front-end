@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/front-end_android.iml" filepath="$PROJECT_DIR$/.idea/front-end_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/front-end_android.iml" filepath="$PROJECT_DIR$/front-end_android.iml" group="front-end_android" />
     </modules>
   </component>
 </project>

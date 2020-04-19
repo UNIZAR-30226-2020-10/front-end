@@ -27,6 +27,7 @@ dependencies:
   path_provider_macos: ^0.0.1
   firebase_messaging: ^6.0.13
   provider: ^3.0.0+1
+  expandable_bottom_bar: any
 
 
 
