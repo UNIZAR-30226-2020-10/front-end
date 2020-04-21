@@ -17,19 +17,19 @@ SizedBox gradientButton2 (String title) {
             ),
             gradient: LinearGradient(
               colors: <Color>[
-                ColorSets.colorprimaryPink,
-                Color(0x335350a7),
-                Color(0x331c4c8b),
+                ColorSets.colorPink,
+                ColorSets.colorButtonPurple,
+                ColorSets.colorButtonBlue,
               ],
             ),
-            border: Border.all(color: Colors.white70, width: 2)
+            border: Border.all(color: ColorSets.colorWhite, width: 2)
         ),
         child: Center(
           child: Text(
               title,
               style: TextStyle(
                   fontSize: 20,
-                  color: Colors.white,
+                  color: ColorSets.colorText,
                   fontFamily: 'RobotoMono'
               )
           ),
@@ -76,15 +76,15 @@ Widget solidButton (BuildContext context, Function func, List arguments, String 
                   bottomLeft: const Radius.circular(25.0),
                   bottomRight: const Radius.circular(25.0),
                 ),
-                color: Colors.white10,
-                border: Border.all(color: Colors.white70, width: 2)
+                color: ColorSets.colorDarkGrey,
+                border: Border.all(color: ColorSets.colorWhite, width: 2)
             ),
             child: Center(
               child: Text(
                   text,
                   style: TextStyle(
                       fontSize: 17,
-                      color: Colors.white,
+                      color: ColorSets.colorText,
                       fontFamily: 'RobotoMono'
                   )
               ),

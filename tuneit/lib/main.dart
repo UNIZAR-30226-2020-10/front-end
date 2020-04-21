@@ -77,8 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('PAGINA PRINCIPAL'),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
-        elevation: 0.0,
       ),
       drawer: LateralMenu(),
       body: Container(

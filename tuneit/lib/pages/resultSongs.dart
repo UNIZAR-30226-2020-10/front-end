@@ -66,7 +66,6 @@ class _ResultSongListState extends State<ResultSongList> {
       appBar:AppBar(
         title:Text( 'TuneIT'),
         centerTitle: true,
-        backgroundColor: Colors.purple,
       ),
 
       body: Column(
@@ -74,18 +73,12 @@ class _ResultSongListState extends State<ResultSongList> {
 
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Title(
-              child: Text('Resultados de la busqueda de: ${widget.list_title}',
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold,
-                    fontSize: 32
-                ),
+            child: Text('Resultados de la busqueda de: ${widget.list_title}',
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold,
+                  fontSize: 32
               ),
-              color:Colors.black,
-
-
-
             ),
           ),
           Expanded(

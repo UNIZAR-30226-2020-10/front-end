@@ -9,6 +9,7 @@ import 'package:tuneit/classes/components/Audio.dart';
 import 'package:flutter_exoplayer/audio_notification.dart';
 import 'package:flutter_exoplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
 
 const imageUrl1 = "https://www.bensound.com/bensound-img/buddy.jpg";
 const imageUrl2 = "https://www.bensound.com/bensound-img/epic.jpg";
@@ -152,7 +153,10 @@ class _PlayerPageState extends State<PlayerPage> {
       child: */DefaultTabController(
         length: 5,
         child: Scaffold(
-          appBar: AppBar()
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+          )
           ,
           body:  Column(
             children: [
@@ -216,11 +220,11 @@ class _PlayerPageState extends State<PlayerPage> {
                             onPressed:(){
                               if(_repeatMode){
                                 _repeatMode = false;
-                                setState((){_iconRepeatColor = Colors.grey;});
+                                setState((){_iconRepeatColor = ColorSets.colorGrey;});
                               }
                               else{
                                 _repeatMode = true;
-                                setState((){_iconRepeatColor = Colors.blue;});
+                                setState((){_iconRepeatColor = ColorSets.colorBlue;});
                               }
                               _repeat();
                             },
@@ -251,12 +255,12 @@ class _PlayerPageState extends State<PlayerPage> {
                               onPressed: () {
                                 if(!_shuffleMode){
                                   _shuffleMode = true;
-                                  setState((){_iconShuffleColor = Colors.blue;});
+                                  setState((){_iconShuffleColor = ColorSets.colorBlue;});
                                   _shuffle();
                                 }
                                 else{
                                   _shuffleMode = false;
-                                  setState((){_iconShuffleColor = Colors.grey;});
+                                  setState((){_iconShuffleColor = ColorSets.colorGrey;});
                                 }
                               }),
                           IconButton(
@@ -280,9 +284,9 @@ class _PlayerPageState extends State<PlayerPage> {
                     data: SliderThemeData(
                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
                       trackHeight: 3,
-                      thumbColor: Colors.pink,
-                      inactiveTrackColor: Colors.grey,
-                      activeTrackColor: Colors.pink,
+                      thumbColor: ColorSets.colorBlue,
+                      inactiveTrackColor: ColorSets.colorGrey,
+                      activeTrackColor: ColorSets.colorBlue,
                       overlayColor: Colors.transparent,
                     ),
                     child: Slider(
