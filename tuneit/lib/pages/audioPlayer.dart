@@ -77,6 +77,9 @@ class _PlayerPageState extends State<PlayerPage> {
   bool _repeatMode = false;
   bool _shuffleMode = false;
 
+  Color _iconRepeatColor = Colors.grey;
+  Color _iconShuffleColor = Colors.grey;
+
   PlayerState _playerState = PlayerState.RELEASED;
   StreamSubscription _durationSubscription;
   StreamSubscription _positionSubscription;
@@ -138,6 +141,8 @@ class _PlayerPageState extends State<PlayerPage> {
     _rellenarUrl();
     _rellenarNotificaciones();
     funcion_auxiliar();
+    print('=== Slider value: ${_position?.inMilliseconds?.toDouble() ?? 0.0} ===');
+    print('=== Duration value: ${_duration?.inMilliseconds?.toDouble() ?? 0.0} ===');
     return /*MultiProvider(
       providers: [
         StreamProvider<Duration>.value(
@@ -211,17 +216,17 @@ class _PlayerPageState extends State<PlayerPage> {
                             onPressed:(){
                               if(_repeatMode){
                                 _repeatMode = false;
+                                setState((){_iconRepeatColor = Colors.grey;});
                               }
                               else{
                                 _repeatMode = true;
+                                setState((){_iconRepeatColor = Colors.blue;});
                               }
                               _repeat();
                             },
                             iconSize: 60.0,
                             icon:  Icon(Icons.repeat,
-                                color:(_repeatMode)
-                                    ? Colors.blue
-                                    : Colors.black
+                                color:_iconRepeatColor
                             ),
                           ),
                           IconButton(
@@ -242,16 +247,16 @@ class _PlayerPageState extends State<PlayerPage> {
                           IconButton(
                               iconSize: 60.0,
                               icon: Icon(Icons.shuffle),
-                              color:(_shuffleMode)
-                                  ? Colors.blue
-                                  : Colors.black,
+                              color: _iconShuffleColor,
                               onPressed: () {
                                 if(!_shuffleMode){
                                   _shuffleMode = true;
+                                  setState((){_iconShuffleColor = Colors.blue;});
                                   _shuffle();
                                 }
                                 else{
                                   _shuffleMode = false;
+                                  setState((){_iconShuffleColor = Colors.grey;});
                                 }
                               }),
                           IconButton(
@@ -281,21 +286,24 @@ class _PlayerPageState extends State<PlayerPage> {
                       overlayColor: Colors.transparent,
                     ),
                     child: Slider(
-                      value:
-                      _position != null ? _position.inMilliseconds.toDouble() : 0.0,
                       min: 0.0,
                       max:
-                      _duration != null ? _duration.inMilliseconds.toDouble() : 0.0,
+                      _duration != null ? _duration.inMilliseconds.toDouble().abs() : 0.0,
+                      value:
+                      (_position != null) &&
+                      (_position != null && _duration != null && _position.inMilliseconds.toDouble().abs() <
+                       _duration.inMilliseconds.toDouble().abs())
+                          ? _position.inMilliseconds.toDouble().abs() : 0.0,
                       onChanged: (double value) async {
                         final Result result = await _audioPlayer
-                            .seekPosition(Duration(milliseconds: value.toInt()));
+                            .seekPosition(Duration(milliseconds: value.toInt()).abs());
                         if (result == Result.FAIL) {
                           print(
                               "you tried to call audio conrolling methods on released audio player :(");
                         } else if (result == Result.ERROR) {
                           print("something went wrong in seek :(");
                         }
-                        _position = Duration(milliseconds: value.toInt());
+                        _position = Duration(milliseconds: value.toInt().abs());
                       },
                     ),
                   ),
