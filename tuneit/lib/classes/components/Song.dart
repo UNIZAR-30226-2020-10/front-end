@@ -137,6 +137,7 @@ class SongLista{
       }),
     );
     print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
@@ -178,7 +179,6 @@ class SongLista{
 
 Future< SongLista> fetchSonglists(String id) async {
   print(id);
-
 
   var queryParameters = {
     'list' : id

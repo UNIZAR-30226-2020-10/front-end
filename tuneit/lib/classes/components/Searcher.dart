@@ -36,11 +36,13 @@ class _SearcherState extends State<Searcher> {
         borderRadius: BorderRadius.all(Radius.circular(30.0)),
       ),
       child: TextField(
+        //minLines: 3,
         onChanged: (value) {
           //filterSearchResults(value);
         },
         controller: editingController,
         decoration: InputDecoration(
+
           hintText: "Buscar contenido",
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),
@@ -52,46 +54,55 @@ class _SearcherState extends State<Searcher> {
               icon: Icon(Icons.search, color: Colors.white70,),
               iconSize: 30,
               onPressed: ()async {
-                if(musNpod){
-                  //Compruebo primero las canciones
-                  List<Song> lista_p = await buscar_canciones(editingController.text);
-                  // Si no hay ninguna cancion voy a comprobar las listas
-                  if(lista_p==null || lista_p.isEmpty){
-                    // Compruebo las listas
-                    List<Playlist> listaP = await buscar_una_lista(editingController.text);
-                    if(listaP==null || listaP.isEmpty){
-                      //Si no hay nada pues error
-                      _showDialog(editingController.text);
+                if(editingController.text.length>=3){
+
+
+                  if(musNpod){
+                    //Compruebo primero las canciones
+                    List<Song> lista_p = await buscar_canciones(editingController.text);
+                    // Si no hay ninguna cancion voy a comprobar las listas
+                    if(lista_p==null || lista_p.isEmpty){
+                      // Compruebo las listas
+                      List<Playlist> listaP = await buscar_una_lista(editingController.text);
+                      if(listaP==null || listaP.isEmpty){
+                        //Si no hay nada pues error
+                        _notFound(editingController.text);
+                      }
+                      else{
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
+                        ));
+                      }
                     }
                     else{
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
-                      ));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResultSongList(lista_p,editingController.text),
+                        ),
+                      );
                     }
                   }
                   else{
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResultSongList(lista_p,editingController.text),
-                      ),
-                    );
+                    List<Podcast> listaPodcasts = await fetchPodcastByTitle(editingController.text);
+                    //Haz que sino encuentra nada devuelva null
+                    if(listaPodcasts==null|| listaPodcasts.isEmpty){
+                      _notFound(editingController.text);
+                    }
+                    else{
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResultPodcasts(listaPodcasts, editingController.text),
+                        ),
+                      );
+                    }
                   }
                 }
                 else{
-                  List<Podcast> listaPodcasts = await fetchPodcastByTitle(editingController.text);
-                  //Haz que sino encuentra nada devuelva null
-                  if(listaPodcasts==null|| listaPodcasts.isEmpty){
-                    _showDialog(editingController.text);
-                  }
-                  else{
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ResultPodcasts(listaPodcasts, editingController.text),
-                      ),
-                    );
-                  }
+                  _notBigEnough();
+
+
                 }
               }
           ),
@@ -101,7 +112,7 @@ class _SearcherState extends State<Searcher> {
   }
 
   // user defined function
-  void _showDialog(String mensaje) {
+  void _notFound(String mensaje) {
     // flutter defined function
     showDialog(
       context: context,
@@ -118,6 +129,38 @@ class _SearcherState extends State<Searcher> {
           child: AlertDialog(
             title: new Text("Error de Busqueda"),
             content: new Text("No se ha encontrado "+ "${mensaje}"),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new FlatButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _notBigEnough() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: AlertDialog(
+            title: new Text("Error de Busqueda"),
+            content: new Text("La búsqueda ha de tener mínimo 3 caracteres"),
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
               new FlatButton(
