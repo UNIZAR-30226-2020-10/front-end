@@ -4,8 +4,8 @@ import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/bottomExpandableAudio.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/pages/audioPlayer.dart';
-import 'package:tuneit/widgets/OptionSongs.dart';
-import 'package:tuneit/widgets/PlaylistOption.dart';
+import 'package:tuneit/widgets/optionSongs.dart';
+import 'package:tuneit/widgets/playlistOption.dart';
 
 
 class ShowList extends StatefulWidget {

@@ -6,7 +6,7 @@ import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/Searcher.dart';
 import 'package:tuneit/pages/showList.dart';
 import 'package:tuneit/pages/showPodcast.dart';
-import 'package:tuneit/widgets/PlaylistOption.dart';
+import 'package:tuneit/widgets/playlistOption.dart';
 import 'package:tuneit/widgets/lists.dart';
 
 

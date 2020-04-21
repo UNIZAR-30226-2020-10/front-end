@@ -4,7 +4,7 @@ import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/pages/audioPlayer.dart';
-import 'package:tuneit/widgets/OptionSongs.dart';
+import 'package:tuneit/widgets/optionSongs.dart';
 
 
 
