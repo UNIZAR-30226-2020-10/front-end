@@ -117,7 +117,7 @@ class _RegisterState extends State<Register> {
                               Flexible(
                                 flex: 8,
                                 child: Text(
-                                  _date != null?_date.toString().substring(0,11) : DateTime.now().toString().substring(0,11),
+                                  _date != null?_date.toString().substring(0,10) : DateTime.now().toString().substring(0,11),
                                   style: TextStyle(
                                       fontSize: 15,
                                       color: Colors.white60,
