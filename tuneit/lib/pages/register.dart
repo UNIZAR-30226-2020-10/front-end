@@ -41,7 +41,7 @@ class _RegisterState extends State<Register> {
       lastDate: DateTime(2030),
       builder: (BuildContext context, Widget child) {
         return Theme(
-          data: ThemeData.light(),
+          data: Theme.of(context),
           child: child,
         );
       },
@@ -52,9 +52,9 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        elevation: 0.0,
       ),
       body: Center(
           child: Container(
@@ -98,6 +98,7 @@ class _RegisterState extends State<Register> {
                         Icons.place),
                     RaisedButton(
                       color: Colors.transparent,
+                      elevation: 0.0,
                       child: Column(
                         children: <Widget>[
                           SizedBox(height: 10),

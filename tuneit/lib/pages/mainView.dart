@@ -12,31 +12,33 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-            children: <Widget>[
-              Flexible(
-                flex: 6,
-                child: new Image(image: new AssetImage('assets/LogoApp.png'),),
-              ),
-              Container(
-                color: Colors.transparent,
-                height: 30,
-              ),
-              Flexible(
-                  flex: 2,
-                  child: gradientButton(context, toLogin, [], 'INICIAR SESIÓN')
-              ),
-              Container(
-                color: Colors.transparent,
-                height: 20,
-              ),
-              Flexible(
-                  flex: 2,
-                  child: gradientButton(context, toRegister, [], 'REGISTRARSE')
-              )
-            ]
-        )
+    return Scaffold(
+      body: Container(
+          child: Column(
+              children: <Widget>[
+                Flexible(
+                  flex: 6,
+                  child: new Image(image: new AssetImage('assets/LogoApp.png'),),
+                ),
+                Container(
+                  color: Colors.transparent,
+                  height: 30,
+                ),
+                Flexible(
+                    flex: 2,
+                    child: gradientButton(context, toLogin, [], 'INICIAR SESIÓN')
+                ),
+                Container(
+                  color: Colors.transparent,
+                  height: 30,
+                ),
+                Flexible(
+                    flex: 2,
+                    child: gradientButton(context, toRegister, [], 'REGISTRARSE')
+                )
+              ]
+          )
+      ),
     );
   }
 

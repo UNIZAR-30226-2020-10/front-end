@@ -20,9 +20,9 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        elevation: 0.0,
       ),
       body: Center(
           child: Container(

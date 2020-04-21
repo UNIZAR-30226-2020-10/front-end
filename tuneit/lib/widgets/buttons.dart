@@ -5,8 +5,8 @@ import 'package:tuneit/classes/values/ColorSets.dart';
 // Widget del botón con degradado de colores sin comportamiento (NO USAR)
 SizedBox gradientButton2 (String title) {
   return new SizedBox(
-    height: 60,
-    width: 230.0,
+    height: 50,
+    width: 230,
     child: Container(
         decoration: BoxDecoration(
             borderRadius: new BorderRadius.only(
@@ -18,11 +18,11 @@ SizedBox gradientButton2 (String title) {
             gradient: LinearGradient(
               colors: <Color>[
                 ColorSets.colorprimaryPink,
-                Color(0xAA5350a7),
-                Color(0xAA1c4c8b),
+                Color(0x335350a7),
+                Color(0x331c4c8b),
               ],
             ),
-            border: Border.all(color: Colors.white, width: 2)
+            border: Border.all(color: Colors.white70, width: 2)
         ),
         child: Center(
           child: Text(
@@ -76,8 +76,8 @@ Widget solidButton (BuildContext context, Function func, List arguments, String 
                   bottomLeft: const Radius.circular(25.0),
                   bottomRight: const Radius.circular(25.0),
                 ),
-                color: Colors.transparent,
-                border: Border.all(color: Colors.white, width: 4)
+                color: Colors.white10,
+                border: Border.all(color: Colors.white70, width: 2)
             ),
             child: Center(
               child: Text(
