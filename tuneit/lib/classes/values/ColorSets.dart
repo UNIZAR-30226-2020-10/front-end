@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorSets {
-  static const Color colorBlue = const Color(0xAA03A9F4);
+  static const Color colorBlue = const Color(0xAA448AFF);
   static const Color colorDarkBlue = const Color(0xAA1c4c8b);
   static const Color colorButtonBlue = const Color(0x331c4c8b);
 
