@@ -141,8 +141,8 @@ class _PlayerPageState extends State<PlayerPage> {
     _rellenarUrl();
     _rellenarNotificaciones();
     funcion_auxiliar();
-    print('=== Slider value: ${_position?.inMilliseconds?.toDouble() ?? 0.0} ===');
-    print('=== Duration value: ${_duration?.inMilliseconds?.toDouble() ?? 0.0} ===');
+    //print('=== Slider value: ${_position?.inMilliseconds?.toDouble() ?? 0.0} ===');
+    //print('=== Duration value: ${_duration?.inMilliseconds?.toDouble() ?? 0.0} ===');
     return /*MultiProvider(
       providers: [
         StreamProvider<Duration>.value(
@@ -154,172 +154,190 @@ class _PlayerPageState extends State<PlayerPage> {
         child: Scaffold(
           appBar: AppBar()
           ,
-          body:  Column(
-            children: [
+          body:
+          Center(
+            child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(15.0),
+              children: [
 
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('${audios[indice].devolverTitulo()}',
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontWeight: FontWeight.bold,
-                            fontSize: 32
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('${audios[indice].devolverTitulo()}',
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontWeight: FontWeight.bold,
+                              fontSize: 32
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
 
 
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(audios[indice].devolverArtista(),
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 32
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(audios[indice].devolverArtista(),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontWeight: FontWeight.bold,
+                          fontSize: 32
+                      ),
                     ),
                   ),
                 ),
-              ),
 
 
 
 
 
 
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                    child: imagen_por_defecto(audios[indice].devolverImagen()),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                      child: imagen_por_defecto(audios[indice].devolverImagen()),
 
+                  ),
                 ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                              iconSize: 64,
-                              icon: Icon(Icons.skip_previous),
-                              onPressed: () {
-                                _previous();
-                              }),
-                          IconButton(
-                            onPressed:(){
-                              if(_repeatMode){
-                                _repeatMode = false;
-                                setState((){_iconRepeatColor = Colors.grey;});
-                              }
-                              else{
-                                _repeatMode = true;
-                                setState((){_iconRepeatColor = Colors.blue;});
-                              }
-                              _repeat();
-                            },
-                            iconSize: 60.0,
-                            icon:  Icon(Icons.repeat,
-                                color:_iconRepeatColor
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+
+                            Flexible(
+                              child: IconButton(
+                                  iconSize: 64,
+                                  icon: Icon(Icons.skip_previous),
+                                  onPressed: () {
+                                    _previous();
+                                  }),
                             ),
-                          ),
-                          IconButton(
-                            onPressed:(){
-                              if(!_isPlaying) {
-                                _play(urls);
-                              }
-                              else{
-                                _pause();
-                              }
-                            },
-                            iconSize: 60.0,
 
-                            icon: Icon(_isPlaying
-                                ? Icons.pause_circle_filled
-                                : Icons.play_circle_filled),
-                          ),
-                          IconButton(
-                              iconSize: 60.0,
-                              icon: Icon(Icons.shuffle),
-                              color: _iconShuffleColor,
-                              onPressed: () {
-                                if(!_shuffleMode){
-                                  _shuffleMode = true;
-                                  setState((){_iconShuffleColor = Colors.blue;});
-                                  _shuffle();
-                                }
-                                else{
-                                  _shuffleMode = false;
-                                  setState((){_iconShuffleColor = Colors.grey;});
-                                }
-                              }),
-                          IconButton(
-                              iconSize: 60.0,
-                              icon: Icon(Icons.skip_next),
-                              onPressed: () {
-                                _next();
-                              }),
 
-                        ],
+                            Flexible(
+                              child: IconButton(
+                                onPressed:(){
+                                  if(_repeatMode){
+                                    _repeatMode = false;
+                                    setState((){_iconRepeatColor = Colors.grey;});
+                                  }
+                                  else{
+                                    _repeatMode = true;
+                                    setState((){_iconRepeatColor = Colors.blue;});
+                                  }
+                                  _repeat();
+                                },
+                                iconSize: 60.0,
+                                icon:  Icon(Icons.repeat,
+                                    color:_iconRepeatColor
+                                ),
+                              ),
+                            ),
+
+                            Flexible(
+                              child: IconButton(
+                                onPressed:(){
+                                  if(!_isPlaying) {
+                                    _play(urls);
+                                  }
+                                  else{
+                                    _pause();
+                                  }
+                                },
+                                iconSize: 60.0,
+
+                                icon: Icon(_isPlaying
+                                    ? Icons.pause_circle_filled
+                                    : Icons.play_circle_filled),
+                              ),
+                            ),
+
+                            Flexible(
+                              child: IconButton(
+                                  iconSize: 60.0,
+                                  icon: Icon(Icons.shuffle),
+                                  color: _iconShuffleColor,
+                                  onPressed: () {
+                                    if(!_shuffleMode){
+                                      _shuffleMode = true;
+                                      setState((){_iconShuffleColor = Colors.blue;});
+                                      _shuffle();
+                                    }
+                                    else{
+                                      _shuffleMode = false;
+                                      setState((){_iconShuffleColor = Colors.grey;});
+                                    }
+                                  }),
+                            ),
+
+                            Flexible(
+                              child: IconButton(
+                                  iconSize: 60.0,
+                                  icon: Icon(Icons.skip_next),
+                                  onPressed: () {
+                                    _next();
+                                  }),
+                            ),
+
+
+
+                      ],
+                    ),
+                  )
+                  ,
+                ),
+                SizedBox(
+                    width: 400,
+                    height: 30,
+                    child: SliderTheme(
+                      data: SliderThemeData(
+                        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
+                        trackHeight: 3,
+                        thumbColor: Colors.pink,
+                        inactiveTrackColor: Colors.grey,
+                        activeTrackColor: Colors.pink,
+                        overlayColor: Colors.transparent,
+                      ),
+                      child: Slider(
+                        min: 0.0,
+                        max:
+                        _duration != null ? _duration.inMilliseconds.toDouble().abs() : 0.0,
+                        value:
+                        (_position != null) &&
+                        (_position != null && _duration != null && _position.inMilliseconds.toDouble().abs() <
+                         _duration.inMilliseconds.toDouble().abs())
+                            ? _position.inMilliseconds.toDouble().abs() : 0.0,
+                        onChanged: (double value) async {
+                          final Result result = await _audioPlayer
+                              .seekPosition(Duration(milliseconds: value.toInt()).abs());
+                          if (result == Result.FAIL) {
+                            print(
+                                "you tried to call audio conrolling methods on released audio player :(");
+                          } else if (result == Result.ERROR) {
+                            print("something went wrong in seek :(");
+                          }
+                          _position = Duration(milliseconds: value.toInt().abs());
+                        },
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _position != null
+                            ? '${_positionText ?? ''} / ${_durationText ?? ''}'
+                            : _duration != null ? _durationText : '',
+                        style: TextStyle(fontSize: 24.0),
                       ),
                     ],
                   ),
-                )
-                ,
-              ),
-              SizedBox(
-                  width: 400,
-                  height: 30,
-                  child: SliderTheme(
-                    data: SliderThemeData(
-                      thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
-                      trackHeight: 3,
-                      thumbColor: Colors.pink,
-                      inactiveTrackColor: Colors.grey,
-                      activeTrackColor: Colors.pink,
-                      overlayColor: Colors.transparent,
-                    ),
-                    child: Slider(
-                      min: 0.0,
-                      max:
-                      _duration != null ? _duration.inMilliseconds.toDouble().abs() : 0.0,
-                      value:
-                      (_position != null) &&
-                      (_position != null && _duration != null && _position.inMilliseconds.toDouble().abs() <
-                       _duration.inMilliseconds.toDouble().abs())
-                          ? _position.inMilliseconds.toDouble().abs() : 0.0,
-                      onChanged: (double value) async {
-                        final Result result = await _audioPlayer
-                            .seekPosition(Duration(milliseconds: value.toInt()).abs());
-                        if (result == Result.FAIL) {
-                          print(
-                              "you tried to call audio conrolling methods on released audio player :(");
-                        } else if (result == Result.ERROR) {
-                          print("something went wrong in seek :(");
-                        }
-                        _position = Duration(milliseconds: value.toInt().abs());
-                      },
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      _position != null
-                          ? '${_positionText ?? ''} / ${_durationText ?? ''}'
-                          : _duration != null ? _durationText : '',
-                      style: TextStyle(fontSize: 24.0),
-                    ),
-                  ],
-                ),
-            ],
+              ],
+            ),
           ),
 
         ),

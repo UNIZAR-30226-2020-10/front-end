@@ -83,7 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: LateralMenu(),
       body: Container(
         margin: EdgeInsets.all(10),
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.all(15.0),
 
           children: <Widget>[
             Align(

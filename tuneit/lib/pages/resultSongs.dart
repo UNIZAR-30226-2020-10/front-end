@@ -124,25 +124,6 @@ class _ResultSongListState extends State<ResultSongList> {
 
                             ),
                           );
-                          /*return Card(
-                            child: new ListTile(
-                              onTap:(){
-
-
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PlayerPage(audios: songs,indice: index,escanciones: true),
-
-                                ));
-                              },
-
-                              leading: imagen_por_defecto(songs[index].devolverImagen()),
-                              title: Text(songs[index].devolverTitulo()),
-                              subtitle: Text(songs[index].devolverArtista()),
-
-
-                            ),
-                          );*/
-
 
                         }
                     ),
