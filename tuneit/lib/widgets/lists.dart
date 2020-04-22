@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
 
 //------------------------------------------------------------------------------
 // Widget de un único elemento de una lista sin comportamiento (NO USAR)
@@ -40,7 +41,7 @@ Widget elementOfList2 (String image, String name) {
                 child: Center(
                     child: FittedBox(
                       child: Text(name,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: ColorSets.colorText),
                         textAlign: TextAlign.center,
                       ),
                     )

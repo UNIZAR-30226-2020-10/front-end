@@ -59,7 +59,6 @@ class _State extends State<ShowList> {
       appBar:AppBar(
         title:Text( '$list_title'),
         centerTitle: true,
-        backgroundColor: Colors.purple,
         actions: <Widget>[
 
           PopupMenuButton<String>(

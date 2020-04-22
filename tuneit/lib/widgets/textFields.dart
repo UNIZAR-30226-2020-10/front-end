@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
 
 //------------------------------------------------------------------------------
 InputDecoration textField2 (String text, IconData ic) {
@@ -8,7 +9,7 @@ InputDecoration textField2 (String text, IconData ic) {
       padding: EdgeInsets.all(0.0),
       child: Icon(
         ic,
-        color: Colors.grey,
+        color: ColorSets.colorGrey,
       ),
     ),
     hintStyle: TextStyle(
@@ -17,10 +18,10 @@ InputDecoration textField2 (String text, IconData ic) {
         fontFamily: 'RobotoMono'
     ),
     enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Colors.white),
+      borderSide: BorderSide(color: ColorSets.colorWhite),
     ),
     focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: Color(0xFF5350a7)),
+      borderSide: BorderSide(color: ColorSets.colorPurple),
     ),
   );
 }
@@ -30,7 +31,7 @@ Widget textField(TextEditingController _controller, bool obscureText, String tex
     controller: _controller,
     obscureText: obscureText,
     style: TextStyle(
-        color: Colors.white,
+        color: ColorSets.colorText,
         fontFamily: 'RobotoMono'
     ),
     decoration: textField2(text, ic),

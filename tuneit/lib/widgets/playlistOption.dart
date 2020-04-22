@@ -70,7 +70,7 @@ void _mostrarInforme(BuildContext context) {
                               ),
                             );
                           },
-                          color: Colors.deepPurple,
+                          color: ColorSets.colorBlue,
                           child: Text("CREAR"),
                         ),
                       ],
