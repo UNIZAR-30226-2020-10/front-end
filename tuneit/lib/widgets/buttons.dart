@@ -114,3 +114,25 @@ Widget simpleButton (BuildContext context, Function func, List arguments, String
     ),
   );
 }
+
+//------------------------------------------------------------------------------
+Widget criticalButton (BuildContext context, Function func, List arguments, String text) {
+  return Container(
+    height: 40,
+    decoration: BoxDecoration(
+      borderRadius: new BorderRadius.only(
+        topLeft: const Radius.circular(15.0),
+        topRight: const Radius.circular(15.0),
+        bottomLeft: const Radius.circular(15.0),
+        bottomRight: const Radius.circular(15.0),
+      ),
+      border: Border.all(color: ColorSets.colorCritical, width: 2),
+    ),
+    child:  FlatButton(
+      child: Text(text, style: TextStyle(fontSize: 18, color: ColorSets.colorCritical),),
+      onPressed: () {
+        Function.apply(func, arguments);
+      },
+    ),
+  );
+}

@@ -48,7 +48,7 @@ Future<bool> registerUser(
   if (response.body == 'Success') {
     return true;
   } else {
-    throw Exception(response.body + ': Failed on register');
+    return false;
   }
 }
 
@@ -85,5 +85,26 @@ Future<List<String>> infoUser(String email) async {
     return list;
   } else {
     throw Exception(response.body + ': Failed to get info user');
+  }
+}
+
+Future<bool> deleteUser(
+    String email, String password
+    ) async {
+
+  final http.Response response = await http.post(
+    'https://' + baseURL + '/delete_user',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email': email,
+      'password': password,
+    }),
+  );
+  if (response.body == 'Success') {
+    return true;
+  } else {
+    return false;
   }
 }

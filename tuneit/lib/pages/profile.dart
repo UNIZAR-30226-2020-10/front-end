@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/LateralMenu.dart';
+import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
+import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/main.dart';
+import 'package:tuneit/pages/mainView.dart';
+import 'package:tuneit/widgets/buttons.dart';
+import 'package:tuneit/widgets/textFields.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -8,32 +15,98 @@ class Profile extends StatefulWidget {
 
 
 class _ProfilePageState extends State<Profile> {
-  int _counter = 0;
-  //----------------------------------------------------//
+
+  final TextEditingController _controller1 = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Perfil'),
         centerTitle: true,
       ),
       drawer: LateralMenu(),
-         // This trailing comma makes auto-formatting nicer for build methods.
+      body: Center(
+        child: Container(
+          width: 350,
+          height: 120,
+          decoration: BoxDecoration(
+            borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(15.0),
+              topRight: const Radius.circular(15.0),
+              bottomLeft: const Radius.circular(15.0),
+              bottomRight: const Radius.circular(15.0),
+            ),
+            border: Border.all(color: ColorSets.colorCritical, width: 2),
+            color: ColorSets.colorDarkCritical,
+          ),
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 10,),
+              Container(
+                width: 300,
+                child: textField(_controller1, true, 'Contraseña', Icons.lock_outline),
+              ),
+              SizedBox(height: 10,),
+              criticalButton(context, tryDelete, [], 'Eliminar cuenta'),
+            ],
+          ),
+        )
+      )
     );
+  }
+
+  void tryDelete () {
+    setState(() {
+      deleteUser(Globals.email, _controller1.text).then((value) async {
+        if (value) {
+
+          Globals.isLoggedIn = false;
+          Globals.email = '';
+          Globals.name = '';
+          Globals.password = '';
+          Globals.date = '';
+          Globals.country = '';
+          Globals.imagen = '';
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MainView()),
+          );
+
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('CUENTA ELIMINADA'),
+                  content: Text('Su cuenta ha sido eliminada con éxito'),
+                  actions: <Widget>[
+                    simpleButton(context, () {Navigator.of(context).pop();}, [], 'Volver')
+                  ],
+                );
+              }
+          );
+        }
+        else {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('ERROR'),
+                  content: Text('Error al eliminar la cuenta'),
+                  actions: <Widget>[
+                    simpleButton(context, () {Navigator.of(context).pop();}, [], 'Volver')
+                  ],
+                );
+              }
+          );
+        }
+      });
+    });
   }
 }

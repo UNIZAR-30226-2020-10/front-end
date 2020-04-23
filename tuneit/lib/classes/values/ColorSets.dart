@@ -17,5 +17,7 @@ class ColorSets {
   static const Color colorDarkGrey = const Color(0xAA757575);
 
   static const Color colorText = const Color(0xFFFFFFFF);
+  static const Color colorCritical = const Color(0xFFFF6969);
+  static const Color colorDarkCritical = const Color(0x22FF0000);
 
 }
