@@ -32,7 +32,6 @@ Widget textField(TextEditingController _controller, bool obscureText, String tex
     obscureText: obscureText,
     style: TextStyle(
         color: ColorSets.colorText,
-        fontFamily: 'RobotoMono'
     ),
     decoration: textField2(text, ic),
   );

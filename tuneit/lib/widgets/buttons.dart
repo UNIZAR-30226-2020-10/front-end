@@ -95,3 +95,22 @@ Widget solidButton (BuildContext context, Function func, List arguments, String 
 }
 
 //------------------------------------------------------------------------------
+Widget simpleButton (BuildContext context, Function func, List arguments, String text) {
+  return Container(
+    decoration: BoxDecoration(
+        borderRadius: new BorderRadius.only(
+          topLeft: const Radius.circular(15.0),
+          topRight: const Radius.circular(15.0),
+          bottomLeft: const Radius.circular(15.0),
+          bottomRight: const Radius.circular(15.0),
+        ),
+        color: ColorSets.colorDarkGrey,
+    ),
+    child:  FlatButton(
+      child: Text(text),
+      onPressed: () {
+        Function.apply(func, arguments);
+      },
+    ),
+  );
+}

@@ -67,8 +67,6 @@ Future<List<Playlist>> buscar_una_lista(String data) async {
     list = (json.decode(response.body) as List)
         .map((data) => new Playlist.fromJson(data))
         .toList();
-
-    print("aaaaaaaaaaaaaaa");
     return list;
 
   } else {
@@ -79,8 +77,6 @@ Future<List<Playlist>> buscar_una_lista(String data) async {
 
 Future<void> nuevaLista(String nombre, String desc) async {
 
-  print(nombre);
-  print(desc);
   final http.Response response = await http.post(
     'https://psoftware.herokuapp.com/create_list',
     headers: <String, String>{
@@ -168,8 +164,6 @@ class InitialPlaylist{
     final response = await http.get(baseURL);
     if (response.statusCode == 200) {
       print(response.body);
-
-      print("aaaaaaaa");
 
       list = (json.decode(response.body) as List)
           .map((data) => new Playlist.fromJson(data))

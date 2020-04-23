@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-const baseURL = 'https://jsonplaceholder.typicode.com';
 
 class User {
   final String name;
@@ -16,39 +14,40 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      name: json['name'],
+      name: json['nombre'],
       email: json['email'],
       password: json['password'],
-      date: json['date'],
-      country: json['country'],
+      date: json['fecha'],
+      country: json['pais'],
     );
   }
 
-  /*Map toJson() {
-    return {'name': name, 'email': email, 'password': password, 'date': date, 'country': country};
-  }*/
 }
+
+
+const baseURL = 'psoftware.herokuapp.com';
 
 Future<bool> registerUser(
     String name, String email, String password, String date, String country
     ) async {
+
   final http.Response response = await http.post(
     baseURL + '/register',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{
-      'name': name,
+      'nombre': name,
       'email': email,
       'password': password,
-      'date': date,
-      'country': country,
+      'fecha': date,
+      'pais': country,
     }),
   );
   if (response.body == 'Success') {
     return true;
   } else {
-    return false;
+    throw Exception(response.body + ': Failed on register');
   }
 }
 
@@ -60,6 +59,7 @@ Future<bool> fetchUser(String email, String password) async {
   var uri = Uri.http(baseURL, '/sign_in', queryParameters);
   final http.Response response = await http.get(uri);
   if (response.body == 'Success') {
+    print('He entrado');
     return true;
   } else {
     return false;

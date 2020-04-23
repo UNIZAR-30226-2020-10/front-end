@@ -59,11 +59,10 @@ class _LoginState extends State<Login> {
                     SizedBox(height: 30),
                     textField(_controller1, false, 'Correo electrónico',
                         Icons.mail_outline),
-                    textField(
-                        _controller2, true, 'Contraseña', Icons.lock_outline),
+                    textField(_controller2, true, 'Contraseña',
+                        Icons.lock_outline),
                     SizedBox(height: 100),
-                    solidButton(context, tryLogin,
-                        [_controller1.text, _controller2.text], 'ENTRAR'),
+                    solidButton(context, tryLogin, [], 'ENTRAR'),
                   ],
                 ),
               )
@@ -72,9 +71,9 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void tryLogin (String email, String password) {
+  void tryLogin () {
     setState(() {
-      fetchUser(email, password).then((value) {
+      fetchUser(_controller1.text, _controller2.text).then((value) {
         if (value) {
           Navigator.push(
             context,
@@ -82,7 +81,18 @@ class _LoginState extends State<Login> {
           );
         }
         else {
-
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('ERROR'),
+                content: Text('El email y/o la contraseña introducidos son incorrectos'),
+                actions: <Widget>[
+                  simpleButton(context, () {Navigator.of(context).pop();}, [], 'Volver')
+                ],
+              );
+            }
+          );
         }
       });
     });

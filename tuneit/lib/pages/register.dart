@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/textFields.dart';
 
@@ -19,8 +20,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
   final TextEditingController _controller3 = TextEditingController();
-  final TextEditingController _controller4 = TextEditingController();
-  final TextEditingController _controller5 = TextEditingController();
+  String pais = 'País de nacimiento';
 
   DateTime _date = DateTime.now();
 
@@ -89,13 +89,41 @@ class _RegisterState extends State<Register> {
                     ),
                     SizedBox(height: 30),
                     textField(_controller1, false, 'Nombre de usuario',
-                        Icons.alternate_email),
+                        Icons.person),
                     textField(_controller2, false, 'Correo electrónico',
                         Icons.mail_outline),
                     textField(_controller3, true, 'Contraseña',
                         Icons.lock_outline),
-                    textField(_controller4, false, 'País de nacimiento',
-                        Icons.place),
+                    Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: SizedBox(width: 12,),
+                            ),
+                            Flexible(
+                              child: Icon(
+                                Icons.place,
+                                color: Colors.grey,
+                                size: 25,
+                              ),
+                            ),
+                            Flexible(
+                              child: SizedBox(width: 15),
+                            ),
+                            Flexible(
+                              flex: 8,
+                              child:  countryDrop(),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                      color: ColorSets.colorWhite,
+                      width: 400,
+                      height: 1,
+                    ),
                     RaisedButton(
                       color: Colors.transparent,
                       elevation: 0.0,
@@ -107,7 +135,7 @@ class _RegisterState extends State<Register> {
                               Flexible(
                                 child: Icon(
                                   Icons.cake,
-                                  color: Colors.grey,
+                                  color: ColorSets.colorGrey,
                                   size: 25,
                                 ),
                               ),
@@ -135,13 +163,13 @@ class _RegisterState extends State<Register> {
                       },
                     ),
                     Container(
-                      color: Colors.white,
+                      color: ColorSets.colorWhite,
                       width: 400,
                       height: 1,
                     ),
                     SizedBox(height: 30),
                     solidButton(context, tryRegister,
-                        [_controller1.text, _controller2.text, _controller3.text,  _controller4.text,  _date.toString()],
+                        [_controller1.text, _controller2.text, _controller3.text,  pais,  _date.toString()],
                         'REGISTRARSE'),
                   ],
                 ),
@@ -168,4 +196,37 @@ class _RegisterState extends State<Register> {
       });
     });
   }
+
+  Widget countryDrop () {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton(
+        hint: Text(pais),
+        icon: Icon(null),
+        style: TextStyle(
+          color: ColorSets.colorText,
+          fontSize: 15,
+        ),
+        onChanged: (String value) {
+          setState(() {
+            pais = value;
+          });
+        },
+        items: [
+          DropdownMenuItem(
+            value: 'España',
+            child: Text('España'),
+          ),
+          DropdownMenuItem(
+            value: 'Italia',
+            child: Text('Italia'),
+          ),
+          DropdownMenuItem(
+            value: 'Portugal',
+            child: Text('Portugal'),
+          )
+        ],
+      ),
+    );
+  }
+
 }
