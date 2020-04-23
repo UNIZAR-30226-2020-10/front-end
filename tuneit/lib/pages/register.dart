@@ -32,13 +32,11 @@ class _RegisterState extends State<Register> {
   }
 
   Future<DateTime> getDate() {
-    // Imagine that this function is
-    // more complex and slow.
     return showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2018),
-      lastDate: DateTime(2030),
+      firstDate: DateTime(1960),
+      lastDate: DateTime.now(),
       builder: (BuildContext context, Widget child) {
         return Theme(
           data: Theme.of(context),
@@ -145,7 +143,7 @@ class _RegisterState extends State<Register> {
                               Flexible(
                                 flex: 8,
                                 child: Text(
-                                  _date != null?_date.toString().substring(0,10) : DateTime.now().toString().substring(0,11),
+                                  _date != null?_date.toString().substring(0,10) : DateTime.now().toString().substring(0,10),
                                   style: TextStyle(
                                       fontSize: 15,
                                       color: Colors.white60,
@@ -168,9 +166,7 @@ class _RegisterState extends State<Register> {
                       height: 1,
                     ),
                     SizedBox(height: 30),
-                    solidButton(context, tryRegister,
-                        [_controller1.text, _controller2.text, _controller3.text,  pais,  _date.toString()],
-                        'REGISTRARSE'),
+                    solidButton(context, tryRegister, [], 'REGISTRARSE'),
                   ],
                 ),
               )
@@ -179,22 +175,51 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  void tryRegister (String nick, String email, String password, String pais, String fecha) {
-    setState(() {
-      registerUser(
-          nick, email, password, pais, fecha
-      ).then((value) {
-        if (value) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Login()),
+  void tryRegister () {
+    if (_controller1.text.toString().length < 1) {
+      mostrarError('Tu nombre de usuario no puede estar vacío');
+    }
+    else if (_controller2.text.toString().length < 1) {
+      mostrarError('Tu correo electrónico no puede estar vacío');
+    }
+    else if (_controller3.text.toString().length < 1) {
+      mostrarError('Tu constraseña no puede estar vacía');
+    }
+    else if (pais == 'País de nacimiento') {
+      mostrarError('Es necesario que indiques tu país de nacimiento');
+    }
+    else {
+      setState(() {
+        registerUser(
+            _controller1.text, _controller2.text, _controller3.text, parsingDate(_date.toString()), pais
+        ).then((value) {
+          if (value) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Login()),
+            );
+          }
+          else {
+            mostrarError('Ya existe un usuario registrado con tus datos');
+          }
+        });
+      });
+    }
+  }
+
+  void mostrarError(String description) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('ERROR'),
+            content: Text(description),
+            actions: <Widget>[
+              simpleButton(context, () {Navigator.of(context).pop();}, [], 'Volver')
+            ],
           );
         }
-        else {
-
-        }
-      });
-    });
+    );
   }
 
   Widget countryDrop () {
@@ -229,4 +254,12 @@ class _RegisterState extends State<Register> {
     );
   }
 
+  String parsingDate (String date) {
+    List<String> splited = date.substring(0,10).split('-');
+    String year = splited[0];
+    String month = splited[1];
+    String day = splited[2];
+
+    return month + '/' + day + '/' + year;
+  }
 }

@@ -10,6 +10,7 @@ class User {
   final String date;
   final String country;
 
+
   User({this.name, this.email, this.password, this.date, this.country});
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -32,7 +33,7 @@ Future<bool> registerUser(
     ) async {
 
   final http.Response response = await http.post(
-    baseURL + '/register',
+    'https://' + baseURL + '/register',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -59,9 +60,30 @@ Future<bool> fetchUser(String email, String password) async {
   var uri = Uri.http(baseURL, '/sign_in', queryParameters);
   final http.Response response = await http.get(uri);
   if (response.body == 'Success') {
-    print('He entrado');
     return true;
   } else {
     return false;
+  }
+}
+
+Future<List<String>> infoUser(String email) async {
+  var queryParameters = {
+    'email' : email,
+  };
+  var uri = Uri.http(baseURL, '/info_usuario', queryParameters);
+  final http.Response response = await http.get(uri);
+  Map<String, dynamic> parsedJson = json.decode(response.body);
+
+  if (response.body != 'Error' && response.body != 'No existe el usuario') {
+    List<String> list = List(5);
+    list [0] = parsedJson['Nombre'];
+    list [1] = parsedJson['Password'];
+    list [2] = parsedJson['fecha'];
+    list [3] = parsedJson['Pais'];
+    list [4] = parsedJson['Foto'];
+
+    return list;
+  } else {
+    throw Exception(response.body + ': Failed to get info user');
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 import "package:tuneit/pages/playlists.dart";
 import "package:tuneit/pages/profile.dart";
 import "package:tuneit/pages/equalizer.dart";
@@ -13,11 +14,12 @@ class LateralMenu extends StatelessWidget {
     return new Drawer(
       child: ListView(
         children: <Widget>[
-        //  Image(image: AssetImage('assets/LogoAppName.png'),),
           new UserAccountsDrawerHeader(
-            currentAccountPicture: Image(image: AssetImage('assets/LogoAppName.png'),fit: BoxFit.contain),
-              accountName: Text('TuneIt'),
-              accountEmail: Text('tuneit@music.es'),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage(Globals.imagen),
+              ),
+              accountName: Text(Globals.name),
+              accountEmail: Text(Globals.email),
           ),
           new ListTile(
             title: Text('PAGINA PRINCIPAL'),

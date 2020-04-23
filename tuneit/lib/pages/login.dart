@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/playlists.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/textFields.dart';
@@ -73,8 +74,18 @@ class _LoginState extends State<Login> {
 
   void tryLogin () {
     setState(() {
-      fetchUser(_controller1.text, _controller2.text).then((value) {
+      fetchUser(_controller1.text, _controller2.text).then((value) async {
         if (value) {
+
+          Globals.isLoggedIn = true;
+          Globals.email = _controller1.text;
+          List<String> list = await infoUser(_controller1.text);
+          Globals.name = list[0];
+          Globals.password = list[1];
+          Globals.date = list[2];
+          Globals.country = list[3];
+          Globals.imagen = list[4];
+
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => PlayLists(true)),

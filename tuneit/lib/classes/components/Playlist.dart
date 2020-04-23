@@ -36,7 +36,6 @@ class Playlist {
   List<Playlist> list = List();
   final response = await http.get(baseURL);
   if (response.statusCode == 200) {
-    print(response.body);
     list = (json.decode(response.body) as List)
         .map((data) => new Playlist.fromJson(data))
         .toList();
