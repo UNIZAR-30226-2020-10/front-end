@@ -1,50 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/pages/login.dart';
-import 'package:tuneit/pages/mainView.dart';
-import 'package:tuneit/pages/notificaciones.dart';
-import 'package:tuneit/pages/playlists.dart';
-import 'package:tuneit/pages/register.dart';
-import 'package:tuneit/pages/showList.dart';
+import 'package:tuneit/pages/register/login.dart';
+import 'package:tuneit/pages/register/mainView.dart';
+import 'package:tuneit/pages/social/notificaciones.dart';
+import 'package:tuneit/pages/songs/playlists.dart';
+import 'package:tuneit/pages/register/register.dart';
+import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/PushProvider.dart';
-import 'package:tuneit/pages/showPodcast.dart';
-import 'classes/components/LateralMenu.dart';
+import 'package:tuneit/pages/podcast/showPodcast.dart';
+import '../classes/components/LateralMenu.dart';
 
-void main() => runApp(MyApp());
-
-final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      initialRoute: '/mainview',
-      navigatorKey: navigatorKey,
-      routes:{
-        '/mainview':(context) => MainView(),
-        '/list':(context) => ShowList(),
-        //'/playlists':(context) => PlayLists(),
-        '/notificaciones':(context) => Notificaciones(),
-        '/login':(context) => Login(),
-        '/register':(context) => Register(),
-        '/list_podcast':(context) => ShowPodcast(),
-      },
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.deepPurple,
-        fontFamily: 'RobotoMono',
-        textTheme: TextTheme(
-          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          title: TextStyle(fontSize: 25.0, fontStyle: FontStyle.italic),
-          body1: TextStyle(fontSize: 14.0, fontFamily: 'RobotoMono'),
-        ),
-      ),
-      home: MyHomePage(),
-    );
-  }
-}
 
 class MyHomePage extends StatefulWidget {
 
@@ -56,20 +21,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  InitialPlaylist cargarDatos = new InitialPlaylist();
 
   void initState() {
     super.initState();
 
     //FUNCION PARA REACCIONAR A LAS NOTIFICACIONES
     reaccionarNotificacion();
-    leerDatos();
+
 
   }
 
-  void leerDatos() async {
-    await cargarDatos.fetchNewList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,36 +52,6 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(
                 'Novedades',
                 style: Theme.of(context).textTheme.title,
-              ),
-            ),
-            Center(
-              child:
-              StreamBuilder(
-                  stream: cargarDatos.seleccionar_listas,
-                  builder: (context,snapshot){
-                    if(!snapshot.hasData){
-                      return Column(
-                        children: <Widget>[
-                          Image(image: AssetImage('assets/LogoApp.png'),
-                            fit: BoxFit.fill,),
-                          Text("Buscando en la base de datos las mejores canciones...")
-                        ],
-                      );
-                    }
-                    else{
-                      return Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                        height: MediaQuery.of(context).size.height * 0.35,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data.listas.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return  listBox (context, index,snapshot.data.listas);
-                            }
-                        ),
-                      );
-                    }
-                  }
               ),
             ),
             Align(

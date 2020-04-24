@@ -3,7 +3,8 @@ import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/bottomExpandableAudio.dart';
 import 'package:tuneit/classes/values/Constants.dart';
-import 'package:tuneit/pages/audioPlayer.dart';
+import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/pages/audio/audioPlayer.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/playlistOption.dart';
 
@@ -66,7 +67,7 @@ class _State extends State<ShowList> {
             itemBuilder: (BuildContext context){
               return optionPlayList.map((String choice){
                 return PopupMenuItem<String>(
-                  value: (indetificadorLista),
+                  value: (choice+"--"+indetificadorLista),
                   child: Text(choice),
                 );
 
@@ -121,9 +122,15 @@ class _State extends State<ShowList> {
                                        ));
                                      },
 
-                                     leading: imagen_por_defecto(songs.songs[index].image),
+                                     leading:       CircleAvatar(
+                                       radius: 15.0,
+                                       backgroundImage: NetworkImage(songs.songs[index].image),
+                                       backgroundColor: Colors.transparent,
+
+                                     ),
+                                     //imagen_por_defecto(songs.songs[index].image),
                                      title: Text(songs.songs[index].name),
-                                     subtitle: Text(juntarArtistas(songs.songs[index].artist)),
+                                     subtitle: Text(songs.songs[index].devolverArtista()),
                                      trailing: PopupMenuButton<String>(
                                        onSelected: choiceAction,
                                        itemBuilder: (BuildContext context){
@@ -162,49 +169,55 @@ class _State extends State<ShowList> {
 
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(
-          () {
-        if (newIndex > oldIndex) {
-          newIndex -= 1;
-        }
-        final Song item = songs.songs.removeAt(oldIndex);
-        songs.songs.insert(newIndex, item);
-      },
-    );
+  void _onReorder(int oldIndex, int newIndex) async{
+    bool exito =await reposicionarCancion(songs.id.toString(),oldIndex.toString(),newIndex.toString());
+    if(exito){
+      setState(
+            () {
+          if (newIndex > oldIndex) {
+            newIndex -= 1;
+          }
+          final Song item = songs.songs.removeAt(oldIndex);
+          songs.songs.insert(newIndex, item);
+
+        },
+      );
+    }
   }
 
-  String juntarArtistas(List<String> datos){
-    String juntitos="";
-    for(int i=0;i<datos.length;i++){
-      juntitos+=datos[i] + ' ';
+
+
+  void ActionPlaylist(String contenido) async{
+
+    List<String> opciones=contenido.split("--");
+    String lista=opciones[1];
+
+    if(opciones[0]==optionPlayList[0]){
+      eliminarPlaylist(context,lista);
+    }
+    else if(opciones[0]==optionPlayList[1]){
+      print(opciones[0]);
+
+      setState(() {
+        songs.ordenarPorArtista();
+
+
+      });
 
     }
-    return juntitos;
+    else if(opciones[0]==optionPlayList[2]){
+      print(opciones[0]);
 
-  }
+      setState(() {
 
-  Widget imagen_por_defecto(String imagen){
+        songs.ordenarPorTitulo();
 
+      });
 
-    if (imagen== null){
-      return  new CircleAvatar( backgroundImage: AssetImage('assets/LogoApp.png'));
     }
     else{
-
-      CircleAvatar(
-        backgroundImage: NetworkImage(imagen),
-
-      );
-
-
+      print("Do nothing");
     }
-
-  }
-
-  void ActionPlaylist(String lista) async{
-
-    eliminarPlaylist(context,lista);
 
   }
 
@@ -219,7 +232,7 @@ class _State extends State<ShowList> {
     if(choice == optionMenuSong[0]){
       print("Agregar");
 
-      List<Playlist>listas=await fetchPlaylists();
+      List<Playlist>listas=await fetchPlaylists(Globals.email);
 
       mostrarListas(context,listas,id_song);
     }

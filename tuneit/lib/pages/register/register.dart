@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
+import 'package:tuneit/pages/paginaInicial.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/textFields.dart';
 
@@ -196,7 +197,7 @@ class _RegisterState extends State<Register> {
           if (value) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Login()),
+              MaterialPageRoute(builder: (context) => MyHomePage()),
             );
           }
           else {

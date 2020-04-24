@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
-import 'package:tuneit/pages/playlists.dart';
-import 'package:tuneit/pages/showList.dart';
-import 'package:tuneit/pages/showPodcast.dart';
+import 'package:tuneit/pages/songs/playlists.dart';
+import 'package:tuneit/pages/songs/showList.dart';
+import 'package:tuneit/pages/podcast/showPodcast.dart';
 class ResultListPlaylist extends StatelessWidget {
 
   List<Playlist> list = List();
@@ -15,10 +15,9 @@ ResultListPlaylist({this.list,this.list_title});
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-      title:Text( 'TuneIT'),
-      centerTitle: true,
-      backgroundColor: Colors.purple,
-      ),
+        title:Text( 'TuneIT'),
+        centerTitle: true,
+        ),
 
       body: Column(
       children: <Widget>[
@@ -26,7 +25,7 @@ ResultListPlaylist({this.list,this.list_title});
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Title(
-            child: Text('Resultados de la busqueda de: $list_title',
+            child: Text('Resultados',
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold,

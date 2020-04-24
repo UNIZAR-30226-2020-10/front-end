@@ -3,7 +3,8 @@ import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/values/Constants.dart';
-import 'package:tuneit/pages/audioPlayer.dart';
+import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/pages/audio/audioPlayer.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 
 
@@ -38,7 +39,7 @@ class _ResultSongListState extends State<ResultSongList> {
     if(choice == optionMenuSong[0]){
       print("Agregar");
 
-      List<Playlist>listas=await fetchPlaylists();
+      List<Playlist>listas=await fetchPlaylists(Globals.email);
 
       mostrarListas(context,listas,id_song);
     }

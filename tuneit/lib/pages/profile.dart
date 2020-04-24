@@ -3,8 +3,8 @@ import 'package:tuneit/classes/components/LateralMenu.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
-import 'package:tuneit/main.dart';
-import 'package:tuneit/pages/mainView.dart';
+import 'package:tuneit/pages/paginaInicial.dart';
+import 'package:tuneit/pages/register/mainView.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/textFields.dart';
 

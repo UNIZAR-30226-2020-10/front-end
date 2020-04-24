@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
-import 'package:tuneit/pages/showPodcast.dart';
+import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/widgets/lists.dart';
 
 class ResultPodcasts extends StatefulWidget {

@@ -4,10 +4,11 @@ import 'package:tuneit/classes/components/LateralMenu.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/Searcher.dart';
-import 'package:tuneit/pages/showList.dart';
-import 'package:tuneit/pages/showPodcast.dart';
+import 'package:tuneit/pages/songs/showList.dart';
+import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/widgets/playlistOption.dart';
 import 'package:tuneit/widgets/lists.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 
 
 class PlayLists extends StatefulWidget {
@@ -31,7 +32,7 @@ class _PlayListsState extends State<PlayLists> {
 
   void obtenerDatos() async{
     if (musNpod) {
-      List<Playlist> listaPlay = await fetchPlaylists();
+      List<Playlist> listaPlay = await fetchPlaylists(Globals.email);
       setState(() {
         listaPlaylists = listaPlay;
       });

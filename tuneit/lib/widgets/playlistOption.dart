@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
-import 'package:tuneit/pages/playlists.dart';
+import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/pages/songs/playlists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/textFields.dart';
 
@@ -39,47 +40,42 @@ void _mostrarInforme(BuildContext context) {
           }
         },
 
-        child: AlertDialog(
-          title: Text(
-            'Crear nueva lista',
-            style: Theme.of(context).textTheme.title,
-          ),
-          content: Center(
-              child: Container(
-                  width: 350,
-                  color: Colors.transparent,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 16.0),
-                  child: Form(
-                    key: _newkeylist,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        textField(_titulo, false, 'Título', Icons.title),
-                        textField(_descp, false, 'Descripción', Icons.description),
-                        SizedBox(height: 15,),
-                        RaisedButton(
-                          onPressed: () async {
-                            await nuevaLista(_titulo.text, _descp.text);
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PlayLists(true),
-                              ),
-                            );
-                          },
-                          color: ColorSets.colorBlue,
-                          child: Text("CREAR"),
-                        ),
-                      ],
+          child: AlertDialog(
+            title: Text(
+              'Crear nueva lista',
+              style: Theme.of(context).textTheme.title,
+            ),
+
+            content: new Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                textField(_titulo, false, 'Título', Icons.title),
+                textField(_descp, false, 'Descripción', Icons.description),
+              ],
+            ),
+            actions: <Widget>[
+              //SizedBox(height: 15,),
+              RaisedButton(
+                onPressed: () async {
+                  await nuevaLista(_titulo.text, _descp.text,Globals.email);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PlayLists(true),
                     ),
-                  )
-              )
+                  );
+                },
+                color: ColorSets.colorBlue,
+                child: Text("CREAR"),
+              ),
+
+            ],
+
           ),
 
-        ),
       );
     },
   );

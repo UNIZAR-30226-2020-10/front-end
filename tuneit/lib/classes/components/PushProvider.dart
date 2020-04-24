@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/LateralMenu.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:tuneit/model/message.dart';
-import 'package:tuneit/pages/notificaciones.dart';
+import 'package:tuneit/pages/social/notificaciones.dart';
 
 
 class PushProvider{

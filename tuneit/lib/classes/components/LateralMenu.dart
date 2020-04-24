@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/values/Globals.dart';
-import "package:tuneit/pages/playlists.dart";
+import 'package:tuneit/pages/songs/playlists.dart';
 import "package:tuneit/pages/profile.dart";
-import "package:tuneit/pages/equalizer.dart";
-import "package:tuneit/pages/friendList.dart";
-import "package:tuneit/pages/notificaciones.dart";
+import 'package:tuneit/pages/audio/equalizer.dart';
+import 'package:tuneit/pages/social/friendList.dart';
+import 'package:tuneit/pages/social/notificaciones.dart';
 
-import '../../main.dart';
+import '../../pages/paginaInicial.dart';
 import 'Searcher.dart';
 class LateralMenu extends StatelessWidget {
   @override

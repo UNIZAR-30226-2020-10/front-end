@@ -1,7 +1,7 @@
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_exoplayer/audioplayer.dart';
-import 'package:tuneit/pages/audioPlayer.dart';
+import 'package:tuneit/pages/audio/audioPlayer.dart';
 
 class bottomExpandableAudio extends StatefulWidget {
   bottomExpandableAudio({

@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/Globals.dart';
-import 'package:tuneit/pages/playlists.dart';
+import 'package:tuneit/pages/paginaInicial.dart';
+import 'package:tuneit/pages/songs/playlists.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/textFields.dart';
 
@@ -88,7 +89,7 @@ class _LoginState extends State<Login> {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PlayLists(true)),
+            MaterialPageRoute(builder: (context) => MyHomePage()),
           );
         }
         else {

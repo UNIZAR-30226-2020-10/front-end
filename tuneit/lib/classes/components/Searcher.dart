@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
-import 'package:tuneit/pages/resultPlaylist.dart';
-import 'package:tuneit/pages/resultPodcasts.dart';
-import 'package:tuneit/pages/resultSongs.dart';
+import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/pages/songs/resultPlaylist.dart';
+import 'package:tuneit/pages/podcast/resultPodcasts.dart';
+import 'package:tuneit/pages/songs/resultSongs.dart';
 
 import 'Audio.dart';
 import 'Song.dart';
@@ -63,7 +64,7 @@ class _SearcherState extends State<Searcher> {
                     // Si no hay ninguna cancion voy a comprobar las listas
                     if(lista_p==null || lista_p.isEmpty){
                       // Compruebo las listas
-                      List<Playlist> listaP = await buscar_una_lista(editingController.text);
+                      List<Playlist> listaP = await buscar_una_lista(editingController.text,Globals.email);
                       if(listaP==null || listaP.isEmpty){
                         //Si no hay nada pues error
                         _notFound(editingController.text);

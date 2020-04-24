@@ -102,20 +102,34 @@ class SongLista{
   final _cancionStreamController = StreamController<SongLista>.broadcast();
   Stream<SongLista> get buscar_canciones_1 => _cancionStreamController.stream;
 
+  void ordenarPorTitulo(){
+
+    Comparator<Song> titleComparator = (a, b) => a.name.compareTo(b.name);
+
+    songs.sort(titleComparator);
+  }
+
+  void ordenarPorArtista(){
+
+    Comparator<Song> artistComparator = (a, b) => a.devolverArtista().compareTo(b.devolverArtista());
+
+    songs.sort(artistComparator);
+
+  }
+
 
   Future< SongLista> fetchSonglists(String id) async {
     print(id);
 
 
     var queryParameters = {
-      'list' : id
+      'lista' : id
     };
     var uri = Uri.https(baseURL,'/list_data' ,queryParameters);
     final http.Response response = await http.get(uri, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
     });
-    print(response.statusCode);
-    print(response.body);
+
     if (response.statusCode == 200) {
       _cancionStreamController.sink.add(SongLista.fromJson(json.decode(response.body)));
       return SongLista.fromJson(json.decode(response.body));
@@ -133,11 +147,10 @@ class SongLista{
       },
       body: jsonEncode(<String, String>{
         'cancion': id_song,
-        'list': id_lista
+        'lista': id_lista
       }),
     );
-    print(response.statusCode);
-    print(response.body);
+
     if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
@@ -159,7 +172,7 @@ class SongLista{
       },
       body: jsonEncode(<String, String>{
         'cancion': id_song,
-        'list': id_lista
+        'lista': id_lista
       }),
     );
     if (response.statusCode == 200) {
@@ -181,14 +194,14 @@ Future< SongLista> fetchSonglists(String id) async {
   print(id);
 
   var queryParameters = {
-    'list' : id
+    'lista' : id
   };
   var uri = Uri.https(baseURL,'/list_data' ,queryParameters);
+  print(uri);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
-  print(response.statusCode);
-  print(response.body);
+
   if (response.statusCode == 200) {
    // _cancionStreamController.sink.add(SongLista.fromJson(json.decode(response.body)));
     return SongLista.fromJson(json.decode(response.body));
@@ -204,7 +217,7 @@ Future<List<Song>> buscar_canciones(String contenido_busqueda) async {
   print(contenido_busqueda);
 
   var queryParameters = {
-    'Nombre' : contenido_busqueda
+    'nombre' : contenido_busqueda
   };
 
   var uri = Uri.https(baseURL,'/search' ,queryParameters);
@@ -231,6 +244,40 @@ Future<List<Song>> buscar_canciones(String contenido_busqueda) async {
     print('Failed to load playlists');
     return null;
   }
+}
+/*
+    lista: id de la lista a modificar
+    before: posición inicial de la cancion a mover
+    after: posición final de la cancion a mover
+*/
+Future<bool> reposicionarCancion(String id_lista, String before,String after) async{
+  bool exito= false;
+
+  final http.Response response = await http.post(
+    'https://psoftware.herokuapp.com/reorder',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'lista': id_lista,
+      'before':before,
+      'after':after
+    }),
+  );
+  if (response.statusCode == 200) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    print(response.body);
+    exito=true;
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    print('Failed to reposition');
+  }
+
+  return exito;
+
+
 }
 
 
