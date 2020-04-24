@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Song.dart';
-import 'package:tuneit/classes/values/ColorSets.dart';
-import 'package:tuneit/classes/values/Constants.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 Widget colaReproduccion(List<Song> canciones,int actual) {
   return new ListView.builder

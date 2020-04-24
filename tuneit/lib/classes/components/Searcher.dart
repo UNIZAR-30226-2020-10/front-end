@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/values/Globals.dart';
-import 'package:tuneit/pages/songs/resultPlaylist.dart';
 import 'package:tuneit/pages/podcast/resultPodcasts.dart';
+import 'package:tuneit/pages/songs/resultPlaylist.dart';
 import 'package:tuneit/pages/songs/resultSongs.dart';
 
-import 'Audio.dart';
 import 'Song.dart';
 
 class Searcher extends StatefulWidget {

@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/pages/register/login.dart';
-import 'package:tuneit/pages/register/mainView.dart';
-import 'package:tuneit/pages/social/notificaciones.dart';
-import 'package:tuneit/pages/songs/playlists.dart';
-import 'package:tuneit/pages/register/register.dart';
-import 'package:tuneit/pages/songs/showList.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/PushProvider.dart';
-import 'package:tuneit/pages/podcast/showPodcast.dart';
+import 'package:tuneit/pages/songs/showList.dart';
+
+import '../main.dart';
 import '../widgets/LateralMenu.dart';
 
 

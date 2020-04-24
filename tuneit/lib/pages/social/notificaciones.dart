@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:tuneit/widgets/LateralMenu.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:tuneit/classes/components/PushProvider.dart';
 import 'package:tuneit/model/message.dart';
+import 'package:tuneit/widgets/LateralMenu.dart';
 
 
 class Notificaciones extends StatefulWidget{
