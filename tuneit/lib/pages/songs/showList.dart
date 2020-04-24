@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
-import 'package:tuneit/classes/components/bottomExpandableAudio.dart';
+import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/audioPlayer.dart';

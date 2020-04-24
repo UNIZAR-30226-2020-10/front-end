@@ -8,7 +8,7 @@ import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/PushProvider.dart';
 import 'package:tuneit/pages/podcast/showPodcast.dart';
-import '../classes/components/LateralMenu.dart';
+import '../widgets/LateralMenu.dart';
 
 
 class MyHomePage extends StatefulWidget {

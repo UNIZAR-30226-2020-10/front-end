@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:tuneit/classes/components/LateralMenu.dart';
+import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/Searcher.dart';

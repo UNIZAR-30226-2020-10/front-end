@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/LateralMenu.dart';
+import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
