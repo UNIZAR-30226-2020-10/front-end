@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 //------------------------------------------------------------------------------
 // Widget de un único elemento de una lista sin comportamiento (NO USAR)
@@ -24,7 +25,7 @@ Widget elementOfList2 (String image, String name) {
                     decoration: new BoxDecoration(
                       shape: BoxShape.rectangle,
                       image: new DecorationImage(
-                        image: image == null? new AssetImage('assets/PorDefecto.png') : new NetworkImage(image),
+                        image: image == null? new AssetImage(imagenPorDefecto) : new NetworkImage(image),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: new BorderRadius.only(

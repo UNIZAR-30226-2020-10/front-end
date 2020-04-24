@@ -28,6 +28,7 @@ dependencies:
   firebase_messaging: ^6.0.13
   provider: ^3.0.0+1
   expandable_bottom_bar: any
+  getflutter: ^1.0.11
 
 
 

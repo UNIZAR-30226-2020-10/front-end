@@ -111,7 +111,8 @@ Widget list_box (BuildContext context, index) {
       ));
 
     },
-    child: template_list(
+    child:
+    template_list(
         (list[index].image != null? list[index].image : "https://i.blogs.es/2596e6/sonic/450_1000.jpg"),
         list[index].name
     ),

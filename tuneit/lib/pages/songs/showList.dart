@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getflutter/getflutter.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
@@ -122,10 +123,11 @@ class _State extends State<ShowList> {
                                        ));
                                      },
 
-                                     leading:       CircleAvatar(
-                                       radius: 15.0,
+                                     leading: GFAvatar(
+
                                        backgroundImage: NetworkImage(songs.songs[index].image),
                                        backgroundColor: Colors.transparent,
+                                       shape: GFAvatarShape.standard,
 
                                      ),
                                      //imagen_por_defecto(songs.songs[index].image),

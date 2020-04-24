@@ -10,6 +10,7 @@ import 'package:flutter_exoplayer/audio_notification.dart';
 import 'package:flutter_exoplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 const imageUrl1 = "https://www.bensound.com/bensound-img/buddy.jpg";
 const imageUrl2 = "https://www.bensound.com/bensound-img/epic.jpg";
@@ -326,7 +327,11 @@ class _PlayerPageState extends State<PlayerPage> {
             ],
           ),
 
+          //colaReproduccion(List<Song> canciones,int actual)
+
         ),
+
+
       );
     //);
   }
@@ -518,7 +523,7 @@ class _PlayerPageState extends State<PlayerPage> {
 
   Widget imagen_por_defecto(String imagen){
     if (imagen== null){
-      return  new Image(image: AssetImage('assets/LogoApp.png'),
+      return  new Image(image: AssetImage(imagenPorDefecto),
                         fit: BoxFit.fill,
         width: 300,
         height: 300);
