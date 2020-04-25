@@ -7,16 +7,9 @@ import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 
-const imageUrl1 = "https://www.bensound.com/bensound-img/buddy.jpg";
-const imageUrl2 = "https://www.bensound.com/bensound-img/epic.jpg";
-const imageUrl3 = "https://www.bensound.com/bensound-img/onceagain.jpg";
-
 
 
 typedef void OnError(Exception exception);
-//enum PlayerState { stopped, playing, paused }
-
-
 
 class PlayerPage extends StatefulWidget {
   List<Audio> audios;
@@ -138,15 +131,7 @@ class _PlayerPageState extends State<PlayerPage> {
     _rellenarUrl();
     _rellenarNotificaciones();
     funcion_auxiliar();
-    print('=== Slider value: ${_position?.inMilliseconds?.toDouble() ?? 0.0} ===');
-    print('=== Duration value: ${_duration?.inMilliseconds?.toDouble() ?? 0.0} ===');
-    return /*MultiProvider(
-      providers: [
-        StreamProvider<Duration>.value(
-            initialData: Duration(),
-            value: advancedPlayer.onAudioPositionChanged),
-      ],
-      child: */DefaultTabController(
+    return DefaultTabController(
         length: 5,
         child: Scaffold(
           appBar: AppBar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:getflutter/getflutter.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
@@ -24,15 +25,13 @@ class _ResultSongListState extends State<ResultSongList> {
   List<Audio> songs= new List<Song>();
   String list_title;
 
-  String indetificadorLista="1";
-
   _ResultSongListState(this.songs,this.list_title);
 
   void choiceAction(String choice) async{
     List<String> hola=choice.split("--");
     choice=hola[0];
     int id_song=int.parse(hola[1]);
-    int id_lista=int.parse(hola[2]);
+    int indice=int.parse(hola[2]);
 
 
 
@@ -48,9 +47,10 @@ class _ResultSongListState extends State<ResultSongList> {
 
     }
     else if(choice ==optionMenuSong[2]){
-      print("Eliminar");
-      //eliminarCancion(context,id_lista,id_song);
 
+    }
+    else if(choice == optionMenuSong[3]){
+      launchInBrowser(widget.songs[indice].devolverTitulo(),widget.songs[indice].devolverArtista());
     }
     else{
       print ("Correct option was not found");
@@ -74,7 +74,7 @@ class _ResultSongListState extends State<ResultSongList> {
 
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Resultados de la busqueda de: ${widget.list_title}',
+            child: Text(textoResultado,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.bold,
@@ -100,7 +100,13 @@ class _ResultSongListState extends State<ResultSongList> {
                                 ));
                               },
 
-                              leading: imagen_por_defecto(widget.songs[index].devolverImagen()),
+                              leading: GFAvatar(
+
+                                backgroundImage: NetworkImage(widget.songs[index].devolverImagen()),
+                                backgroundColor: Colors.transparent,
+                                shape: GFAvatarShape.standard,
+
+                              ),
                               title: Text(widget.songs[index].devolverTitulo()),
                               subtitle: Text(widget.songs[index].devolverArtista()),
                               trailing: PopupMenuButton<String>(
@@ -108,7 +114,7 @@ class _ResultSongListState extends State<ResultSongList> {
                                 itemBuilder: (BuildContext context){
                                   return optionMenuSong.map((String choice){
                                     return PopupMenuItem<String>(
-                                      value: (choice + "--"+widget.songs[index].devolverID()+"--"+indetificadorLista),
+                                      value: (choice + "--"+widget.songs[index].devolverID()+"--"+index.toString()),
                                       child: Text(choice),
                                     );
 
@@ -136,31 +142,3 @@ class _ResultSongListState extends State<ResultSongList> {
   }
 }
 
-
-  String juntarArtistas(List<String> datos){
-    String juntitos="";
-    for(int i=0;i<datos.length;i++){
-      juntitos+=datos[i] + ' ';
-
-    }
-    return juntitos;
-
-  }
-
-  Widget imagen_por_defecto(String imagen){
-
-
-    if (imagen== null){
-      return  new CircleAvatar( backgroundImage: AssetImage('assets/LogoApp.png'));
-    }
-    else{
-
-      CircleAvatar(
-        backgroundImage: NetworkImage(imagen),
-
-      );
-
-
-    }
-
-  }

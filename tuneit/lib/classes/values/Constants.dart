@@ -12,6 +12,12 @@ const String imagenReproduciendo="assets/reproduciendo.png";
 
 const String imagenPorDefecto="assets/PorDefecto.png";
 
+const String logoApp="assets/LogoApp.png";
+
+const String textoInutil_1="Buscando en nuestra base de datos las mejores canciones...";
+
+const String textoResultado='Resultados obtenidos ';
+
 const List<String> optionMenuSong =<String>[
     agregar,
     compartir,

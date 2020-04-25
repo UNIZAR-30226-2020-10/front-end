@@ -6,6 +6,7 @@ import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/audioPlayer.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
+import 'package:tuneit/widgets/notDataFoundWidget.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/playlistOption.dart';
 
@@ -89,17 +90,7 @@ class _State extends State<ShowList> {
                      builder: (context, snapshot) {
 
                        if(!snapshot.hasData){
-                         return Column(
-                           children: <Widget>[
-                             Image(image: AssetImage('assets/LogoApp.png'),
-                                 fit: BoxFit.fill,
-                                 width: 200,
-                                 height: 200),
-                             Text("Buscando en nuestra base de datos las mejores canciones...")
-
-
-                           ],
-                         );
+                         return NotDataFound();
                        }
                        else{
                          return ReorderableListView(

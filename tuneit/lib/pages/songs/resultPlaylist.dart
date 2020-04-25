@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/pages/songs/showList.dart';
 class ResultListPlaylist extends StatelessWidget {
 
@@ -22,7 +23,7 @@ ResultListPlaylist({this.list,this.list_title});
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Title(
-            child: Text('Resultados',
+            child: Text(textoResultado,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold,
