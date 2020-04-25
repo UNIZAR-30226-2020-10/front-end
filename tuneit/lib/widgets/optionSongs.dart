@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/pages/songs/showList.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 
@@ -177,6 +178,20 @@ void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async
       }
   );
 
+}
+
+Future<void> launchInBrowser(String cancion,String artista) async {
+  String url= 'https://google.com/search?q=';
+  url= url + artista+'+'+cancion;
+  if (await canLaunch(url)) {
+    await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+    );
+  } else {
+    throw 'Could not launch $url';
+  }
 }
 
 

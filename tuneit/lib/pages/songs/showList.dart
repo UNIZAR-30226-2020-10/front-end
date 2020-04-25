@@ -24,7 +24,6 @@ class ShowList extends StatefulWidget {
 class _State extends State<ShowList> {
   SongLista songs= SongLista();
   String list_title;
-  int indice;
   String indetificadorLista;
 
   _State(this.indetificadorLista,this.list_title);
@@ -138,7 +137,7 @@ class _State extends State<ShowList> {
                                        itemBuilder: (BuildContext context){
                                          return optionMenuSong.map((String choice){
                                            return PopupMenuItem<String>(
-                                             value: (choice + "--"+songs.songs[index].id.toString()+"--"+indetificadorLista),
+                                             value: (choice + "--"+songs.songs[index].id.toString()+"--"+indetificadorLista+"--"+index.toString()),
                                              child: Text(choice),
                                            );
 
@@ -228,6 +227,7 @@ class _State extends State<ShowList> {
     choice=hola[0];
     int id_song=int.parse(hola[1]);
     int id_lista=int.parse(hola[2]);
+    int indice=int.parse(hola[3]);
 
 
 
@@ -244,9 +244,11 @@ class _State extends State<ShowList> {
     }
     else if(choice ==optionMenuSong[2]){
       print("Eliminar");
-      //(BuildContext context,String nombre_lista,id_lista,int id_song)
       eliminarCancion(context,list_title,id_lista,id_song);
 
+    }
+    else if(choice == optionMenuSong[3]){
+      launchInBrowser(songs.songs[indice].devolverTitulo(),songs.songs[indice].devolverArtista());
     }
     else{
       print ("Correct option was not found");
