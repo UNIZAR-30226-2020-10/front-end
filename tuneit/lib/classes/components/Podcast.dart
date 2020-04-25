@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:tuneit/classes/values/Globals.dart';
 
 
 class Podcast {
@@ -89,48 +90,59 @@ Future<List<Podcast>> fetchPodcastByTitle(String title) async {
   }
 }
 
-const baseURLBD = 'psoftware.herokuapp.com/';
-Future<bool> askFav(String id) async {
-  var queryParameters = {
-    'id' : id,
-  };
-  var uri = Uri.https(baseURLBD, '/PodcastFav', queryParameters);
-  final http.Response response = await http.get(uri, headers: {
-    HttpHeaders.contentTypeHeader: 'application/json',
-  });
+const baseURLBD = 'psoftware.herokuapp.com';
 
-  if (response.statusCode == 200) {
+Future<void> isFav(String id, String name) async {
 
-    Map<String, dynamic> parsedJson = json.decode(response.body);
-    var fav = parsedJson['fav'] as bool;
+  final http.Response response = await http.post(
+    'https://' + baseURLBD + '/podcast_fav',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'nombre' : name,
+      'podcast' : id,
+      'email' : Globals.email,
+    }),
+  );
 
-    return fav;
-
-  } else {
-    throw Exception(response.statusCode.toString() + ': Failed to check favourite podcast');
+  if (response.body != 'Success') {
+    throw Exception(response.body + ': Failed to set favourite podcast');
   }
 }
 
-Future<bool> changeFav(String id) async {
-  var queryParameters = {
-    'id' : id,
-  };
-  var uri = Uri.https(baseURLBD, '/PodcastFav', queryParameters);
+Future<void> isNotFav(String id) async {
   final http.Response response = await http.post(
-      uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+    'https://' + baseURLBD + '/delete_podcast_fav',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'podcast' : id,
+      'email' : Globals.email,
+    }),
   );
 
-  if (response.statusCode == 200) {
+  if (response.body != 'Success') {
+    throw Exception(response.body + ': Failed to set not favourite podcast');
+  }
+}
 
-    Map<String, dynamic> parsedJson = json.decode(response.body);
-    var fav = parsedJson['fav'] as bool;
+Future<bool> checkFav(String id) async {
+  var queryParameters = {
+    'podcast' : id,
+    'email' : Globals.email,
+  };
+  var uri = Uri.http(baseURLBD, '/podcast_is_fav', queryParameters);
+  final http.Response response = await http.get(uri);
 
-    return fav;
-
-  } else {
-    throw Exception(response.statusCode.toString() + ': Failed to check favourite podcast');
+  if (response.body == 'True') {
+    return true;
+  }
+  else if (response.body == 'False') {
+    return false;
+  }
+  else {
+    throw Exception(response.body + ': Failed to check favourite podcast');
   }
 }

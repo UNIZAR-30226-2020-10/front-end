@@ -126,7 +126,7 @@ class _PlayListsState extends State<PlayLists> {
 
   void onTapPodcasts (int index) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ShowPodcast(podc: listaPodcast[index].id, name: listaPodcast[index].name),
+      builder: (context) => ShowPodcast(podcId: listaPodcast[index].id, podcName: listaPodcast[index].name),
     ));
   }
 }

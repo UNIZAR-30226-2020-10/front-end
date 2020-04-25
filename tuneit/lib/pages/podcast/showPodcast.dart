@@ -6,52 +6,54 @@ import 'package:tuneit/widgets/lists.dart';
 
 class ShowPodcast extends StatefulWidget {
 
-  String podc;
-  String name;
+  String podcId;
+  String podcName;
 
   @override
-  _ShowPodcastState createState() => _ShowPodcastState(podc, name);
+  _ShowPodcastState createState() => _ShowPodcastState(podcId, podcName);
 
-  ShowPodcast({Key key, @required this.podc, @required this.name}) : super(key: key);
+  ShowPodcast({Key key, @required this.podcId, @required this.podcName}) : super(key: key);
 }
 
 class _ShowPodcastState extends State<ShowPodcast> {
 
-  String podc;
-  String name;
+  String podcId;
+  String podcName;
   List<PodcastEpisode> list = List();
   bool fav = false;
-  bool init_fav;
+  bool initFav;
 
-  _ShowPodcastState(this.podc, this.name);
+  _ShowPodcastState(this.podcId, this.podcName);
 
-  void obtener_datos() async{
-    List<PodcastEpisode> lista = await fetchEpisodes(podc);
-    //bool favorito = await askFav(podc);
-    bool favorito = true;
+  void obtenerDatos() async{
+    List<PodcastEpisode> lista = await fetchEpisodes(podcId);
+    bool favorito = await checkFav(podcId);
     setState(() {
       list = lista;
       fav = favorito;
-      init_fav = favorito;
+      initFav = favorito;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    obtener_datos();
+    obtenerDatos();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('PODCAST: ' + name),
+        title: Text('PODCAST: ' + podcName),
         centerTitle: true,
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: (){
-            if (fav != init_fav) changeFav(podc);
+            if (fav != initFav) {
+              if (fav) isFav(podcId, podcName);
+              else isNotFav(podcId);
+            }
             Navigator.pop(context);
           },
           child: Icon(
