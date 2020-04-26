@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                     textField(_controller2, true, 'Contraseña',
                         Icons.lock_outline),
                     SizedBox(height: 100),
-                    solidButton(context, tryLogin, [], 'ENTRAR'),
+                    gradientButton(context, tryLogin, [], 'ENTRAR'),
                   ],
                 ),
               )
