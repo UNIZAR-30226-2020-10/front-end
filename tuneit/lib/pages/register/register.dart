@@ -165,7 +165,7 @@ class _RegisterState extends State<Register> {
                       height: 1,
                     ),
                     SizedBox(height: 30),
-                    gradientButton(context, tryRegister, [], 'REGISTRARSE'),
+                    gradientButton(context, tryRegister, [], 'REGISTRARSE', 40, 150, 15),
                   ],
                 ),
               )

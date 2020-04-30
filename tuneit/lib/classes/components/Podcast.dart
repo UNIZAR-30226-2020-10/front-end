@@ -37,8 +37,21 @@ class Podcast {
     );
   }
 
+  factory Podcast.fromJson3(Map<String, dynamic> parsedJson) {
+
+    return Podcast(
+      id: parsedJson['id'],
+      name: parsedJson['title'],
+      image: parsedJson['image'],
+      description: parsedJson['description'],
+      web_link: parsedJson['website'],
+    );
+  }
+
 }
+
 const baseURL = 'listen-api.listennotes.com';
+
 Future<List<Podcast>> fetchBestPodcasts() async {
   var uri = Uri.https(baseURL, '/api/v2/best_podcasts');
   final http.Response response = await http.get(
@@ -90,7 +103,56 @@ Future<List<Podcast>> fetchPodcastByTitle(String title) async {
   }
 }
 
+Future<List<Podcast>> fetchPodcastById(String ids) async {
+  Map map = {
+    'ids': ids,
+  };
+  final http.Response response = await http.post(
+    'https://' + baseURL + '/api/v2/podcasts',
+    headers: <String, String>{
+      //'Content-Type': 'application/json; charset=UTF-8',
+      'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1',
+    },
+    body: map,
+  );
+
+  if (response.statusCode == 200) {
+
+    Map<String, dynamic> parsedJson = json.decode(response.body);
+    var list = parsedJson['podcasts'] as List;
+    List<Podcast> podcastList = list.map((i) => new Podcast.fromJson3(i)).toList();
+
+    return podcastList;
+
+  } else {
+    throw Exception(response.statusCode.toString() + ': Failed to load podcasts');
+  }
+}
+
 const baseURLBD = 'psoftware.herokuapp.com';
+
+Future<List<Podcast>> fetchFavPodcasts() async {
+  var queryParameters = {
+    'email' : Globals.email,
+  };
+  var uri = Uri.http(baseURLBD, '/list_podcast', queryParameters);
+  final http.Response response = await http.get(uri);
+
+  if (response.statusCode == 200) {
+    List<String> list = (json.decode(response.body) as List)
+        .map((data) => data.toString())
+        .toList();
+    list.remove('a1');
+    list.remove('a2');
+    String ids = list.join(',');
+    List<Podcast> podcastList = await fetchPodcastById(ids);
+
+    return podcastList;
+  }
+  else {
+    throw Exception(response.body + ': Failed to check favourite podcast');
+  }
+}
 
 Future<void> isFav(String id, String name) async {
 

@@ -3,10 +3,10 @@ import 'package:tuneit/classes/values/ColorSets.dart';
 
 //------------------------------------------------------------------------------
 // Widget del botón con degradado de colores sin comportamiento (NO USAR)
-SizedBox gradientButton2 (String title) {
+SizedBox gradientButton2 (String title, double height, double width, double fontSize) {
   return new SizedBox(
-    height: 50,
-    width: 230,
+    height: height, // 50
+    width: width, // 230
     child: Container(
         decoration: BoxDecoration(
             borderRadius: new BorderRadius.only(
@@ -28,7 +28,7 @@ SizedBox gradientButton2 (String title) {
           child: Text(
               title,
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: fontSize, // 20
                   color: ColorSets.colorText,
                   fontFamily: 'RobotoMono'
               )
@@ -42,14 +42,14 @@ SizedBox gradientButton2 (String title) {
 //  func: función que describe el comportamiento onPressed del botón
 //  arguments: lista con los argumentos de func (EN ORDEN)
 // Ejemplo en pages/mainView.dart
-Widget gradientButton (BuildContext context, Function func, List arguments, String text) {
+Widget gradientButton (BuildContext context, Function func, List arguments, String text, double height, double width, double fontSize) {
   return RaisedButton(
       onPressed: () {
         Function.apply(func, arguments);
       },
       color: Colors.transparent,
       elevation: 0.0,
-      child: gradientButton2(text)
+      child: gradientButton2(text, height, width, fontSize)
   );
 }
 
@@ -58,7 +58,7 @@ Widget gradientButton (BuildContext context, Function func, List arguments, Stri
 //  func: función que describe el comportamiento onPressed del botón
 //  arguments: lista con los argumentos de func (EN ORDEN)
 // Ejemplo en pages/login.dart y pages/register.dart
-Widget solidButton (BuildContext context, Function func, List arguments, String text) {
+Widget solidButton (BuildContext context, Function func, List arguments, String text, double height, double width, double fontSize) {
   return RaisedButton(
       onPressed: () {
         Function.apply(func, arguments);
@@ -66,8 +66,8 @@ Widget solidButton (BuildContext context, Function func, List arguments, String 
       color: Colors.transparent,
       elevation: 0.0,
       child: SizedBox(
-        height: 50,
-        width: 200.0,
+        height: height,
+        width: width,
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: new BorderRadius.only(
@@ -83,7 +83,7 @@ Widget solidButton (BuildContext context, Function func, List arguments, String 
               child: Text(
                   text,
                   style: TextStyle(
-                      fontSize: 17,
+                      fontSize: fontSize,
                       color: ColorSets.colorText,
                       fontFamily: 'RobotoMono'
                   )
@@ -116,9 +116,9 @@ Widget simpleButton (BuildContext context, Function func, List arguments, String
 }
 
 //------------------------------------------------------------------------------
-Widget criticalButton (BuildContext context, Function func, List arguments, String text) {
+Widget criticalButton (BuildContext context, Function func, List arguments, String text, double height, double width, double fontSize) {
   return Container(
-    height: 40,
+    height: height,
     decoration: BoxDecoration(
       borderRadius: new BorderRadius.only(
         topLeft: const Radius.circular(15.0),
@@ -129,7 +129,7 @@ Widget criticalButton (BuildContext context, Function func, List arguments, Stri
       border: Border.all(color: ColorSets.colorCritical, width: 2),
     ),
     child:  FlatButton(
-      child: Text(text, style: TextStyle(fontSize: 18, color: ColorSets.colorCritical),),
+      child: Text(text, style: TextStyle(fontSize: fontSize, color: ColorSets.colorCritical),),
       onPressed: () {
         Function.apply(func, arguments);
       },

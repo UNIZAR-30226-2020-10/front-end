@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/register/mainView.dart';
+import 'package:tuneit/pages/songs/showList.dart';
+import 'package:tuneit/widgets/AutoScrollableText.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/buttons.dart';
+import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/textFields.dart';
 
 class Profile extends StatefulWidget {
@@ -15,97 +19,116 @@ class Profile extends StatefulWidget {
 
 class _ProfilePageState extends State<Profile> {
 
-  final TextEditingController _controller1 = TextEditingController();
+  List<Playlist> list = List();
+
+  void obtenerDatos() async{
+    List<Playlist> lista = await listasUsuario();
+    setState(() {
+      list = lista;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    obtenerDatos();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Perfil'),
-        centerTitle: true,
-      ),
-      drawer: LateralMenu(),
-      body: Center(
-        child: Container(
-          width: 350,
-          height: 120,
-          decoration: BoxDecoration(
-            borderRadius: new BorderRadius.only(
-              topLeft: const Radius.circular(15.0),
-              topRight: const Radius.circular(15.0),
-              bottomLeft: const Radius.circular(15.0),
-              bottomRight: const Radius.circular(15.0),
+        appBar: AppBar(
+          title: Text('PERFIL'),
+          centerTitle: true,
+        ),
+        drawer: LateralMenu(),
+        body: Container(
+          margin: const EdgeInsets.only(left: 10, right: 10),
+          width: 400,
+          height: 750,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 10,),
+                Row(
+                  children: <Widget>[
+                    SizedBox(width: 15,),
+                    Container(
+                        width: 100,
+                        height: 100,
+                        decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: ColorSets.colorDarkPurple,
+                              width: 2,
+                            ),
+                            image: new DecorationImage(
+                                fit: BoxFit.cover,
+                                image: new NetworkImage(Globals.image)
+                            )
+                        )
+                    ),
+                    SizedBox(width: 20,),
+                    Expanded(
+                      child: Column(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: iconText(Globals.name, Icons.person),
+                          ),
+                          SizedBox(height: 5,),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: iconText(Globals.email, Icons.mail_outline),
+                          ),
+                          SizedBox(height: 5,),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: iconText(Globals.country, Icons.place),
+                          ),
+                          SizedBox(height: 5,),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: iconText(Globals.date, Icons.cake),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 15,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('   Tus listas de reproducción', style: Theme.of(context).textTheme.subtitle,),
+                ),
+                SizedBox(height: 7,),
+                completeListNotScrollable(list, onTapPlaylists, []),
+              ],
             ),
-            border: Border.all(color: ColorSets.colorCritical, width: 2),
-            color: ColorSets.colorDarkCritical,
           ),
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 10,),
-              Container(
-                width: 300,
-                child: textField(_controller1, true, 'Contraseña', Icons.lock_outline),
-              ),
-              SizedBox(height: 10,),
-              criticalButton(context, tryDelete, [], 'Eliminar cuenta'),
-            ],
-          ),
-        )
-      )
+        ),
     );
   }
 
-  void tryDelete () {
-    setState(() {
-      deleteUser(Globals.email, _controller1.text).then((value) async {
-        if (value) {
-
-          Globals.isLoggedIn = false;
-          Globals.email = '';
-          Globals.name = '';
-          Globals.password = '';
-          Globals.date = '';
-          Globals.country = '';
-          Globals.imagen = '';
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MainView()),
-          );
-
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('CUENTA ELIMINADA'),
-                  content: Text('Su cuenta ha sido eliminada con éxito'),
-                  actions: <Widget>[
-                    simpleButton(context, () {Navigator.of(context).pop();}, [], 'Volver')
-                  ],
-                );
-              }
-          );
-        }
-        else {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('ERROR'),
-                  content: Text('Error al eliminar la cuenta'),
-                  actions: <Widget>[
-                    simpleButton(context, () {Navigator.of(context).pop();}, [], 'Volver')
-                  ],
-                );
-              }
-          );
-        }
-      });
-    });
+  void onTapPlaylists (int index) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name),
+    ));
   }
+
+  Widget iconText (String text, IconData ic) {
+    return Row(
+      children: <Widget>[
+        SizedBox(width: 10,),
+        Icon(ic, size: 20,),
+        SizedBox(width: 10,),
+        Expanded(
+          child: MarqueeWidget(
+            child: Text(text, style: Theme.of(context).textTheme.body1,),
+          ),
+        )
+      ],
+    );
+  }
+
 }

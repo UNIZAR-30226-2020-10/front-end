@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 
+import 'AutoScrollableText.dart';
+
 //------------------------------------------------------------------------------
 // Widget de un único elemento de una lista sin comportamiento (NO USAR)
 Widget elementOfList2 (String image, String name) {
   return new Container(
+    height: 150,
+    width: 150,
     decoration: new BoxDecoration(
         color: Colors.white10,
         borderRadius: new BorderRadius.only(
@@ -19,7 +23,7 @@ Widget elementOfList2 (String image, String name) {
         child: Column(
             children: <Widget>[
               Flexible(
-                  flex: 5,
+                  flex: 6,
                   child: new Container(
                     margin: EdgeInsets.all(10.0),
                     decoration: new BoxDecoration(
@@ -39,13 +43,8 @@ Widget elementOfList2 (String image, String name) {
               ),
               Flexible(
                 flex: 1,
-                child: Center(
-                    child: FittedBox(
-                      child: Text(name,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: ColorSets.colorText),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
+                child: MarqueeWidget(
+                  child: Text(name, style: TextStyle(fontSize: 15, fontFamily: 'RobotoMono', color: ColorSets.colorText),),
                 ),
               ),
             ]
@@ -74,10 +73,33 @@ Widget elementOfList (BuildContext context, Function func, List arguments, Strin
 // Ejemplo en pages/playlists.dart
 Widget completeList (List lista, Function func, List arguments) {
   return GridView.builder(
-      //scrollDirection: Axis.vertical,
-      //shrinkWrap: true,
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 8.0),
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      itemCount: lista.length,
+      itemBuilder: (BuildContext context, int index) {
+        return elementOfList(context, func, arguments + [index], lista[index].image, lista[index].name);
+      }
+  );
+}
+
+Widget completeListNotScrollable (List lista, Function func, List arguments) {
+  return GridView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 8.0),
+      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      itemCount: lista.length,
+      itemBuilder: (BuildContext context, int index) {
+        return elementOfList(context, func, arguments + [index], lista[index].image, lista[index].name);
+      }
+  );
+}
+
+Widget completeListHorizontal (List lista, Function func, List arguments) {
+  return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 8.0),
       itemCount: lista.length,
       itemBuilder: (BuildContext context, int index) {
         return elementOfList(context, func, arguments + [index], lista[index].image, lista[index].name);

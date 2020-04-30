@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                     textField(_controller2, true, 'Contraseña',
                         Icons.lock_outline),
                     SizedBox(height: 100),
-                    gradientButton(context, tryLogin, [], 'ENTRAR'),
+                    gradientButton(context, tryLogin, [], 'ENTRAR', 40, 150, 15),
                   ],
                 ),
               )
@@ -84,7 +84,7 @@ class _LoginState extends State<Login> {
           Globals.password = list[1];
           Globals.date = list[2];
           Globals.country = list[3];
-          Globals.imagen = list[4];
+          Globals.image = list[4];
 
           Navigator.push(
             context,

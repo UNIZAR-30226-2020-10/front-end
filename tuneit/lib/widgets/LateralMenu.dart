@@ -4,7 +4,7 @@ import 'package:tuneit/pages/audio/equalizer.dart';
 import "package:tuneit/pages/profile.dart";
 import 'package:tuneit/pages/social/friendList.dart';
 import 'package:tuneit/pages/social/notificaciones.dart';
-import 'package:tuneit/pages/songs/playlists.dart';
+import 'package:tuneit/pages/audio/playlists.dart';
 
 import '../pages/paginaInicial.dart';
 class LateralMenu extends StatelessWidget {
@@ -15,7 +15,7 @@ class LateralMenu extends StatelessWidget {
         children: <Widget>[
           new UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(Globals.imagen),
+                backgroundImage: NetworkImage(Globals.image),
               ),
               accountName: Text(Globals.name),
               accountEmail: Text(Globals.email),

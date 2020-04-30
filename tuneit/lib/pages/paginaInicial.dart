@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/PushProvider.dart';
+import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/pages/songs/showList.dart';
+import 'package:tuneit/widgets/lists.dart';
 
 import '../main.dart';
 import '../widgets/LateralMenu.dart';
@@ -16,13 +19,21 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  List<Podcast> listaPodcast = List();
+
+  void obtenerDatos() async{
+    List<Podcast> listaPodc = await fetchBestPodcasts();
+    setState(() {
+      listaPodcast = listaPodc;
+    });
+  }
 
   void initState() {
     super.initState();
 
     //FUNCION PARA REACCIONAR A LAS NOTIFICACIONES
     reaccionarNotificacion();
-
+    obtenerDatos();
 
   }
 
@@ -37,29 +48,44 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: LateralMenu(),
       body: Container(
         margin: EdgeInsets.all(10),
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(15.0),
-
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Novedades',
-                style: Theme.of(context).textTheme.title,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text('   Los mejores podcasts', style: Theme.of(context).textTheme.subtitle,),
               ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Generos',
-                style: Theme.of(context).textTheme.title,
+              Container(
+                height: 200,
+                child: completeListHorizontal(listaPodcast, onTapPodcasts, []),
               ),
-            ),
-          ],
-        ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text('   Géneros musicales', style: Theme.of(context).textTheme.subtitle,),
+              ),
+              Container(
+                height: 200,
+                child: completeListHorizontal(listaPodcast, onTapPodcasts, []),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text('   Los peores podcasts', style: Theme.of(context).textTheme.subtitle,),
+              ),
+              Container(
+                height: 200,
+                child: completeListHorizontal(listaPodcast, onTapPodcasts, []),
+              ),
+            ],
+          ),
+        )
       )
     );
+  }
+
+  void onTapPodcasts (int index) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ShowPodcast(podcId: listaPodcast[index].id, podcName: listaPodcast[index].name),
+    ));
   }
 
   Widget templateList (String image, String playlistName) {

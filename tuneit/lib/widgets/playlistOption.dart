@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
-import 'package:tuneit/pages/songs/playlists.dart';
+import 'package:tuneit/pages/audio/playlists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/textFields.dart';
 

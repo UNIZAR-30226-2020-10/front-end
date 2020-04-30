@@ -37,7 +37,7 @@ class _PlayListsState extends State<PlayLists> {
       });
     }
     else {
-      List<Podcast> listaPodc = await fetchBestPodcasts();
+      List<Podcast> listaPodc = await fetchFavPodcasts();
       setState(() {
         listaPodcast = listaPodc;
       });

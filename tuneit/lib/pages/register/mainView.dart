@@ -27,7 +27,7 @@ class _MainViewState extends State<MainView> {
                 ),
                 Flexible(
                     flex: 2,
-                    child: gradientButton(context, toLogin, [], 'INICIAR SESIÓN')
+                    child: gradientButton(context, toLogin, [], 'INICIAR SESIÓN', 50, 230, 20)
                 ),
                 Container(
                   color: Colors.transparent,
@@ -35,7 +35,7 @@ class _MainViewState extends State<MainView> {
                 ),
                 Flexible(
                     flex: 2,
-                    child: gradientButton(context, toRegister, [], 'REGISTRARSE')
+                    child: gradientButton(context, toRegister, [], 'REGISTRARSE', 50, 230, 20)
                 )
               ]
           )
