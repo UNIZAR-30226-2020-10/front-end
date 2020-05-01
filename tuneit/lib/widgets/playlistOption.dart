@@ -102,16 +102,24 @@ void eliminarPlaylist(BuildContext context, String id_lista) async {
             // usually buttons at the bottom of the dialog
             new FlatButton(
               child: new Text("Confirmar"),
+
               onPressed: () async {
-                await borrarLista(id_lista);
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PlayLists(true),
-                  ),
-                );
+                if(Globals.id_fav!= id_lista){
+                  await borrarLista(id_lista);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PlayLists(true),
+                    ),
+                  );
+
+                }
+                else{
+                  _borrarFavoritas(context);
+                }
+
 
               },
             ),
@@ -122,6 +130,31 @@ void eliminarPlaylist(BuildContext context, String id_lista) async {
                 },
                 child: new Text("Cancelar"))
           ],
+        ),
+      );
+    },
+  );
+}
+
+void _borrarFavoritas(BuildContext context) {
+  // flutter defined function
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return GestureDetector(
+
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+
+        child: AlertDialog(
+          title: new Text("No puede borrar la lista de favoritas"),
+
         ),
       );
     },

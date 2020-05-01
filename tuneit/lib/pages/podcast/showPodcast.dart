@@ -78,7 +78,20 @@ class _ShowPodcastState extends State<ShowPodcast> {
           ),
         ],
       ),
-      body: completeList (list, onTapEpisode, []),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView(
+              children: listaParaAudios(context,list,podcId.toString(),false,null),
+
+              // listaParaAudios(context,list,podcId.toString(),false,null),
+            ),
+          ),
+        ],
+      ),
+
+
+     // completeList (list, onTapEpisode, []),
     );
   }
 

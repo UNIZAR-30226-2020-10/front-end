@@ -78,9 +78,10 @@ class SongLista{
   final String name;
   final String description;
   final String image;
-  List<Song> songs= new List<Song>();
+  final bool cancionesOEpisodios;
+  List<Audio> songs= new List<Audio>();
 
-  SongLista({this.id, this.name, this.description, this.image,this.songs});
+  SongLista({this.id, this.name, this.description, this.image,this.songs, this.cancionesOEpisodios});
 
   factory SongLista.fromJson(Map<String, dynamic> parsedJson) {
 
@@ -95,27 +96,6 @@ class SongLista{
       songs: songsList
     );
   }
-
-
-  final _cancionStreamController = StreamController<SongLista>.broadcast();
-  Stream<SongLista> get buscar_canciones_1 => _cancionStreamController.stream;
-
-  void ordenarPorTitulo(){
-
-    Comparator<Song> titleComparator = (a, b) => a.name.compareTo(b.name);
-
-    songs.sort(titleComparator);
-  }
-
-  void ordenarPorArtista(){
-
-    Comparator<Song> artistComparator = (a, b) => a.devolverArtista().compareTo(b.devolverArtista());
-
-    songs.sort(artistComparator);
-
-  }
-
-
   Future< SongLista> fetchSonglists(String id) async {
     print(id);
 
@@ -129,79 +109,70 @@ class SongLista{
     });
 
     if (response.statusCode == 200) {
-      _cancionStreamController.sink.add(SongLista.fromJson(json.decode(response.body)));
       return SongLista.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load playlists');
     }
   }
 
+}
 
-  Future<void> eliminarCancion(String id_lista, String id_song) async {
-    final http.Response response = await http.post(
-      'https://psoftware.herokuapp.com/delete_from_list',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'cancion': id_song,
-        'lista': id_lista
-      }),
-    );
+Future<void> eliminarCancionDeLista(String id_lista, String id_song) async {
+  final http.Response response = await http.post(
+    'https://psoftware.herokuapp.com/delete_from_list',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'cancion': id_song,
+      'lista': id_lista
+    }),
+  );
 
-    if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      print(response.body);
-    } else {
-      // If the server did not return a 201 CREATED response,
-      // then throw an exception.
-      throw Exception('Failed to delete a song');
-    }
-
-  }
-
-  void agregarCancion( String  id_lista, String id_song) async{
-
-    final http.Response response = await http.post(
-      'https://psoftware.herokuapp.com/add_to_list',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'cancion': id_song,
-        'lista': id_lista
-      }),
-    );
-    if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      print(response.body);
-    } else {
-      // If the server did not return a 201 CREATED response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
-    }
-
+  if (response.statusCode == 200) {
+    // If the server did return a 201 CREATED response,
+    // then parse the JSON.
+    print(response.body);
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to delete a song');
   }
 
 }
 
+void agregarCancion( String  id_lista, String id_song) async{
+
+  final http.Response response = await http.post(
+    'https://psoftware.herokuapp.com/add_to_list',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'cancion': id_song,
+      'lista': id_lista
+    }),
+  );
+  if (response.statusCode == 200) {
+    print(response.body);
+  } else {
+    throw Exception('Failed to load album');
+  }
+
+}
 
 Future< SongLista> fetchSonglists(String id) async {
-  print(id);
 
   var queryParameters = {
     'lista' : id
   };
   var uri = Uri.https(baseURL,'/list_data' ,queryParameters);
-  print(uri);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
 
   if (response.statusCode == 200) {
-   // _cancionStreamController.sink.add(SongLista.fromJson(json.decode(response.body)));
+
     return SongLista.fromJson(json.decode(response.body));
   } else {
     throw Exception('Failed to load playlists');
@@ -212,15 +183,11 @@ Future< SongLista> fetchSonglists(String id) async {
 Future<List<Song>> buscar_canciones(String contenido_busqueda) async {
 
   List<Song> list;
-  print(contenido_busqueda);
-
   var queryParameters = {
     'nombre' : contenido_busqueda
   };
 
   var uri = Uri.https(baseURL,'/search' ,queryParameters);
-
-  print(uri);
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
@@ -228,9 +195,6 @@ Future<List<Song>> buscar_canciones(String contenido_busqueda) async {
 
 
   if (response.statusCode == 200) {
-
-    print(response.body);
-
     list = (json.decode(response.body) as List)
         .map((data) => new Song.fromJson(data))
         .toList();
@@ -263,13 +227,10 @@ Future<bool> reposicionarCancion(String id_lista, String before,String after) as
     }),
   );
   if (response.statusCode == 200) {
-    // If the server did return a 201 CREATED response,
-    // then parse the JSON.
-    print(response.body);
+
     exito=true;
   } else {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
+
     print('Failed to reposition');
   }
 

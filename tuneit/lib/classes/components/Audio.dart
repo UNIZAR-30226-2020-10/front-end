@@ -10,4 +10,24 @@ abstract class  Audio{
 
  String devolverID();
 
+
+}
+
+
+List<Audio> ordenarPorTituloAudios( List<Audio> songs){
+
+ Comparator<Audio> titleComparator = (a, b) => a.devolverTitulo().compareTo(b.devolverTitulo());
+
+ songs.sort(titleComparator);
+ return songs;
+
+}
+
+List<Audio> ordenarPorArtistaAudios( List<Audio> songs){
+
+ Comparator<Audio> artistComparator = (a, b) => a.devolverArtista().compareTo(b.devolverArtista());
+
+ songs.sort(artistComparator);
+ return songs;
+
 }

@@ -8,18 +8,11 @@ import 'package:tuneit/pages/songs/showList.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-
-
-
-
-// user defined function
 void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_song) {
-  // flutter defined function
-  SongLista songs= new SongLista();
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      // return object of type Dialog
+
       return GestureDetector(
 
         onTap: () {
@@ -37,7 +30,7 @@ void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_so
             new FlatButton(
               child: new Text("Confirmar"),
               onPressed: () async {
-                await songs.eliminarCancion(id_lista.toString(),id_song.toString());
+                await eliminarCancionDeLista(id_lista.toString(),id_song.toString());
                 Navigator.pop(context);
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
@@ -84,7 +77,8 @@ void operacionCancelada(BuildContext context) {
   );
 }
 
-void _agregada(BuildContext context,String id_lista,String title) {
+
+void agregada(BuildContext context,String id_lista,String title) {
   // flutter defined function
   showDialog(
     context: context,
@@ -130,7 +124,6 @@ void onTapReload (BuildContext context,String id_lista,String title) {
 
 
 void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async{
-  SongLista songs= new SongLista();
 
    showDialog(
       context: context,
@@ -159,9 +152,9 @@ void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async
                         return Card(
                           child: new ListTile(
                             onTap:(){
-                              songs.agregarCancion(listas[index].id.toString(),id_song.toString());
+                              agregarCancion(listas[index].id.toString(),id_song.toString());
                               Navigator.pop(context);
-                              _agregada(context,listas[index].id.toString(),listas[index].name);
+                              agregada(context,listas[index].id.toString(),listas[index].name);
 
 
                             },

@@ -4,6 +4,7 @@ const String compartir="Compartir";
 const String agregar="Agregar";
 const String ordenarPorArtista="Ordenar por artista";
 const String ordenarPorTitulo="Ordenar por título";
+const String addFavoritos ="Añadir a favoritos";
 
 const String buscar_info="Buscar información";
 
@@ -18,11 +19,15 @@ const String textoInutil_1="Buscando en nuestra base de datos las mejores cancio
 
 const String textoResultado='Resultados obtenidos ';
 
+const String ListaFavorita="Favoritas";
+
 const List<String> optionMenuSong =<String>[
     agregar,
     compartir,
     eliminar,
-    buscar_info
+    buscar_info,
+    addFavoritos
+
   ];
 
 

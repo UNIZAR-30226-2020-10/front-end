@@ -30,8 +30,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
   @override
   Widget build(BuildContext context) {
-    //queryData.size.width
-
 
     final _formKey_2 = GlobalKey<FormState>();
     final size_width = MediaQuery.of(context).size.width;
@@ -56,9 +54,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                child: Form(
                  key: _formKey_2,
                     child: ListView(
-                      //crossAxisAlignment: CrossAxisAlignment.stretch,
 
-                  //crossAxisCount: 2,
                   children: <Widget>[
 
                       Align(
@@ -76,9 +72,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                       SizedBox(height: size_height*0.05,),
 
 
-
-
-                    //(TextEditingController _controller, bool obscureText, String text, IconData ic)
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text('Cambiar contraseña', style: Theme.of(context).textTheme.subtitle,),
@@ -90,8 +83,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                         Icons.edit
 
                       ),
-                      //SizedBox(height: size_height*0.05,),
-
 
                       SizedBox(height: size_height*0.05,),
 
@@ -244,6 +235,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
           Globals.date = '';
           Globals.country = '';
           Globals.image = '';
+          Globals.id_fav = '';
 
           Navigator.push(
             context,

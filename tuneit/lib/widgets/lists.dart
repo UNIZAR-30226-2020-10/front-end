@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:getflutter/getflutter.dart';
+import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/pages/audio/audioPlayer.dart';
 
 import 'AutoScrollableText.dart';
 
@@ -77,6 +81,7 @@ Widget completeList (List lista, Function func, List arguments) {
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: lista.length,
       itemBuilder: (BuildContext context, int index) {
+        if(lista[index].name==ListaFavorita) {Globals.id_fav=lista[index].id.toString(); print(Globals.id_fav);}
         return elementOfList(context, func, arguments + [index], lista[index].image, lista[index].name);
       }
   );
@@ -108,3 +113,49 @@ Widget completeListHorizontal (List lista, Function func, List arguments) {
 }
 
 //------------------------------------------------------------------------------
+
+
+List<Widget> listaParaAudios(BuildContext context,List<Audio> audios, String indetificadorLista,bool musicPod,Function choiceAction){
+  return List.generate(
+    audios.length,
+        (index) {
+      return
+        Card(
+          key: Key('$index'),
+          child: new ListTile(
+            onTap:(){
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PlayerPage(audios:audios,indice: index),
+
+              ));
+            },
+
+            leading: GFAvatar(
+
+              backgroundImage: NetworkImage(audios[index].devolverImagen()),
+              backgroundColor: Colors.transparent,
+              shape: GFAvatarShape.standard,
+
+            ),
+            title: Text(audios[index].devolverTitulo()),
+            subtitle: Text(audios[index].devolverArtista()),
+            trailing: musicPod? PopupMenuButton<String>(
+              onSelected: choiceAction,
+              itemBuilder: (BuildContext context){
+                return optionMenuSong.map((String choice){
+                  return PopupMenuItem<String>(
+                    value: (choice + "--"+audios[index].devolverID().toString()+"--"+indetificadorLista+"--"+index.toString()),
+                    child: Text(choice),
+                  );
+
+                }).toList();
+              },
+            ):Container( width: 0,height: 0,),
+
+          ),
+        );
+
+    },
+  );
+
+}

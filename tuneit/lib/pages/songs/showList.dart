@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/audioPlayer.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
+import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/notDataFoundWidget.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/playlistOption.dart';
@@ -16,14 +18,11 @@ class ShowList extends StatefulWidget {
   _State createState() => _State(indetificadorLista,list_title);
   String list_title;
   String indetificadorLista;
-  bool tipo;
-  String contenido;
-
   ShowList({Key key, @required this.list_title,@required this.indetificadorLista}):super(key : key);
 }
 
 class _State extends State<ShowList> {
-  SongLista songs= SongLista();
+  List<Audio> audios =[];
   String list_title;
   String indetificadorLista;
 
@@ -32,24 +31,21 @@ class _State extends State<ShowList> {
 
 
   void ObtenerDatos() async{
+    SongLista canciones =await fetchSonglists(indetificadorLista);
+    setState(() {
+      audios=canciones.songs;
+    });
 
-          SongLista canciones =await fetchSonglists(indetificadorLista);
-          setState(() {
-            songs=canciones;
-          });
-
-          await songs.fetchSonglists(indetificadorLista);
-    }
+  }
 
 
 
 
 @override
   void initState(){
-    // TODO: implement initState
-
+  ObtenerDatos();
     super.initState();
-    ObtenerDatos();
+
 
 
   }
@@ -75,86 +71,26 @@ class _State extends State<ShowList> {
               }).toList();
             },
           ),
-
-
-
         ],
       ),
 
       body: Column(
           children: <Widget>[
             Expanded(
-              child:
-                   StreamBuilder<Object>(
-                     stream: songs.buscar_canciones_1,
-                     builder: (context, snapshot) {
-
-                       if(!snapshot.hasData){
-                         return NotDataFound();
-                       }
-                       else{
-                         return ReorderableListView(
+              child: ReorderableListView(
 
                            padding: const EdgeInsets.all(8),
                            scrollDirection: Axis.vertical,
                            onReorder: _onReorder,
 
-                           children: List.generate(
-                             songs.songs.length,
-                                 (index) {
-                               return
-                                 Card(
-                                   key: Key('$index'),
-                                   child: new ListTile(
-                                     onTap:(){
-                                       Navigator.of(context).push(MaterialPageRoute(
-                                         builder: (context) => PlayerPage(audios: songs.songs,indice: index,escanciones: true),
+                           children: listaParaAudios(context,audios,indetificadorLista,true,choiceAction),
 
-                                       ));
-                                     },
-
-                                     leading: GFAvatar(
-
-                                       backgroundImage: NetworkImage(songs.songs[index].image),
-                                       backgroundColor: Colors.transparent,
-                                       shape: GFAvatarShape.standard,
-
-                                     ),
-                                     //imagen_por_defecto(songs.songs[index].image),
-                                     title: Text(songs.songs[index].name),
-                                     subtitle: Text(songs.songs[index].devolverArtista()),
-                                     trailing: PopupMenuButton<String>(
-                                       onSelected: choiceAction,
-                                       itemBuilder: (BuildContext context){
-                                         return optionMenuSong.map((String choice){
-                                           return PopupMenuItem<String>(
-                                             value: (choice + "--"+songs.songs[index].id.toString()+"--"+indetificadorLista+"--"+index.toString()),
-                                             child: Text(choice),
-                                           );
-
-                                         }).toList();
-                                       },
-                                     ),
-
-                                   ),
-                                 );
-
-                             },
-                           ),
-
-
-                         );
-                       }
-                     }
-                   ),
-    ),
-
-
+                         ),
+            ),
 
     ]
 
-
-              ),
+      ),
       bottomNavigationBar: bottomExpandableAudio(),
   );
 
@@ -162,21 +98,20 @@ class _State extends State<ShowList> {
   }
 
   void _onReorder(int oldIndex, int newIndex) async{
-    bool exito =await reposicionarCancion(songs.id.toString(),oldIndex.toString(),newIndex.toString());
+    bool exito =await reposicionarCancion(indetificadorLista,oldIndex.toString(),newIndex.toString());
     if(exito){
       setState(
             () {
           if (newIndex > oldIndex) {
             newIndex -= 1;
           }
-          final Song item = songs.songs.removeAt(oldIndex);
-          songs.songs.insert(newIndex, item);
+          final Song item = audios.removeAt(oldIndex);
+          audios.insert(newIndex, item);
 
         },
       );
     }
   }
-
 
 
   void ActionPlaylist(String contenido) async{
@@ -191,7 +126,7 @@ class _State extends State<ShowList> {
       print(opciones[0]);
 
       setState(() {
-        songs.ordenarPorArtista();
+        audios =ordenarPorArtistaAudios(audios);
 
 
       });
@@ -202,7 +137,7 @@ class _State extends State<ShowList> {
 
       setState(() {
 
-        songs.ordenarPorTitulo();
+        audios=ordenarPorTituloAudios(audios);
 
       });
 
@@ -220,26 +155,24 @@ class _State extends State<ShowList> {
     int id_lista=int.parse(hola[2]);
     int indice=int.parse(hola[3]);
 
-
-
     if(choice == optionMenuSong[0]){
-      print("Agregar");
 
       List<Playlist>listas=await fetchPlaylists(Globals.email);
 
       mostrarListas(context,listas,id_song);
     }
     else if(choice ==optionMenuSong[1]){
-      print("Compartir");
 
     }
     else if(choice ==optionMenuSong[2]){
-      print("Eliminar");
       eliminarCancion(context,list_title,id_lista,id_song);
 
     }
     else if(choice == optionMenuSong[3]){
-      launchInBrowser(songs.songs[indice].devolverTitulo(),songs.songs[indice].devolverArtista());
+      launchInBrowser(audios[indice].devolverTitulo(),audios[indice].devolverArtista());
+    }
+    else if(choice == optionMenuSong[4]){
+      agregada(context,Globals.id_fav,audios[indice].devolverTitulo());
     }
     else{
       print ("Correct option was not found");
@@ -247,7 +180,5 @@ class _State extends State<ShowList> {
     }
 
   }
-
-
 
 }

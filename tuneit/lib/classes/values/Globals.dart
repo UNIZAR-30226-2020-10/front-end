@@ -8,4 +8,5 @@ class Globals {
   static String date = '2000-01-01';
   static String country = 'España';
   static String image = 'x';
+  static String id_fav='1';
 }

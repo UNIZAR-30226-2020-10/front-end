@@ -52,6 +52,9 @@ class _ResultSongListState extends State<ResultSongList> {
     else if(choice == optionMenuSong[3]){
       launchInBrowser(widget.songs[indice].devolverTitulo(),widget.songs[indice].devolverArtista());
     }
+    else if(choice == optionMenuSong[4]){
+      agregada(context,Globals.id_fav,widget.songs[indice].devolverTitulo());
+    }
     else{
       print ("Correct option was not found");
 
