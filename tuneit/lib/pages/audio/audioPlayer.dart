@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exoplayer/audio_notification.dart';
 import 'package:flutter_exoplayer/audioplayer.dart';
 import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 
@@ -30,22 +31,12 @@ class _PlayerPageState extends State<PlayerPage> {
 
   List<Audio> audios;
   int indice;
-  int indiceShuffle;
   bool escanciones;
 
 
   //Cargar datos
-
-  Future <void> funcion_auxiliar()async{
-   await rellenarDatos();
-
-  }
-
-  Future <void> rellenarDatos()async{
-
-
-
-  }
+  Future <void> funcion_auxiliar()async{await rellenarDatos();}
+  Future <void> rellenarDatos()async{}
 
   //----------------------------------------------------//
 
@@ -54,18 +45,11 @@ class _PlayerPageState extends State<PlayerPage> {
   //----------------------------------------------------//
   //----------------------------------------------------//
   //----------------------------------------------------//
-  String url;
-  List<String> urls = new List<String>();
 
-  List<int> audiosShuffle = new List<int>();
-  int primera = 0;
-
+  audioPlayerClass _audioPlayerClass;
   AudioPlayer _audioPlayer;
   Duration _duration;
   Duration _position;
-  bool _playAll = false;
-  bool _repeatMode = false;
-  bool _shuffleMode = false;
 
   Color _iconRepeatColor = Colors.grey;
   Color _iconShuffleColor = Colors.grey;
@@ -80,35 +64,26 @@ class _PlayerPageState extends State<PlayerPage> {
   StreamSubscription _playerAudioSessionIdSubscription;
   StreamSubscription _notificationActionCallbackSubscription;
 
-
-
   final List<AudioNotification> audioNotifications = new List<AudioNotification>();
 
   get _isPlaying => _playerState == PlayerState.PLAYING;
-
-  //CON ESTO SE MUESTRA CÓMO VA LA CANCIÓN
-
   get _durationText => _duration?.toString()?.split('.')?.first ?? '';
   get _positionText => _position?.toString()?.split('.')?.first ?? '';
 
 
-  final _playerStreamController = StreamController<AudioPlayer>.broadcast();
-  Stream<AudioPlayer> get devolverPlayer => _playerStreamController.stream;
+
 
   @override
   void initState() {
     super.initState();
-
-    setState((){
-      url=audios[indice].devolverSonido();
-    });
+    _audioPlayerClass = new audioPlayerClass();
+    _audioPlayerClass.setValoresIniciales(audios,indice);
     _initAudioPlayer();
-    _playerStreamController.sink.add(_audioPlayer);
   }
 
   @override
   Future<void> dispose() async {
-    _audioPlayer.dispose();
+    _audioPlayer.pause();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
     _playerCompleteSubscription?.cancel();
@@ -128,8 +103,8 @@ class _PlayerPageState extends State<PlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-    _rellenarUrl();
-    _rellenarNotificaciones();
+    _audioPlayerClass.rellenarUrl();
+    _audioPlayerClass.rellenarNotificaciones();
     funcion_auxiliar();
     return DefaultTabController(
         length: 5,
@@ -178,7 +153,11 @@ class _PlayerPageState extends State<PlayerPage> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                    child: imagen_por_defecto(audios[indice].devolverImagen()),
+                    child: Image(
+                      image: NetworkImage(audios[indice].devolverImagen()),fit: BoxFit.fill,
+                      width: 300,
+                      height: 300,
+                    ),
 
                 ),
               ),
@@ -195,19 +174,19 @@ class _PlayerPageState extends State<PlayerPage> {
                               iconSize: 64,
                               icon: Icon(Icons.skip_previous),
                               onPressed: () {
-                                _previous();
+                                _audioPlayerClass.previous();
                               }),
                           IconButton(
                             onPressed:(){
-                              if(_repeatMode){
-                                _repeatMode = false;
+                              if(_audioPlayerClass.getRepeat()){
+                                _audioPlayerClass.setRepeat(false);
                                 setState((){_iconRepeatColor = ColorSets.colorGrey;});
                               }
                               else{
-                                _repeatMode = true;
+                                _audioPlayerClass.setRepeat(true);
                                 setState((){_iconRepeatColor = ColorSets.colorBlue;});
                               }
-                              _repeat();
+                              _audioPlayerClass.repeat();
                             },
                             iconSize: 60.0,
                             icon:  Icon(Icons.repeat,
@@ -217,10 +196,10 @@ class _PlayerPageState extends State<PlayerPage> {
                           IconButton(
                             onPressed:(){
                               if(!_isPlaying) {
-                                _play(urls);
+                                _audioPlayerClass.play();
                               }
                               else{
-                                _pause();
+                                _audioPlayerClass.pause();
                               }
                             },
                             iconSize: 60.0,
@@ -234,13 +213,13 @@ class _PlayerPageState extends State<PlayerPage> {
                               icon: Icon(Icons.shuffle),
                               color: _iconShuffleColor,
                               onPressed: () {
-                                if(!_shuffleMode){
-                                  _shuffleMode = true;
+                                if(!_audioPlayerClass.getShuffle()){
+                                  _audioPlayerClass.setShuffle(true);
                                   setState((){_iconShuffleColor = ColorSets.colorBlue;});
-                                  _shuffle();
+                                  _audioPlayerClass.shuffle();
                                 }
                                 else{
-                                  _shuffleMode = false;
+                                  _audioPlayerClass.setShuffle(false);
                                   setState((){_iconShuffleColor = ColorSets.colorGrey;});
                                 }
                               }),
@@ -248,7 +227,7 @@ class _PlayerPageState extends State<PlayerPage> {
                               iconSize: 60.0,
                               icon: Icon(Icons.skip_next),
                               onPressed: () {
-                                _next();
+                                _audioPlayerClass.next();
                               }),
 
                         ],
@@ -317,7 +296,7 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   void _initAudioPlayer() {
-    _audioPlayer = AudioPlayer();
+    _audioPlayer = _audioPlayerClass.getAudioPlayer();
     _durationSubscription = _audioPlayer.onDurationChanged.listen((duration) {
       setState(() {
         _duration = duration;
@@ -356,184 +335,9 @@ class _PlayerPageState extends State<PlayerPage> {
       print('Current player is completed');
     });
   }
-
-  Future<void> _play(List<String> urls) async {
-    if (urls != null) {
-      if(!_playAll) {
-        final Result result = await _audioPlayer.playAll(urls,index: indice,
-          repeatMode: false,
-          respectAudioFocus: false,
-          playerMode: PlayerMode.FOREGROUND,
-          audioNotifications: audioNotifications,
-        );
-        _playAll = true;
-        if (result == Result.ERROR) {
-          print("something went wrong in play method :(");
-        }
-
-      }
-      else{
-        final Result result = await _audioPlayer.resume();
-        if (result == Result.ERROR) {
-          print("something went wrong in play method :(");
-        }
-      }
-  }
-
-    }
-
-  Future<void> _pause() async {
-    final Result result = await _audioPlayer.pause();
-    if (result == Result.FAIL) {
-      print(
-          "you tried to call audio conrolling methods on released audio player :(");
-    } else if (result == Result.ERROR) {
-      print("something went wrong in pause :(");
-    }
-  }
-
-  Future<void> _stop() async {
-    indice = 0;
-    final Result result = await _audioPlayer.stop();
-    if (result == Result.FAIL) {
-      print(
-          "you tried to call audio conrolling methods on released audio player :(");
-    } else if (result == Result.ERROR) {
-      print("something went wrong in stop :(");
-    }
-  }
-
-  Future<void> _repeat() async {
-    final Result result = await _audioPlayer.setRepeatMode(_repeatMode);
-    if (result == Result.FAIL) {
-      print(
-          "you tried to call audio conrolling methods on released audio player :(");
-    } else if (result == Result.ERROR) {
-      print("something went wrong in stop :(");
-    }
-  }
-
-  Future<void> _next() async {
-    if(!_shuffleMode) {
-      if (indice == audios.length - 1) {
-        indice = 0;
-      }
-      else {
-        indice++;
-      }
-      final Result result = await _audioPlayer.seekIndex(indice);
-      if (result == Result.FAIL) {
-        print(
-            "you tried to call audio conrolling methods on released audio player :(");
-      } else if (result == Result.ERROR) {
-        print("something went wrong in next :(");
-      }
-    }
-    else{
-      if(indiceShuffle == audiosShuffle.length - 1){
-        indice = audiosShuffle.elementAt(0);
-        indiceShuffle = 0;
-      }
-      else{
-        indiceShuffle++;
-        indice = audiosShuffle.elementAt(indiceShuffle);
-      }
-      final Result result = await _audioPlayer.seekIndex(indice);
-      if (result == Result.FAIL) {
-        print(
-            "you tried to call audio conrolling methods on released audio player :(");
-      } else if (result == Result.ERROR) {
-        print("something went wrong in previous :(");
-      }
-    }
-  }
-
-  Future<void> _previous() async {
-    if(!_shuffleMode) {
-      if (indice == 0) {
-        indice = audios.length - 1;
-      }
-      else {
-        indice--;
-      }
-      final Result result = await _audioPlayer.seekIndex(indice);
-      if (result == Result.FAIL) {
-        print(
-            "you tried to call audio conrolling methods on released audio player :(");
-      } else if (result == Result.ERROR) {
-        print("something went wrong in previous :(");
-      }
-    }
-    else{
-     if(indiceShuffle == 0){
-        indice = audiosShuffle.elementAt(audiosShuffle.length - 1);
-        indiceShuffle = audiosShuffle.length - 1;
-      }
-      else{
-        indiceShuffle--;
-        indice =audiosShuffle.elementAt(indiceShuffle);
-      }
-      final Result result = await _audioPlayer.seekIndex(indice);
-      if (result == Result.FAIL) {
-        print(
-            "you tried to call audio conrolling methods on released audio player :(");
-      } else if (result == Result.ERROR) {
-        print("something went wrong in previous :(");
-      }
-    }
-  }
-
-  void _rellenarUrl() {
-    for(int i = 0; i < audios.length; i++){
-      urls.add(audios[i].devolverSonido());
-    }
-  }
-
-  void _rellenarNotificaciones(){
-    for(int i = 0; i < audios.length; i++){
-      audioNotifications.add( AudioNotification(
-          smallIconFileName: "ic_launcher",
-          title:audios[i].devolverTitulo(),
-          subTitle: audios[i].devolverArtista(),
-          largeIconUrl: audios[i].devolverImagen(),
-          isLocal: false,
-          notificationDefaultActions: NotificationDefaultActions.ALL));
-    }
-  }
-
-  Widget imagen_por_defecto(String imagen){
-    if (imagen== null){
-      return  new Image(image: AssetImage(imagenPorDefecto),
-                        fit: BoxFit.fill,
-        width: 300,
-        height: 300);
-    }
-    else{
-     return new Image(
-          image: NetworkImage(audios[indice].devolverImagen()),fit: BoxFit.fill,
-       width: 300,
-       height: 300,
-     );
-      
-    }
-    
-  }
-  Future<void> _shuffle() async {
-
-    for(int i = 0; i < audios.length ; i++){
-      audiosShuffle.add(i);
-      print(i);
-    }
-    audiosShuffle.shuffle();
-    primera = await _audioPlayer.getCurrentPlayingAudioIndex();
-    int index_primera_shuffle = audiosShuffle.indexOf(primera);
-    int valor_index_0 = audiosShuffle.elementAt(0);
-    audiosShuffle[index_primera_shuffle] = valor_index_0;
-    audiosShuffle[0] = primera;
-    indiceShuffle = 0;
-  }
-
 }
+
+
 
 
 

@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 
+import 'package:encrypt/encrypt.dart' as Encrypter;
+
 import 'login.dart';
 
 class Register extends StatefulWidget {
@@ -234,13 +236,25 @@ class _RegisterState extends State<Register> {
     else if (_controller3.text.toString().length < 1) {
       mostrarError('Tu constraseña no puede estar vacía');
     }
+    else if (_controller3.text.toString().length < 7){
+      mostrarError('Tu constraseña debe ser de más de 7 carácteres');
+    }
+    else if(!_controller3.text.toString().contains(new RegExp(r'^[a-zA-Z]*[0-9][a-zA-Z]*$'))){
+    mostrarError('Tu constraseña debe tener como mínimo 1 número y '
+    'solo se aceptan minúsculas, mayúsculas y números ');
+    }
     else if (pais == 'País de nacimiento') {
       mostrarError('Es necesario que indiques tu país de nacimiento');
     }
     else {
       setState(() {
+        final key = Encrypter.Key.fromUtf8('my 32 length key................');
+        final iv = Encrypter.IV.fromLength(16);
+        final encrypter = Encrypter.Encrypter(Encrypter.AES(key));
+        final encrypted = encrypter.encrypt(_controller3.text, iv: iv);
+
         registerUser(
-            _controller1.text, _controller2.text, _controller3.text, parsingDate(_date.toString()), pais
+            _controller1.text, _controller2.text, encrypted.base64, parsingDate(_date.toString()), pais
         ).then((value) {
           if (value) {
             Navigator.push(
@@ -311,4 +325,5 @@ class _RegisterState extends State<Register> {
 
     return month + '/' + day + '/' + year;
   }
+
 }
