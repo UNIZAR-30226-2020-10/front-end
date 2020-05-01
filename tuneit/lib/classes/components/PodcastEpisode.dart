@@ -38,6 +38,10 @@ class PodcastEpisode extends Audio {
     return id;
   }
 
+  String devolverGenero(){
+    return "podcast";
+  }
+
   PodcastEpisode({this.id,this.name, this.image,this.description,this.audio,this.audio_length_sec,this.web_link});
 
   factory PodcastEpisode.fromJson(Map<String, dynamic> parsedJson) {

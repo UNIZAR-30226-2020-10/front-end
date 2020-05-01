@@ -10,6 +10,7 @@ abstract class  Audio{
 
  String devolverID();
 
+ String devolverGenero();
 
 }
 

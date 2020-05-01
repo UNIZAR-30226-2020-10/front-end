@@ -39,6 +39,10 @@ class Song extends Audio{
     return id.toString();
   }
 
+  String devolverGenero(){
+
+  }
+
 
   String juntarArtistas(List<String> datos){
     String juntitos="";
