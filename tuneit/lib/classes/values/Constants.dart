@@ -21,6 +21,9 @@ const String textoResultado='Resultados obtenidos ';
 
 const String ListaFavorita="Favoritas";
 
+
+const String error_mensaje="Error";
+const String exito_mensaje="Exito";
 const List<String> optionMenuSong =<String>[
     agregar,
     compartir,

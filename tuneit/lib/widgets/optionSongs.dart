@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/pages/songs/showList.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -26,7 +27,6 @@ void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_so
           title: new Text("¿Desea eliminar la canción?"),
           content: new Text("La canción se borrará de la lista"),
           actions: <Widget>[
-            // usually buttons at the bottom of the dialog
             new FlatButton(
               child: new Text("Confirmar"),
               onPressed: () async {
@@ -36,7 +36,6 @@ void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_so
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => ShowList(indetificadorLista: id_lista.toString(), list_title: nombre_lista),
                 ));
-                //_eliminada(context,nombre_lista,id_lista.toString());
               },
             ),
             new FlatButton(
@@ -57,7 +56,6 @@ void operacionCancelada(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      // return object of type Dialog
       return GestureDetector(
 
         onTap: () {
@@ -69,7 +67,8 @@ void operacionCancelada(BuildContext context) {
         },
 
         child: AlertDialog(
-          title: new Text("Operacion cancelada"),
+          title: new Text(exito_mensaje),
+          content: new Text("Operacion cancelada"),
 
         ),
       );
@@ -99,7 +98,8 @@ void agregada(BuildContext context,String id_lista,String title) {
         },
 
         child: AlertDialog(
-          title: new Text("Cancion añadida"),
+            title: new Text(exito_mensaje),
+            content: new Text("Cancion añadida"),
 
         ),
       );

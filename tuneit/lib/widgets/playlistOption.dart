@@ -5,6 +5,7 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/playlists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/textFields.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 Widget crearListaRep(BuildContext context) {
   return RawMaterialButton(
@@ -79,6 +80,29 @@ void _mostrarInforme(BuildContext context) {
   );
 }
 
+void noEliminarFavoritos(BuildContext context){
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+
+      return GestureDetector(
+
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: AlertDialog(
+          title: new Text(error_mensaje),
+          content: new Text("No se puede eliminar la lista favoritos"),
+        ),
+      );
+    },
+  );
+}
+
 
 void eliminarPlaylist(BuildContext context, String id_lista) async {
   // flutter defined function
@@ -117,7 +141,7 @@ void eliminarPlaylist(BuildContext context, String id_lista) async {
 
                 }
                 else{
-                  _borrarFavoritas(context);
+                  noEliminarFavoritos(context);
                 }
 
 
@@ -136,28 +160,5 @@ void eliminarPlaylist(BuildContext context, String id_lista) async {
   );
 }
 
-void _borrarFavoritas(BuildContext context) {
-  // flutter defined function
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      // return object of type Dialog
-      return GestureDetector(
 
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-
-        child: AlertDialog(
-          title: new Text("No puede borrar la lista de favoritas"),
-
-        ),
-      );
-    },
-  );
-}
 

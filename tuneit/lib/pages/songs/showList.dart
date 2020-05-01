@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:getflutter/getflutter.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
-import 'package:tuneit/pages/audio/audioPlayer.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
-import 'package:tuneit/widgets/notDataFoundWidget.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/playlistOption.dart';
 
@@ -28,8 +25,6 @@ class _State extends State<ShowList> {
 
   _State(this.indetificadorLista,this.list_title);
 
-
-
   void ObtenerDatos() async{
     SongLista canciones =await fetchSonglists(indetificadorLista);
     setState(() {
@@ -39,15 +34,10 @@ class _State extends State<ShowList> {
   }
 
 
-
-
 @override
   void initState(){
   ObtenerDatos();
     super.initState();
-
-
-
   }
 
   @override
@@ -78,25 +68,19 @@ class _State extends State<ShowList> {
           children: <Widget>[
             Expanded(
               child: ReorderableListView(
-
-                           padding: const EdgeInsets.all(8),
-                           scrollDirection: Axis.vertical,
-                           onReorder: _onReorder,
-
-                           children: listaParaAudios(context,audios,indetificadorLista,true,choiceAction),
-
-                         ),
+                padding: const EdgeInsets.all(8),
+                scrollDirection: Axis.vertical,
+                onReorder: _onReorder,
+                children: listaParaAudios(context,audios,indetificadorLista,true,choiceAction),
+              ),
             ),
-
     ]
-
       ),
       bottomNavigationBar: bottomExpandableAudio(),
   );
 
 
   }
-
   void _onReorder(int oldIndex, int newIndex) async{
     bool exito =await reposicionarCancion(indetificadorLista,oldIndex.toString(),newIndex.toString());
     if(exito){
@@ -113,9 +97,7 @@ class _State extends State<ShowList> {
     }
   }
 
-
   void ActionPlaylist(String contenido) async{
-
     List<String> opciones=contenido.split("--");
     String lista=opciones[1];
 
@@ -127,8 +109,6 @@ class _State extends State<ShowList> {
 
       setState(() {
         audios =ordenarPorArtistaAudios(audios);
-
-
       });
 
     }
@@ -136,18 +116,14 @@ class _State extends State<ShowList> {
       print(opciones[0]);
 
       setState(() {
-
         audios=ordenarPorTituloAudios(audios);
-
       });
-
     }
     else{
       print("Do nothing");
     }
 
   }
-
   void choiceAction(String choice) async{
     List<String> hola=choice.split("--");
     choice=hola[0];
@@ -156,9 +132,7 @@ class _State extends State<ShowList> {
     int indice=int.parse(hola[3]);
 
     if(choice == optionMenuSong[0]){
-
       List<Playlist>listas=await fetchPlaylists(Globals.email);
-
       mostrarListas(context,listas,id_song);
     }
     else if(choice ==optionMenuSong[1]){
