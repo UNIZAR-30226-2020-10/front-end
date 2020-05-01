@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Foto.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/textFields.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:async';
 
 import 'login.dart';
 
@@ -21,7 +25,13 @@ class _RegisterState extends State<Register> {
   final TextEditingController _controller3 = TextEditingController();
   String pais = 'País de nacimiento';
 
+
   DateTime _date = DateTime.now();
+
+  Future<File> la_imagen;
+  String base64Image;
+  File tmpFile;
+
 
   void callDatePicker() async {
     var order = await getDate();
@@ -47,6 +57,8 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final size_width = MediaQuery.of(context).size.width;
+    final size_height= MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -55,7 +67,7 @@ class _RegisterState extends State<Register> {
       ),
       body: Center(
           child: Container(
-              width: 350,
+              width: size_width*0.8,
               color: Colors.transparent,
               padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
               child: Form(
@@ -114,7 +126,9 @@ class _RegisterState extends State<Register> {
                             )
                           ],
                         ),
+
                       ],
+
                     ),
                     Container(
                       color: ColorSets.colorWhite,
@@ -171,6 +185,42 @@ class _RegisterState extends State<Register> {
               )
           )
       ),
+    );
+
+  }
+
+  Widget showImage(){
+    return FutureBuilder<File>(
+      future: la_imagen,
+      builder: (BuildContext context,AsyncSnapshot<File> snapshot){
+        print(snapshot.connectionState);
+        print(la_imagen);
+        if(snapshot.connectionState== ConnectionState.done && snapshot.data!=null){
+          tmpFile=snapshot.data;
+          base64Image = base64Encode(snapshot.data.readAsBytesSync());
+          return Flexible(
+            child: Image.file(
+              snapshot.data,
+              fit: BoxFit.fill,
+            ),
+          );
+
+        }
+        else if(snapshot.error!=null){
+          return const Text(
+            'Ha fallado algo',
+            textAlign: TextAlign.center,
+          );
+
+        }
+        else{
+          return const Text(
+            'No hay imagen loco',
+            textAlign: TextAlign.center,
+          );
+
+        }
+      },
     );
   }
 

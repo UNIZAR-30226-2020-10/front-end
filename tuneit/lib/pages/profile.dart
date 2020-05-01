@@ -4,6 +4,7 @@ import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/register/mainView.dart';
+import 'package:tuneit/pages/register/options.dart';
 import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/widgets/AutoScrollableText.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
@@ -40,6 +41,21 @@ class _ProfilePageState extends State<Profile> {
         appBar: AppBar(
           title: Text('PERFIL'),
           centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              tooltip: 'Configurar perfil',
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => opcionesPerfil(),
+                  ),
+                );
+
+              },
+            ),
+          ],
         ),
         drawer: LateralMenu(),
         body: Container(

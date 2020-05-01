@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'dart:io';
+import 'dart:async';
+
 import 'package:http/http.dart' as http;
+import 'package:tuneit/classes/values/Globals.dart';
 
 
 class User {
@@ -108,3 +112,74 @@ Future<bool> deleteUser(
     return false;
   }
 }
+
+Future<bool> settingsUser(String password, String name)async{
+  bool exito = false;
+  if(password != "" || name != "") {
+    var body;
+    if (password != "" && name != "") {
+       body = jsonEncode(<String, String>{
+        'email': Globals.email,
+        'password': password,
+        'nombre': name,
+      });
+    }
+    else if (password != "") {
+     body = jsonEncode(<String, String>{
+        'email': Globals.email,
+        'password': password,
+      });
+    }
+    else if (name != "") {
+      body = jsonEncode(<String, String>{
+        'email': Globals.email,
+        'nombre': name,
+      });
+    }
+
+    exito=await upDateSettings(body);
+    if(exito){
+      if(name!=""){Globals.name =name;}
+      if(password!=""){Globals.password=password;}
+    }
+  }
+    else{
+      return exito;
+
+    }
+  }
+
+
+Future<bool> upDateSettings( body) async{
+  print(body);
+
+  final http.Response response = await http.post(
+    'https://' + baseURL + '/modify',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: body,
+  );
+  print(response.body);
+  if (response.body == 'Success') {
+    return true;
+  } else {
+    return false;
+  }
+
+}
+
+Future<void> startUploadPhoto( File tmpFile , String base64Image){
+  if(null == tmpFile){
+    print("error");
+  }
+  String fileName= tmpFile.path.split('/').last;
+
+  http.post('vacio_porahora',body:{
+    "image": base64Image,
+    "name": fileName,
+  });
+
+
+}
+
