@@ -19,6 +19,7 @@ class audioPlayerClass {
   bool _playAll = false;
   bool _repeatMode = false;
   bool _shuffleMode = false;
+  bool playing = false;
   List<String> urls = new List<String>();
 
   // Variables Shuffle
@@ -27,7 +28,7 @@ class audioPlayerClass {
   int primera = 0;
 
 
-  final List<AudioNotification> audioNotifications = new List<AudioNotification>();
+  List<AudioNotification> audioNotifications = new List<AudioNotification>();
   //////////////////////////////
   // Funciones Set y Get de parametros
   void setValoresIniciales(List<Audio> audios, int indice) {
@@ -37,7 +38,8 @@ class audioPlayerClass {
   void setPlay (bool playAll) => _playAll = playAll;
   void setRepeat (bool repeatMode) => _repeatMode = repeatMode;
   void setShuffle (bool shuffleMode) => _shuffleMode = shuffleMode;
-
+  void setIndice(int el_indice) => indice = el_indice;
+  void setPlaying(bool playing) => this.playing = playing;
   AudioPlayer getAudioPlayer() {
     return _audioPlayer;
   }
@@ -56,7 +58,19 @@ class audioPlayerClass {
   List getAudio(){
     return audios;
   }
+  bool getPlaying(){
+    return playing;
+  }
 
+  Future<void> goTo(int indice_a_ir) async {
+    final Result result = await _audioPlayer.seekIndex(indice_a_ir);
+    if (result == Result.FAIL) {
+      print(
+          "you tried to call audio conrolling methods on released audio player :(");
+    } else if (result == Result.ERROR) {
+      print("something went wrong in pause :(");
+    }
+  }
   Future<void> play() async {
     if (urls != null) {
       if(!_playAll) {
@@ -78,6 +92,24 @@ class audioPlayerClass {
           print("something went wrong in play method :(");
         }
       }
+    }
+
+  }
+
+  Future<void> Changeplay() async {
+    if (urls != null) {
+        _audioPlayer.dispose();
+        _audioPlayer = new AudioPlayer();
+        final Result result = await _audioPlayer.playAll(urls,index: indice,
+          repeatMode: false,
+          respectAudioFocus: false,
+          playerMode: PlayerMode.FOREGROUND,
+          audioNotifications: audioNotifications,
+        );
+        _playAll = true;
+        if (result == Result.ERROR) {
+          print("something went wrong in play method :(");
+        }
     }
 
   }
@@ -184,12 +216,14 @@ class audioPlayerClass {
   }
 
   void rellenarUrl() {
+    urls = new List<String>();
     for(int i = 0; i < audios.length; i++){
       urls.add(audios[i].devolverSonido());
     }
   }
 
   void rellenarNotificaciones(){
+    audioNotifications = new List<AudioNotification>();
     for(int i = 0; i < audios.length; i++){
       audioNotifications.add( AudioNotification(
           smallIconFileName: "ic_launcher",

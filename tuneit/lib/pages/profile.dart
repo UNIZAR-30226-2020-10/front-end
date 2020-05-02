@@ -8,6 +8,7 @@ import 'package:tuneit/pages/register/options.dart';
 import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/widgets/AutoScrollableText.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
+import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/textFields.dart';
@@ -123,6 +124,7 @@ class _ProfilePageState extends State<Profile> {
             ),
           ),
         ),
+      bottomNavigationBar: bottomExpandableAudio(),
     );
   }
 

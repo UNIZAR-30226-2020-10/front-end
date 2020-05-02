@@ -1,3 +1,4 @@
+import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/User.dart';
@@ -73,6 +74,10 @@ class _LoginState extends State<Login> {
   }
 
   void tryLogin () {
+    final key = Encrypter.Key.fromUtf8('my 32 length key................');
+    final iv = Encrypter.IV.fromLength(16);
+    final encrypter = Encrypter.Encrypter(Encrypter.AES(key));
+    final encrypted = encrypter.encrypt(_controller2.text, iv: iv);
     setState(() {
       fetchUser(_controller1.text, _controller2.text).then((value) async {
         if (value) {

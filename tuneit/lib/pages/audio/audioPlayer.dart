@@ -77,13 +77,11 @@ class _PlayerPageState extends State<PlayerPage> {
   void initState() {
     super.initState();
     _audioPlayerClass = new audioPlayerClass();
-    _audioPlayerClass.setValoresIniciales(audios,indice);
-    _initAudioPlayer();
+    initAudioPlayer();
   }
 
   @override
   Future<void> dispose() async {
-    _audioPlayer.pause();
     _durationSubscription?.cancel();
     _positionSubscription?.cancel();
     _playerCompleteSubscription?.cancel();
@@ -103,9 +101,17 @@ class _PlayerPageState extends State<PlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-    _audioPlayerClass.rellenarUrl();
-    _audioPlayerClass.rellenarNotificaciones();
     funcion_auxiliar();
+    print(_audioPlayerClass.getAudio() == audios);
+    print(_audioPlayerClass.getIndice() == indice);
+    print(_audioPlayerClass.getPlaying());
+    print(_audioPlayerClass.getIndice());
+    print(_audioPlayerClass.getIndice());
+    print(_audioPlayerClass.getIndice());
+    print(indice);
+    print(indice);
+    print(indice);
+    print(indice);
     return DefaultTabController(
         length: 5,
         child: Scaffold(
@@ -195,16 +201,38 @@ class _PlayerPageState extends State<PlayerPage> {
                           ),
                           IconButton(
                             onPressed:(){
-                              if(!_isPlaying) {
-                                _audioPlayerClass.play();
+                              if(_audioPlayerClass.getAudio() != audios){
+                                _audioPlayerClass.setValoresIniciales(audios,indice);
+                                _audioPlayerClass.rellenarUrl();
+                                _audioPlayerClass.rellenarNotificaciones();
+                                _audioPlayerClass.Changeplay();
+                                _audioPlayerClass.setPlaying(true);
+                                initAudioPlayer();
                               }
                               else{
-                                _audioPlayerClass.pause();
+                                if(_audioPlayerClass.getIndice() == indice){
+                                  if(_audioPlayerClass.getPlaying()){
+                                    _audioPlayerClass.setPlaying(false);
+                                    _audioPlayerClass.pause();
+                                  }
+                                  else{
+                                    _audioPlayerClass.play();
+                                    _audioPlayerClass.setPlaying(true);
+                                  }
+                                }
+                                else{
+                                  _audioPlayerClass.setIndice(indice);
+                                  _audioPlayerClass.goTo(indice);
+                                  _audioPlayerClass.play();
+                                  _audioPlayerClass.setPlaying(true);
+                                }
                               }
                             },
                             iconSize: 60.0,
 
-                            icon: Icon(_isPlaying
+                            icon: Icon(_audioPlayerClass.getAudio() == audios
+                                      && _audioPlayerClass.getIndice() == indice
+                                      && _audioPlayerClass.getPlaying()
                                 ? Icons.pause_circle_filled
                                 : Icons.play_circle_filled),
                           ),
@@ -295,7 +323,7 @@ class _PlayerPageState extends State<PlayerPage> {
     //);
   }
 
-  void _initAudioPlayer() {
+  void initAudioPlayer() {
     _audioPlayer = _audioPlayerClass.getAudioPlayer();
     _durationSubscription = _audioPlayer.onDurationChanged.listen((duration) {
       setState(() {

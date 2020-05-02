@@ -3,6 +3,7 @@ import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/PushProvider.dart';
 import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/pages/songs/showList.dart';
+import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
 
 import '../main.dart';
@@ -78,7 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         )
-      )
+      ),
+        bottomNavigationBar: bottomExpandableAudio(),
     );
   }
 

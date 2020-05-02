@@ -6,8 +6,10 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
+import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/playlistOption.dart';
+import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 
 
 class PlayLists extends StatefulWidget {
@@ -113,7 +115,8 @@ class _PlayListsState extends State<PlayLists> {
               completeList (listaPodcast, onTapPodcasts, []),
             )
           ],
-        )
+        ),
+          bottomNavigationBar: bottomExpandableAudio(),
       ),
     );
   }

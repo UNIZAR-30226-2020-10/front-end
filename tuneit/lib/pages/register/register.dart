@@ -248,10 +248,9 @@ class _RegisterState extends State<Register> {
     }
     else {
       setState(() {
-        final key = Encrypter.Key.fromUtf8('my 32 length key................');
-        final iv = Encrypter.IV.fromLength(16);
+        final key = Encrypter.Key.fromUtf8('Bocaditos');
         final encrypter = Encrypter.Encrypter(Encrypter.AES(key));
-        final encrypted = encrypter.encrypt(_controller3.text, iv: iv);
+        final encrypted = encrypter.encrypt(_controller3.text);
 
         registerUser(
             _controller1.text, _controller2.text, encrypted.base64, parsingDate(_date.toString()), pais

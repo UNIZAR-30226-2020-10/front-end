@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tuneit/model/message.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
+import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 
 
 class Notificaciones extends StatefulWidget{
@@ -90,7 +91,8 @@ class _NotificacionesState extends State<Notificaciones> {
                 ),
               );
             }
-    )
+    ),
+      bottomNavigationBar: bottomExpandableAudio(),
     );
   }
 }

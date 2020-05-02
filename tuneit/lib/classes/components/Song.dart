@@ -40,7 +40,7 @@ class Song extends Audio{
   }
 
   String devolverGenero(){
-
+    return "";
   }
 
 

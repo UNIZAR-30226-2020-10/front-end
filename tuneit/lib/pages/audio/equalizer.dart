@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
+import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 
 class Equalizer extends StatefulWidget {
   @override
@@ -33,6 +34,7 @@ class _EqualizerPageState extends State<Equalizer> {
         centerTitle: true,
       ),
       drawer: LateralMenu(),
+      bottomNavigationBar: bottomExpandableAudio(),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

@@ -56,6 +56,7 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
   }
   @override
   Widget build(BuildContext context) {
+          _initAudioPlayer();
           audios = _audioPlayerClass.getAudio();
           indice = _audioPlayerClass.getIndice();
           return PreferredSize(
@@ -81,11 +82,15 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
 
                             ListTile(
 
-                              leading: Image(
-                                image: NetworkImage(audios[indice].devolverImagen()),fit: BoxFit.fill,
+                              leading:  audios != null && indice != null ?
+                                Image(
+                                image: NetworkImage(
+                                            audios[indice].devolverImagen()
+                                            )
+                                  ,fit: BoxFit.fill,
                                 width: 70,
                                 height: 70,
-                              ),
+                              ) : Icon(Icons.album, size: 50),
 
                               title: MarqueeWidget(
                                       child: Text(audios != null && indice != null ?
@@ -97,11 +102,11 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
 
                               MarqueeWidget(
                                 child: Text(audios != null && indice != null ?
-                                            audios[indice].devolverArtista()
-                                                      + " | " +
-                                            audios[indice].devolverGenero() :
-                                             '---------------------', style: Theme.of(context).textTheme.body1,),
-                                            ),
+                                    audios[indice].devolverArtista()
+                                    + " | " + audios[indice].devolverGenero() :
+                                    'Artista Desconocido | Género Desconocido',
+                                    style: Theme.of(context).textTheme.body1,),
+                                  ),
 
                             ),
                             SizedBox(
@@ -167,14 +172,16 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
                                   }
                                   _audioPlayerClass.repeat();
                                   },),
-                                IconButton(icon: Icon(_isPlaying
+                                IconButton(icon: Icon(_audioPlayerClass.getPlaying()
                                     ? Icons.pause_circle_filled
                                     : Icons.play_circle_filled),
-                                  onPressed: () {if(!_isPlaying) {
+                                  onPressed: () {if(!_audioPlayerClass.getPlaying()) {
                                                     _audioPlayerClass.play();
+                                                    _audioPlayerClass.setPlaying(true);
                                                   }
                                                   else{
                                                     _audioPlayerClass.pause();
+                                                    _audioPlayerClass.setPlaying(false);
                                                   }
                                   }),
                                 IconButton(icon: Icon(Icons.shuffle),

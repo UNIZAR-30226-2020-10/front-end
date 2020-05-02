@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/pages/podcast/showPodcast.dart';
+import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
 
 class ResultPodcasts extends StatefulWidget {
@@ -46,6 +47,7 @@ class _ResultPodcastsState extends State<ResultPodcasts> {
             )
           ]
       ),
+      bottomNavigationBar: bottomExpandableAudio(),
     );
   }
 
