@@ -19,7 +19,7 @@ const String textoInutil_1="Buscando en nuestra base de datos las mejores cancio
 
 const String textoResultado='Resultados obtenidos ';
 
-const String ListaFavorita="Favoritas";
+const String ListaFavorita="Favoritos";
 
 
 const String error_mensaje="Error";

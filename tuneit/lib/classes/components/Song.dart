@@ -174,6 +174,7 @@ Future< SongLista> fetchSonglists(String id) async {
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
+  print(response.body);
 
   if (response.statusCode == 200) {
 
