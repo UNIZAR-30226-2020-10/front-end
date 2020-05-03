@@ -26,16 +26,17 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   String base64Image;
   File tmpFile;
   final TextEditingController _controller1 = TextEditingController();
+  static final  _formKey_2 = GlobalKey<FormState>();
+  final TextEditingController nombre = TextEditingController();
+  final TextEditingController password = TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
 
-    final _formKey_2 = GlobalKey<FormState>();
     final size_width = MediaQuery.of(context).size.width;
     final size_height= MediaQuery.of(context).size.height;
-    final TextEditingController nombre = TextEditingController();
-    final TextEditingController password = TextEditingController();
+    
     return Scaffold(
       appBar: AppBar(),
       drawer: LateralMenu(),
@@ -64,7 +65,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                       textField(
                         nombre,
                         false,
-                        '',
+                        'aaa',
                         Icons.edit
                         ),
 
@@ -79,7 +80,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                       textField(
                           password,
                         true,
-                        '',
+                        'baaa',
                         Icons.edit
 
                       ),
