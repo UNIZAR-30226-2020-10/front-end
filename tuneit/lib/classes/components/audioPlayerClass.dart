@@ -27,6 +27,8 @@ class audioPlayerClass {
   int indiceShuffle;
   int primera = 0;
 
+  // Variables Canciones y Podcast Favoritos
+  List<Audio> cancionesFav;
 
   List<AudioNotification> audioNotifications = new List<AudioNotification>();
   //////////////////////////////
@@ -40,6 +42,7 @@ class audioPlayerClass {
   void setShuffle (bool shuffleMode) => _shuffleMode = shuffleMode;
   void setIndice(int el_indice) => indice = el_indice;
   void setPlaying(bool playing) => this.playing = playing;
+  void setCancionesFavoritas(List<Audio> audiosFavoritos) => cancionesFav =  audiosFavoritos;
   AudioPlayer getAudioPlayer() {
     return _audioPlayer;
   }
@@ -72,7 +75,7 @@ class audioPlayerClass {
     }
   }
   Future<void> play() async {
-    if (urls != null) {
+    if (audios != null) {
       if(!_playAll) {
         final Result result = await _audioPlayer.playAll(urls,index: indice,
           repeatMode: false,
@@ -97,7 +100,7 @@ class audioPlayerClass {
   }
 
   Future<void> Changeplay() async {
-    if (urls != null) {
+    if (audios != null) {
         _audioPlayer.dispose();
         _audioPlayer = new AudioPlayer();
         final Result result = await _audioPlayer.playAll(urls,index: indice,
@@ -115,102 +118,112 @@ class audioPlayerClass {
   }
 
   Future<void> pause() async {
-    final Result result = await _audioPlayer.pause();
-    if (result == Result.FAIL) {
-      print(
-          "you tried to call audio conrolling methods on released audio player :(");
-    } else if (result == Result.ERROR) {
-      print("something went wrong in pause :(");
+    if(audios != null) {
+      final Result result = await _audioPlayer.pause();
+      if (result == Result.FAIL) {
+        print(
+            "you tried to call audio conrolling methods on released audio player :(");
+      } else if (result == Result.ERROR) {
+        print("something went wrong in pause :(");
+      }
     }
   }
 
   Future<void> stop() async {
-    indice = 0;
-    final Result result = await _audioPlayer.stop();
-    if (result == Result.FAIL) {
-      print(
-          "you tried to call audio conrolling methods on released audio player :(");
-    } else if (result == Result.ERROR) {
-      print("something went wrong in stop :(");
+    if(audios != null) {
+      indice = 0;
+      final Result result = await _audioPlayer.stop();
+      if (result == Result.FAIL) {
+        print(
+            "you tried to call audio conrolling methods on released audio player :(");
+      } else if (result == Result.ERROR) {
+        print("something went wrong in stop :(");
+      }
     }
   }
 
   Future<void> repeat() async {
-    final Result result = await _audioPlayer.setRepeatMode(_repeatMode);
-    if (result == Result.FAIL) {
-      print(
-          "you tried to call audio conrolling methods on released audio player :(");
-    } else if (result == Result.ERROR) {
-      print("something went wrong in stop :(");
+    if (audios != null) {
+      final Result result = await _audioPlayer.setRepeatMode(_repeatMode);
+      if (result == Result.FAIL) {
+        print(
+            "you tried to call audio conrolling methods on released audio player :(");
+      } else if (result == Result.ERROR) {
+        print("something went wrong in stop :(");
+      }
     }
   }
 
   Future<void> next() async {
-    if(!_shuffleMode) {
-      if (indice == audios.length - 1) {
-        indice = 0;
+    if(audios != null) {
+      if (!_shuffleMode) {
+        if (indice == audios.length - 1) {
+          indice = 0;
+        }
+        else {
+          indice++;
+        }
+        final Result result = await _audioPlayer.seekIndex(indice);
+        if (result == Result.FAIL) {
+          print(
+              "you tried to call audio conrolling methods on released audio player :(");
+        } else if (result == Result.ERROR) {
+          print("something went wrong in next :(");
+        }
       }
       else {
-        indice++;
-      }
-      final Result result = await _audioPlayer.seekIndex(indice);
-      if (result == Result.FAIL) {
-        print(
-            "you tried to call audio conrolling methods on released audio player :(");
-      } else if (result == Result.ERROR) {
-        print("something went wrong in next :(");
-      }
-    }
-    else{
-      if(indiceShuffle == audiosShuffle.length - 1){
-        indice = audiosShuffle.elementAt(0);
-        indiceShuffle = 0;
-      }
-      else{
-        indiceShuffle++;
-        indice = audiosShuffle.elementAt(indiceShuffle);
-      }
-      final Result result = await _audioPlayer.seekIndex(indice);
-      if (result == Result.FAIL) {
-        print(
-            "you tried to call audio conrolling methods on released audio player :(");
-      } else if (result == Result.ERROR) {
-        print("something went wrong in previous :(");
+        if (indiceShuffle == audiosShuffle.length - 1) {
+          indice = audiosShuffle.elementAt(0);
+          indiceShuffle = 0;
+        }
+        else {
+          indiceShuffle++;
+          indice = audiosShuffle.elementAt(indiceShuffle);
+        }
+        final Result result = await _audioPlayer.seekIndex(indice);
+        if (result == Result.FAIL) {
+          print(
+              "you tried to call audio conrolling methods on released audio player :(");
+        } else if (result == Result.ERROR) {
+          print("something went wrong in previous :(");
+        }
       }
     }
   }
 
   Future<void> previous() async {
-    if(!_shuffleMode) {
-      if (indice == 0) {
-        indice = audios.length - 1;
+    if(audios != null) {
+      if (!_shuffleMode) {
+        if (indice == 0) {
+          indice = audios.length - 1;
+        }
+        else {
+          indice--;
+        }
+        final Result result = await _audioPlayer.seekIndex(indice);
+        if (result == Result.FAIL) {
+          print(
+              "you tried to call audio conrolling methods on released audio player :(");
+        } else if (result == Result.ERROR) {
+          print("something went wrong in previous :(");
+        }
       }
       else {
-        indice--;
-      }
-      final Result result = await _audioPlayer.seekIndex(indice);
-      if (result == Result.FAIL) {
-        print(
-            "you tried to call audio conrolling methods on released audio player :(");
-      } else if (result == Result.ERROR) {
-        print("something went wrong in previous :(");
-      }
-    }
-    else{
-      if(indiceShuffle == 0){
-        indice = audiosShuffle.elementAt(audiosShuffle.length - 1);
-        indiceShuffle = audiosShuffle.length - 1;
-      }
-      else{
-        indiceShuffle--;
-        indice =audiosShuffle.elementAt(indiceShuffle);
-      }
-      final Result result = await _audioPlayer.seekIndex(indice);
-      if (result == Result.FAIL) {
-        print(
-            "you tried to call audio conrolling methods on released audio player :(");
-      } else if (result == Result.ERROR) {
-        print("something went wrong in previous :(");
+        if (indiceShuffle == 0) {
+          indice = audiosShuffle.elementAt(audiosShuffle.length - 1);
+          indiceShuffle = audiosShuffle.length - 1;
+        }
+        else {
+          indiceShuffle--;
+          indice = audiosShuffle.elementAt(indiceShuffle);
+        }
+        final Result result = await _audioPlayer.seekIndex(indice);
+        if (result == Result.FAIL) {
+          print(
+              "you tried to call audio conrolling methods on released audio player :(");
+        } else if (result == Result.ERROR) {
+          print("something went wrong in previous :(");
+        }
       }
     }
   }
@@ -236,16 +249,25 @@ class audioPlayerClass {
   }
 
   Future<void> shuffle() async {
-
-    for(int i = 0; i < audios.length ; i++){
-      audiosShuffle.add(i);
+    if(audios != null) {
+      for (int i = 0; i < audios.length; i++) {
+        audiosShuffle.add(i);
+      }
+      audiosShuffle.shuffle();
+      primera = await _audioPlayer.getCurrentPlayingAudioIndex();
+      int index_primera_shuffle = audiosShuffle.indexOf(primera);
+      int valor_index_0 = audiosShuffle.elementAt(0);
+      audiosShuffle[index_primera_shuffle] = valor_index_0;
+      audiosShuffle[0] = primera;
+      indiceShuffle = 0;
     }
-    audiosShuffle.shuffle();
-    primera = await _audioPlayer.getCurrentPlayingAudioIndex();
-    int index_primera_shuffle = audiosShuffle.indexOf(primera);
-    int valor_index_0 = audiosShuffle.elementAt(0);
-    audiosShuffle[index_primera_shuffle] = valor_index_0;
-    audiosShuffle[0] = primera;
-    indiceShuffle = 0;
+  }
+
+  bool existeCancionFav (Audio cancion ) {
+    for (Audio cancionBusqueda in cancionesFav) {
+      if (cancion.devolverTitulo() == cancionBusqueda.devolverTitulo()
+          && cancion.devolverArtista() == cancion.devolverArtista()) return true;
+    }
+    return false;
   }
 }

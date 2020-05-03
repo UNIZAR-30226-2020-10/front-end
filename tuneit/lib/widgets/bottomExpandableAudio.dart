@@ -162,16 +162,23 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
                                   },),
                                 IconButton(icon: Icon(Icons.repeat,
                                     color: iconRepeatColor),
-                                  onPressed: () {if(_audioPlayerClass.getRepeat()){
-                                    _audioPlayerClass.setRepeat(false);
-                                    setState((){ iconRepeatColor = ColorSets.colorGrey;});
-                                  }
-                                  else{
-                                    _audioPlayerClass.setRepeat(true);
-                                    setState((){ iconRepeatColor = ColorSets.colorBlue;});
-                                  }
-                                  _audioPlayerClass.repeat();
-                                  },),
+                                  onPressed: () {
+                                    if (_audioPlayerClass.getAudio() != null) {
+                                      if (_audioPlayerClass.getRepeat()) {
+                                        _audioPlayerClass.setRepeat(false);
+                                        setState(() {
+                                          iconRepeatColor = ColorSets.colorGrey;
+                                        });
+                                      }
+                                      else {
+                                        _audioPlayerClass.setRepeat(true);
+                                        setState(() {
+                                          iconRepeatColor = ColorSets.colorBlue;
+                                        });
+                                      }
+                                      _audioPlayerClass.repeat();
+                                    }
+                                  }),
                                 IconButton(icon: Icon(_audioPlayerClass.getPlaying()
                                     ? Icons.pause_circle_filled
                                     : Icons.play_circle_filled),
@@ -186,15 +193,19 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
                                   }),
                                 IconButton(icon: Icon(Icons.shuffle),
                                   color: iconShuffleColor,
-                                  onPressed: () {  if(!_audioPlayerClass.getShuffle()){
-                                                      _audioPlayerClass.setShuffle(true);
-                                                      setState((){iconShuffleColor = ColorSets.colorBlue;});
-                                                      _audioPlayerClass.shuffle();
-                                                    }
-                                                  else{
-                                                    _audioPlayerClass.setShuffle(false);
-                                                    setState((){iconShuffleColor = ColorSets.colorGrey;});
-                                  }},),
+                                  onPressed: () {
+                                    if(_audioPlayerClass.getAudio() != null){
+                                      if(!_audioPlayerClass.getShuffle()) {
+                                        _audioPlayerClass.setShuffle(true);
+                                        setState((){iconShuffleColor = ColorSets.colorBlue;});
+                                        _audioPlayerClass.shuffle();
+                                      }
+                                      else{
+                                        _audioPlayerClass.setShuffle(false);
+                                        setState((){iconShuffleColor = ColorSets.colorGrey;});
+                                      }
+                                    }
+                                  },),
                                 IconButton(icon: Icon(Icons.skip_next),
                                   onPressed: () {_audioPlayerClass.next();},),
                               ],

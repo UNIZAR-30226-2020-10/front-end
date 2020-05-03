@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/Searcher.dart';
+import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/pages/songs/showList.dart';
@@ -37,6 +40,10 @@ class _PlayListsState extends State<PlayLists> {
       setState(() {
         listaPlaylists = listaPlay;
       });
+      SongLista cancionesFavoritas =await fetchSonglists(listaPlaylists[0].id.toString());
+      List<Audio> audiosFavoritos=cancionesFavoritas.songs;
+      audioPlayerClass _audioPlayerClass = new audioPlayerClass();
+      _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);
     }
     else {
       List<Podcast> listaPodc = await fetchFavPodcasts();
@@ -122,6 +129,8 @@ class _PlayListsState extends State<PlayLists> {
   }
 
   void onTapPlaylists (int index) {
+    print(index);
+    print('hola');
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => ShowList(indetificadorLista: listaPlaylists[index].id.toString(), list_title: listaPlaylists[index].name),
     ));
