@@ -135,6 +135,15 @@ class _PlayerPageState extends State<PlayerPage> {
                       ),
                     ),
                   ),
+              // IconButton(
+              //    iconSize: 60.0,
+              //    icon: Icon(_audioPlayerClass.existeCancionFav(audios[indice])
+              //        ? Icons.favorite
+              //        : Icons.favorite_border),
+              //    onPressed: () {
+              //
+              //    }
+              // ),
 
 
 
@@ -257,7 +266,6 @@ class _PlayerPageState extends State<PlayerPage> {
                               onPressed: () {
                                 _audioPlayerClass.next();
                               }),
-
                         ],
                       ),
                     ],
