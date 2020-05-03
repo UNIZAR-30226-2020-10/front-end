@@ -239,7 +239,7 @@ class _RegisterState extends State<Register> {
     else if (_controller3.text.toString().length < 7){
       mostrarError('Tu constraseña debe ser de más de 7 carácteres');
     }
-    else if(!_controller3.text.toString().contains(new RegExp(r'^[a-zA-Z]*[0-9][a-zA-Z]*$'))){
+    else if(!_controller3.text.toString().contains(new RegExp(r'^[a-zA-Z]*[0-9][0-9a-zA-Z]*$'))){
     mostrarError('Tu constraseña debe tener como mínimo 1 número y '
     'solo se aceptan minúsculas, mayúsculas y números ');
     }
@@ -248,9 +248,10 @@ class _RegisterState extends State<Register> {
     }
     else {
       setState(() {
-        final key = Encrypter.Key.fromUtf8('Bocaditos');
-        final encrypter = Encrypter.Encrypter(Encrypter.AES(key));
-        final encrypted = encrypter.encrypt(_controller3.text);
+        final key = Encrypter.Key.fromUtf8('KarenSparckJonesProyectoSoftware');
+        final iv = Encrypter.IV.fromLength(16);
+        final encrypter = Encrypter.Encrypter(Encrypter.AES(key,mode: Encrypter.AESMode.ecb));
+        final encrypted = encrypter.encrypt(_controller3.text, iv: iv);
 
         registerUser(
             _controller1.text, _controller2.text, encrypted.base64, parsingDate(_date.toString()), pais

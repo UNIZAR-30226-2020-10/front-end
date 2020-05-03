@@ -74,12 +74,12 @@ class _LoginState extends State<Login> {
   }
 
   void tryLogin () {
-    final key = Encrypter.Key.fromUtf8('my 32 length key................');
+    final key = Encrypter.Key.fromUtf8('KarenSparckJonesProyectoSoftware');
     final iv = Encrypter.IV.fromLength(16);
-    final encrypter = Encrypter.Encrypter(Encrypter.AES(key));
+    final encrypter = Encrypter.Encrypter(Encrypter.AES(key, mode: Encrypter.AESMode.ecb));
     final encrypted = encrypter.encrypt(_controller2.text, iv: iv);
     setState(() {
-      fetchUser(_controller1.text, _controller2.text).then((value) async {
+      fetchUser(_controller1.text,  encrypted.base64).then((value) async {
         if (value) {
 
           Globals.isLoggedIn = true;
