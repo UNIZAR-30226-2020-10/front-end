@@ -113,40 +113,40 @@ Future<bool> deleteUser(
   }
 }
 
-Future<bool> settingsUser(String password, String name, String email)async{
+Future<bool> settingsUser(String password, String name, String pais)async{
   bool exito = false;
-  if(password != "" || name != "") {
-    var body;
-    if (password != "" && name != "") {
-       body = jsonEncode(<String, String>{
-        'email': Globals.email,
-        'password': password,
-        'nombre': name,
-      });
-    }
-    else if (password != "") {
-     body = jsonEncode(<String, String>{
-        'email': Globals.email,
-        'password': password,
-      });
-    }
-    else if (name != "") {
-      body = jsonEncode(<String, String>{
-        'email': Globals.email,
-        'nombre': name,
-      });
-    }
+  var body;
+
+  if(password!=""){
+
+    body = jsonEncode(<String, String>{
+      'email': Globals.email,
+      'password': password,
+    });
 
     exito=await upDateSettings(body);
-    if(exito){
-      if(name!=""){Globals.name =name;}
-      if(password!=""){Globals.password=password;}
-    }
-  }
-    else{
-      return exito;
 
-    }
+  }
+  if(name!=""){
+
+    body = jsonEncode(<String, String>{
+      'email': Globals.email,
+      'nombre': name,
+    });
+
+    exito=await upDateSettings(body);
+
+  }
+  if(pais!=""){
+    body = jsonEncode(<String, String>{
+      'email': Globals.email,
+      'pais': pais,
+    });
+
+    exito=await upDateSettings(body);
+
+  }
+  return exito;
   }
 
 

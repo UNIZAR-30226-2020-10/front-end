@@ -30,7 +30,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   static final  _formKey_2 = GlobalKey<FormState>();
   final TextEditingController nombre = TextEditingController();
   final TextEditingController password = TextEditingController();
-  final TextEditingController correo = TextEditingController();
   String pais = 'País de nacimiento';
 
 
@@ -142,7 +141,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
                               ) {
 
-                            confirmarCambios( password.text,nombre.text,correo.text);
+                            confirmarCambios( password.text,nombre.text,pais);
 
                           },
                           color: Colors.deepPurple,
@@ -211,9 +210,9 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     );
   }
 
-  void confirmarCambios( String password, String nombre, String mail){
-    settingsUser( password,nombre,mail);
-    startUploadPhoto(tmpFile, base64Image);
+  void confirmarCambios( String password, String nombre, String pais){
+    settingsUser( password,nombre,pais);
+    //startUploadPhoto(tmpFile, base64Image);
   }
 
   Widget showImage(){

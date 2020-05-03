@@ -1,15 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tuneit/pages/register/register.dart';
-import 'package:tuneit/classes/components/Foto.dart';
-import 'package:tuneit/classes/components/User.dart';
-import 'package:tuneit/classes/values/ColorSets.dart';
-import 'package:tuneit/widgets/buttons.dart';
-import 'package:tuneit/widgets/textFields.dart';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:async';
 
 Widget widget_paises(Widget f){
   return Row(
