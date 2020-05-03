@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 
+import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/values/Globals.dart';
 
@@ -118,10 +119,13 @@ Future<bool> settingsUser(String password, String name, String pais)async{
   var body;
 
   if(password!=""){
-
+    final key = Encrypter.Key.fromUtf8('KarenSparckJonesProyectoSoftware');
+    final iv = Encrypter.IV.fromLength(16);
+    final encrypter = Encrypter.Encrypter(Encrypter.AES(key,mode: Encrypter.AESMode.ecb));
+    final encrypted = encrypter.encrypt(password, iv: iv);
     body = jsonEncode(<String, String>{
       'email': Globals.email,
-      'password': password,
+      'password': encrypted.base64,
     });
 
     exito=await upDateSettings(body);

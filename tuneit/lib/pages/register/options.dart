@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/Foto.dart';
@@ -211,8 +212,20 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   }
 
   void confirmarCambios( String password, String nombre, String pais){
-    settingsUser( password,nombre,pais);
-    //startUploadPhoto(tmpFile, base64Image);
+    if(nombre.length < 3 || nombre.length > 50){
+      mostrarError('Tu nuevo nombre de usuario debe contener entre 3 y 50 carácteres');
+    }
+    else if (password.length < 7 && password.length > 0){
+      mostrarError('Tu constraseña debe ser de más de 7 carácteres');
+    }
+    else if(!password.contains(new RegExp(r'^[a-zA-Z]*[0-9][0-9a-zA-Z]*$'))){
+      mostrarError('Tu constraseña debe tener como mínimo 1 número y '
+          'solo se aceptan minúsculas, mayúsculas y números ');
+    }
+    else {
+      settingsUser(password, nombre, pais);
+      //startUploadPhoto(tmpFile, base64Image);
+    }
   }
 
   Widget showImage(){
@@ -252,8 +265,12 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
 
   void tryDelete () {
+    final key = Encrypter.Key.fromUtf8('KarenSparckJonesProyectoSoftware');
+    final iv = Encrypter.IV.fromLength(16);
+    final encrypter = Encrypter.Encrypter(Encrypter.AES(key,mode: Encrypter.AESMode.ecb));
+    final encrypted = encrypter.encrypt(_controller1.text, iv: iv);
     setState(() {
-      deleteUser(Globals.email, _controller1.text).then((value) async {
+      deleteUser(Globals.email, encrypted.base64).then((value) async {
         if (value) {
 
           Globals.isLoggedIn = false;
@@ -300,7 +317,20 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
       });
     });
   }
-
+  void mostrarError(String description) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('ERROR'),
+            content: Text(description),
+            actions: <Widget>[
+              simpleButton(context, () {Navigator.of(context).pop();}, [], 'Volver')
+            ],
+          );
+        }
+    );
+  }
 
 }
 

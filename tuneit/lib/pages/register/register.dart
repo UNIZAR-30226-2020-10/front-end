@@ -9,6 +9,7 @@ import 'package:tuneit/widgets/textFields.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:email_validator/email_validator.dart';
 
 import 'package:encrypt/encrypt.dart' as Encrypter;
 
@@ -230,8 +231,14 @@ class _RegisterState extends State<Register> {
     if (_controller1.text.toString().length < 1) {
       mostrarError('Tu nombre de usuario no puede estar vacío');
     }
+    if (_controller1.text.toString().length < 3 || _controller1.text.toString().length > 50) {
+      mostrarError('Tu nombre de usuario debe contener entre 3 y 50 carácteres');
+    }
     else if (_controller2.text.toString().length < 1) {
       mostrarError('Tu correo electrónico no puede estar vacío');
+    }
+    else if(!EmailValidator.validate(_controller2.text.toString())){
+      mostrarError('Tu correo electrónico debe ser un correo electrónico válido');
     }
     else if (_controller3.text.toString().length < 1) {
       mostrarError('Tu constraseña no puede estar vacía');
