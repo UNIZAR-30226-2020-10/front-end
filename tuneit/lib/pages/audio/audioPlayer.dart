@@ -234,6 +234,7 @@ class _PlayerPageState extends State<PlayerPage> {
                                   _audioPlayerClass.goTo(indice);
                                   _audioPlayerClass.play();
                                   _audioPlayerClass.setPlaying(true);
+                                  initAudioPlayer();
                                 }
                               }
                             },
@@ -333,43 +334,46 @@ class _PlayerPageState extends State<PlayerPage> {
 
   void initAudioPlayer() {
     _audioPlayer = _audioPlayerClass.getAudioPlayer();
-    _durationSubscription = _audioPlayer.onDurationChanged.listen((duration) {
-      setState(() {
-        _duration = duration;
+    if(audios == _audioPlayerClass.getAudio() && indice == _audioPlayerClass.getIndice()) {
+      _durationSubscription = _audioPlayer.onDurationChanged.listen((duration) {
+        setState(() {
+          _duration = duration;
+        });
       });
-    });
-    _positionSubscription = _audioPlayer.onAudioPositionChanged.listen((pos) {
-      setState(() {
-        _position = pos;
+      _positionSubscription = _audioPlayer.onAudioPositionChanged.listen((pos) {
+        setState(() {
+          _position = pos;
+        });
       });
-    });
-    _playerStateSubscription =
-        _audioPlayer.onPlayerStateChanged.listen((playerState) {
-          setState(() {
-            _playerState = playerState;
-            print(_playerState);
+      _playerStateSubscription =
+          _audioPlayer.onPlayerStateChanged.listen((playerState) {
+            setState(() {
+              _playerState = playerState;
+              print(_playerState);
+            });
           });
-        });
-    _playerIndexSubscription =
-        _audioPlayer.onCurrentAudioIndexChanged.listen((index) {
-          setState(() {
-            _position = Duration(milliseconds: 0);
-            indice = index;
+      _playerIndexSubscription =
+          _audioPlayer.onCurrentAudioIndexChanged.listen((index) {
+            setState(() {
+              _position = Duration(milliseconds: 0);
+              indice = index;
+            });
           });
-        });
-    _playerAudioSessionIdSubscription =
-        _audioPlayer.onAudioSessionIdChange.listen((audioSessionId) {
-          print("audio Session Id: $audioSessionId");
-        });
-    _notificationActionCallbackSubscription = _audioPlayer
-        .onNotificationActionCallback
-        .listen((notificationActionName) {
-      //do something
-    });
-    _playerCompleteSubscription = _audioPlayer.onPlayerCompletion.listen((a) {
-      _position = Duration(milliseconds: 0);
-      print('Current player is completed');
-    });
+      _playerAudioSessionIdSubscription =
+          _audioPlayer.onAudioSessionIdChange.listen((audioSessionId) {
+            print("audio Session Id: $audioSessionId");
+          });
+      _notificationActionCallbackSubscription = _audioPlayer
+          .onNotificationActionCallback
+          .listen((notificationActionName) {
+        //do something
+      });
+      _playerCompleteSubscription = _audioPlayer.onPlayerCompletion.listen((a) {
+        _position = Duration(milliseconds: 0);
+        print('Current player is completed');
+      }
+      );
+    }
   }
 }
 
