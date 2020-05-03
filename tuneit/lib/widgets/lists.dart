@@ -150,7 +150,14 @@ List<Widget> listaParaAudios(BuildContext context,List<Audio> audios, String ind
 
                 }).toList();
               },
-            ):Container( width: 0,height: 0,),
+            ):IconButton(
+              icon: Icon(Icons.search),
+              onPressed: (){
+                print("aaaaaaaaaaaaaaa");
+                print(audios[index].devolverTitulo());
+                launchInBrowser(audios[index].devolverTitulo(),audios[index].devolverArtista());
+              },
+            ),
 
           ),
         );

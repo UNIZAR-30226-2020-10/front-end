@@ -173,19 +173,7 @@ void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async
 
 }
 
-Future<void> launchInBrowser(String cancion,String artista) async {
-  String url= 'https://google.com/search?q=';
-  url= url + artista+'+'+cancion;
-  if (await canLaunch(url)) {
-    await launch(
-      url,
-      forceSafariVC: false,
-      forceWebView: false,
-    );
-  } else {
-    throw 'Could not launch $url';
-  }
-}
+
 
 
 

@@ -1,3 +1,5 @@
+import 'package:url_launcher/url_launcher.dart';
+
 abstract class  Audio{
 
  String devolverSonido();
@@ -30,4 +32,24 @@ List<Audio> ordenarPorArtistaAudios( List<Audio> songs){
  songs.sort(artistComparator);
  return songs;
 
+}
+
+Future<void> launchInBrowser(String cancion,String artista) async {
+ cancion=cancion.replaceAll('-', '');
+ cancion=cancion.replaceAll(' ', '+');
+ artista=artista.replaceAll('-', '');
+ artista=artista.replaceAll(' ', '+');
+
+ String url= 'https://google.com/search?q=';
+ url= url + artista+'+'+cancion;
+ print(url);
+ if (await canLaunch(url)) {
+  await launch(
+   url,
+   forceSafariVC: false,
+   forceWebView: false,
+  );
+ } else {
+  throw 'Could not launch $url';
+ }
 }
