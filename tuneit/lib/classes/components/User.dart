@@ -113,7 +113,7 @@ Future<bool> deleteUser(
   }
 }
 
-Future<bool> settingsUser(String password, String name)async{
+Future<bool> settingsUser(String password, String name, String email)async{
   bool exito = false;
   if(password != "" || name != "") {
     var body;

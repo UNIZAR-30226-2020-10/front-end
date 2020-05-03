@@ -29,6 +29,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   static final  _formKey_2 = GlobalKey<FormState>();
   final TextEditingController nombre = TextEditingController();
   final TextEditingController password = TextEditingController();
+  final TextEditingController correo = TextEditingController();
 
 
   @override
@@ -36,7 +37,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
     final size_width = MediaQuery.of(context).size.width;
     final size_height= MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
       appBar: AppBar(),
       drawer: LateralMenu(),
@@ -65,9 +66,25 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                       textField(
                         nombre,
                         false,
-                        'aaa',
+                        'Cambie su nombre',
                         Icons.edit
                         ),
+
+
+                      SizedBox(height: size_height*0.05,),
+
+
+
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('Cambiar su correo', style: Theme.of(context).textTheme.subtitle,),
+                      ),
+                      textField(
+                          correo,
+                          false,
+                          'Cambie su correo',
+                          Icons.edit
+                      ),
 
 
                       SizedBox(height: size_height*0.05,),
@@ -80,7 +97,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                       textField(
                           password,
                         true,
-                        'baaa',
+                        'Cambie su contraseña',
                         Icons.edit
 
                       ),
@@ -102,12 +119,10 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                         IconButton(icon: Icon(Icons.camera), onPressed: (){
                           setState(() {
                             la_imagen =chooseImage_Camera();
-                            print (la_imagen==null);
                           });
 
                         },),
                       ],),
-
 
                       SizedBox(height: size_height*0.05,),
                        Row(
@@ -133,7 +148,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
                               ) {
 
-                            confirmarCambios( password.text,nombre.text);
+                            confirmarCambios( password.text,nombre.text,correo.text);
 
                           },
                           color: Colors.deepPurple,
@@ -183,8 +198,8 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     );
   }
 
-  void confirmarCambios( String password, String nombre){
-    settingsUser( password,nombre);
+  void confirmarCambios( String password, String nombre, String mail){
+    settingsUser( password,nombre,mail);
     startUploadPhoto(tmpFile, base64Image);
   }
 
