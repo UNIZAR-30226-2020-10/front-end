@@ -4,6 +4,7 @@ import 'package:tuneit/classes/components/Foto.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/widgets/buttons.dart';
+import 'package:tuneit/widgets/pais.dart';
 import 'package:tuneit/widgets/textFields.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -107,27 +108,7 @@ class _RegisterState extends State<Register> {
                         Icons.lock_outline),
                     Column(
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: SizedBox(width: 12,),
-                            ),
-                            Flexible(
-                              child: Icon(
-                                Icons.place,
-                                color: Colors.grey,
-                                size: 25,
-                              ),
-                            ),
-                            Flexible(
-                              child: SizedBox(width: 15),
-                            ),
-                            Flexible(
-                              flex: 8,
-                              child:  countryDrop(),
-                            )
-                          ],
-                        ),
+                        widget_paises(countryDrop()),
 
                       ],
 
@@ -225,6 +206,25 @@ class _RegisterState extends State<Register> {
       },
     );
   }
+  Widget countryDrop () {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton(
+          hint: Text(pais),
+          icon: Icon(null),
+          style: TextStyle(
+            color: ColorSets.colorText,
+            fontSize: 15,
+          ),
+          onChanged: (String value) {
+            setState(() {
+              pais = value;
+            });
+          },
+          items: Paises()
+      ),
+    );
+  }
+
 
   void tryRegister () {
     if (_controller1.text.toString().length < 1) {
@@ -285,37 +285,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget countryDrop () {
-    return DropdownButtonHideUnderline(
-      child: DropdownButton(
-        hint: Text(pais),
-        icon: Icon(null),
-        style: TextStyle(
-          color: ColorSets.colorText,
-          fontSize: 15,
-        ),
-        onChanged: (String value) {
-          setState(() {
-            pais = value;
-          });
-        },
-        items: [
-          DropdownMenuItem(
-            value: 'España',
-            child: Text('España'),
-          ),
-          DropdownMenuItem(
-            value: 'Italia',
-            child: Text('Italia'),
-          ),
-          DropdownMenuItem(
-            value: 'Portugal',
-            child: Text('Portugal'),
-          )
-        ],
-      ),
-    );
-  }
+
 
   String parsingDate (String date) {
     List<String> splited = date.substring(0,10).split('-');
@@ -327,3 +297,4 @@ class _RegisterState extends State<Register> {
   }
 
 }
+

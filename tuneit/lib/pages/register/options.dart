@@ -11,6 +11,7 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/register/mainView.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/buttons.dart';
+import 'package:tuneit/widgets/pais.dart';
 import 'package:tuneit/widgets/textFields.dart';
 
 class opcionesPerfil extends StatefulWidget {
@@ -30,6 +31,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   final TextEditingController nombre = TextEditingController();
   final TextEditingController password = TextEditingController();
   final TextEditingController correo = TextEditingController();
+  String pais = 'País de nacimiento';
 
 
   @override
@@ -69,22 +71,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                         'Cambie su nombre',
                         Icons.edit
                         ),
-
-
-                      SizedBox(height: size_height*0.05,),
-
-
-
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('Cambiar su correo', style: Theme.of(context).textTheme.subtitle,),
-                      ),
-                      textField(
-                          correo,
-                          false,
-                          'Cambie su correo',
-                          Icons.edit
-                      ),
 
 
                       SizedBox(height: size_height*0.05,),
@@ -130,6 +116,14 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                            showImage(),
                          ],
                        ),
+
+
+
+                      SizedBox(height: size_height*0.05,),
+
+
+                     widget_paises(countryDrop()),
+
                       SizedBox(height: size_height*0.05,),
 
                      Row(
@@ -195,6 +189,25 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
 
 
+    );
+  }
+
+  Widget countryDrop () {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton(
+          hint: Text(pais),
+          icon: Icon(null),
+          style: TextStyle(
+            color: ColorSets.colorText,
+            fontSize: 15,
+          ),
+          onChanged: (String value) {
+            setState(() {
+              pais = value;
+            });
+          },
+          items: Paises()
+      ),
     );
   }
 
