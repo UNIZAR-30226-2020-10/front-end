@@ -3,6 +3,7 @@ import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/playlists.dart';
+import 'package:tuneit/widgets/errors.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/textFields.dart';
 import 'package:tuneit/classes/values/Constants.dart';

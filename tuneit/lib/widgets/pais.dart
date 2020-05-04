@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
 
 Widget widget_paises(Widget f){
   return Row(
@@ -11,7 +12,7 @@ Widget widget_paises(Widget f){
       Flexible(
         child: Icon(
           Icons.place,
-          color: Colors.grey,
+          color: ColorSets.colorGrey,
           size: 25,
         ),
       ),
@@ -32,28 +33,49 @@ Widget widget_paises(Widget f){
 List< DropdownMenuItem<String>> Paises(){
   return[
     DropdownMenuItem(
-      value: 'España',
-      child: Text('España'),
-    ),
-    DropdownMenuItem(
-      value: 'Italia',
-      child: Text('Italia'),
-    ),
-    DropdownMenuItem(
-      value: 'Portugal',
-      child: Text('Portugal'),
-    ),
-    DropdownMenuItem(
-      value: 'Portugal',
-      child: Text('Portugal'),
+      value: 'Argentina',
+      child: Text('Argentina'),
     ),
     DropdownMenuItem(
       value: 'Colombia',
       child: Text('Colombia'),
     ),
     DropdownMenuItem(
-      value: 'Argentina',
-      child: Text('Argentina'),
-    )
+      value: 'Cuba',
+      child: Text('Cuba'),
+    ),
+    DropdownMenuItem(
+      value: 'España',
+      child: Text('España'),
+    ),
+    DropdownMenuItem(
+      value: 'Ecuador',
+      child: Text('Ecuador'),
+    ),
+    DropdownMenuItem(
+      value: 'Estados Unidos',
+      child: Text('Estados Unidos'),
+    ),
+    DropdownMenuItem(
+      value: 'Italia',
+      child: Text('Italia'),
+    ),
+    DropdownMenuItem(
+      value: 'Mexico',
+      child: Text('Mexico'),
+    ),
+    DropdownMenuItem(
+      value: 'Portugal',
+      child: Text('Portugal'),
+    ),
+    DropdownMenuItem(
+      value: 'Puerto Rico',
+      child: Text('Puerto Rico'),
+    ),
+    DropdownMenuItem(
+      value: 'Venezuela',
+      child: Text('Venezuela'),
+    ),
+
   ];
 }

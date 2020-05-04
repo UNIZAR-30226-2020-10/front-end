@@ -12,6 +12,7 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/register/mainView.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/buttons.dart';
+import 'package:tuneit/widgets/errors.dart';
 import 'package:tuneit/widgets/pais.dart';
 import 'package:tuneit/widgets/textFields.dart';
 
@@ -31,7 +32,8 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   static final  _formKey_2 = GlobalKey<FormState>();
   final TextEditingController nombre = TextEditingController();
   final TextEditingController password = TextEditingController();
-  String pais = 'País de nacimiento';
+
+  String pais = Globals.country;
 
 
   @override
@@ -55,8 +57,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
               margin: const EdgeInsets.only(left: 15, right: 15),
               width: size_width*0.8,
                height: size_height*0.8,
-               child: Form(
-                 key: _formKey_2,
                     child: ListView(
 
                   children: <Widget>[
@@ -142,7 +142,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
                               ) {
 
-                            confirmarCambios( password.text,nombre.text,pais);
+                            confirmarCambios(context,password.text,nombre.text,pais);
 
                           },
                           color: Colors.deepPurple,
@@ -182,7 +182,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
                   ],
                 ),
-               ),
+
 
             ),
           ),
@@ -211,20 +211,22 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     );
   }
 
-  void confirmarCambios( String password, String nombre, String pais){
-    if(nombre.length < 3 || nombre.length > 50){
-      mostrarError('Tu nuevo nombre de usuario debe contener entre 3 y 50 carácteres');
+
+
+  void confirmarCambios(BuildContext context, String password, String nombre, String pais){
+    if(nombre!="" && (nombre.length < 3 || nombre.length > 50)){
+      mostrarError(context,'Tu nuevo nombre de usuario debe contener entre 3 y 50 carácteres');
     }
-    else if (password.length < 7 && password.length > 0){
-      mostrarError('Tu constraseña debe ser de más de 7 carácteres');
+    else if (password!="" && (password.length < 7 && password.length > 0)){
+      mostrarError(context,'Tu constraseña debe ser de más de 7 carácteres');
     }
-    else if(!password.contains(new RegExp(r'^[a-zA-Z]*[0-9][0-9a-zA-Z]*$'))){
-      mostrarError('Tu constraseña debe tener como mínimo 1 número y '
+    else if(password!="" && !password.contains(new RegExp(r'^[a-zA-Z]*[0-9][0-9a-zA-Z]*$'))){
+      mostrarError(context,'Tu constraseña debe tener como mínimo 1 número y '
           'solo se aceptan minúsculas, mayúsculas y números ');
     }
     else {
-      settingsUser(password, nombre, pais);
-      //startUploadPhoto(tmpFile, base64Image);
+      formularioContrasegna(context,password,nombre,pais);
+
     }
   }
 
@@ -317,22 +319,101 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
       });
     });
   }
-  void mostrarError(String description) {
+  bool comprarContreynas( String password){
+    if(password!="" && password!=null){
+      final key = Encrypter.Key.fromUtf8('KarenSparckJonesProyectoSoftware');
+      final iv = Encrypter.IV.fromLength(16);
+      final encrypter = Encrypter.Encrypter(Encrypter.AES(key,mode: Encrypter.AESMode.ecb));
+      final encrypted = encrypter.encrypt(password, iv: iv);
+      print(Globals.password);
+      print(encrypted.base64);
+
+      return (Globals.password==encrypted.base64);
+
+    }
+    else{
+      return false;
+    }
+
+
+    //settingsUser(encrypted.base64, nombre, pais);
+    //startUploadPhoto(tmpFile, base64Image);
+  }
+
+  void formularioContrasegna (BuildContext context,String passprueba, String nombre,String pais) {
+    // flutter defined functio
+    final TextEditingController confirmar_password = TextEditingController();
+    print(Globals.password);
+    print(passprueba);
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('ERROR'),
-            content: Text(description),
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+
+          child: AlertDialog(
+            title: Text(
+              'Confirmar cambio',
+              style: Theme.of(context).textTheme.title,
+            ),
+
+            content: new Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('Repita su antigua contraseña para confirmar el cambio. Recuerde que los campos vacíos no se modificarán.'),
+                textField(confirmar_password,true,"Contraseña antigua",Icons.edit),
+              ],
+            ),
             actions: <Widget>[
+              //SizedBox(height: 15,),
+              RaisedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  if(comprarContreynas(confirmar_password.text)){
+                    settingsUser(passprueba, nombre, pais);
+                    operacionExito(context);
+
+                  }
+                  else{
+                    mostrarError(context,"Contraseña incorrecta");
+                  }
+
+
+
+                },
+                color: ColorSets.colorBlue,
+                child: Text("Confirmar"),
+              ),
               simpleButton(context, () {Navigator.of(context).pop();}, [], 'Volver')
+
             ],
-          );
-        }
+
+          ),
+
+        );
+      },
     );
   }
 
+
+
+
+
 }
+
+
+
+
+
+
 
 
 

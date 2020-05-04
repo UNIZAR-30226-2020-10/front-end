@@ -114,24 +114,31 @@ Future<bool> deleteUser(
   }
 }
 
-Future<bool> settingsUser(String password, String name, String pais)async{
+Future<void> settingsUser(String password, String name, String pais)async{
   bool exito = false;
   var body;
 
-  if(password!=""){
+
+  if(password!="" && password!=Globals.password){
     final key = Encrypter.Key.fromUtf8('KarenSparckJonesProyectoSoftware');
     final iv = Encrypter.IV.fromLength(16);
     final encrypter = Encrypter.Encrypter(Encrypter.AES(key,mode: Encrypter.AESMode.ecb));
     final encrypted = encrypter.encrypt(password, iv: iv);
+    password=encrypted.base64;
+    print(password);
+
     body = jsonEncode(<String, String>{
       'email': Globals.email,
-      'password': encrypted.base64,
+      'password': password,
     });
 
     exito=await upDateSettings(body);
+    if(exito){
+      Globals.password=password;
+    }
 
   }
-  if(name!=""){
+  if(name!="" && Globals.name!=name){
 
     body = jsonEncode(<String, String>{
       'email': Globals.email,
@@ -139,18 +146,23 @@ Future<bool> settingsUser(String password, String name, String pais)async{
     });
 
     exito=await upDateSettings(body);
+    if(exito){
+      Globals.name=name;
+    }
 
   }
-  if(pais!=""){
+  if(pais!="" && Globals.country!=pais){
     body = jsonEncode(<String, String>{
       'email': Globals.email,
       'pais': pais,
     });
 
     exito=await upDateSettings(body);
+    if(exito){
+      Globals.country=pais;
+    }
 
   }
-  return exito;
   }
 
 

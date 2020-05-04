@@ -6,6 +6,7 @@ import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/widgets/errors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -51,30 +52,7 @@ void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_so
   );
 }
 
-void operacionCancelada(BuildContext context) {
-  // flutter defined function
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return GestureDetector(
 
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-
-        child: AlertDialog(
-          title: new Text(exito_mensaje),
-          content: new Text("Operacion cancelada"),
-
-        ),
-      );
-    },
-  );
-}
 
 
 void agregada(BuildContext context,String id_lista,String title) {
