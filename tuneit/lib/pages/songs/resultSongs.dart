@@ -31,10 +31,8 @@ class _ResultSongListState extends State<ResultSongList> {
 
 
   void choiceAction(String choice) async{
-    print(choice);
     List<String> hola=choice.split("--");
     choice=hola[0];
-    print(hola[2]);
     int id_song=int.parse(hola[1]);
     int indice=int.parse(hola[3]);
 

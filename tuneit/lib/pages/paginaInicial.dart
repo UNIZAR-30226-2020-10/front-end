@@ -148,7 +148,6 @@ class _MyHomePageState extends State<MyHomePage> {
       String cuerpo = argumento.body;
 
       //AQUI FALTARIA GUARDAR EL MENSAJE EN NUESTRA BASE DE DATOS
-      print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
       await almacenarMensaje();
 

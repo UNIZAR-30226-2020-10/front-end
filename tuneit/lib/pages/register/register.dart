@@ -177,8 +177,6 @@ class _RegisterState extends State<Register> {
     return FutureBuilder<File>(
       future: la_imagen,
       builder: (BuildContext context,AsyncSnapshot<File> snapshot){
-        print(snapshot.connectionState);
-        print(la_imagen);
         if(snapshot.connectionState== ConnectionState.done && snapshot.data!=null){
           tmpFile=snapshot.data;
           base64Image = base64Encode(snapshot.data.readAsBytesSync());

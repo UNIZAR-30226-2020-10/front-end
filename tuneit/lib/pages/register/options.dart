@@ -29,7 +29,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   String base64Image;
   File tmpFile;
   final TextEditingController _controller1 = TextEditingController();
-  static final  _formKey_2 = GlobalKey<FormState>();
   final TextEditingController nombre = TextEditingController();
   final TextEditingController password = TextEditingController();
 
@@ -325,8 +324,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
       final iv = Encrypter.IV.fromLength(16);
       final encrypter = Encrypter.Encrypter(Encrypter.AES(key,mode: Encrypter.AESMode.ecb));
       final encrypted = encrypter.encrypt(password, iv: iv);
-      print(Globals.password);
-      print(encrypted.base64);
 
       return (Globals.password==encrypted.base64);
 
@@ -343,8 +340,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   void formularioContrasegna (BuildContext context,String passprueba, String nombre,String pais) {
     // flutter defined functio
     final TextEditingController confirmar_password = TextEditingController();
-    print(Globals.password);
-    print(passprueba);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {

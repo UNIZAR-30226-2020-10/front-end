@@ -81,7 +81,7 @@ Widget completeList (List lista, Function func, List arguments) {
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemCount: lista.length,
       itemBuilder: (BuildContext context, int index) {
-        if(lista[index].name==ListaFavorita) {Globals.id_fav=lista[index].id.toString(); print(Globals.id_fav);}
+        if(lista[index].name==ListaFavorita) {Globals.id_fav=lista[index].id.toString();}
         return elementOfList(context, func, arguments + [index], lista[index].image, lista[index].name);
       }
   );
