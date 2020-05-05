@@ -100,24 +100,6 @@ class SongLista{
       songs: songsList
     );
   }
-  Future< SongLista> fetchSonglists(String id) async {
-    print(id);
-
-
-    var queryParameters = {
-      'lista' : id
-    };
-    var uri = Uri.https(baseURL,'/list_data' ,queryParameters);
-    final http.Response response = await http.get(uri, headers: {
-      HttpHeaders.contentTypeHeader: 'application/json',
-    });
-
-    if (response.statusCode == 200) {
-      return SongLista.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load playlists');
-    }
-  }
 
 }
 
