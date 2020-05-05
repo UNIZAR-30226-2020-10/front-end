@@ -170,7 +170,7 @@ Future< SongLista> fetchSonglists(String id) async {
   var queryParameters = {
     'lista' : id
   };
-  var uri = Uri.https(baseURL,'/list_data' ,queryParameters);
+  var uri = Uri.https(baseURL,'/list_lists_data' ,queryParameters);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
