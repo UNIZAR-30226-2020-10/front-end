@@ -119,29 +119,12 @@ Future<void> settingsUser(String password, String name, String pais)async{
   var body;
 
 
-  if(password!="" && password!=Globals.password){
-    final key = Encrypter.Key.fromUtf8('KarenSparckJonesProyectoSoftware');
-    final iv = Encrypter.IV.fromLength(16);
-    final encrypter = Encrypter.Encrypter(Encrypter.AES(key,mode: Encrypter.AESMode.ecb));
-    final encrypted = encrypter.encrypt(password, iv: iv);
-    password=encrypted.base64;
-    print(password);
 
-    body = jsonEncode(<String, String>{
-      'email': Globals.email,
-      'password': password,
-    });
-
-    exito=await upDateSettings(body);
-    if(exito){
-      Globals.password=password;
-    }
-
-  }
   if(name!="" && Globals.name!=name){
 
     body = jsonEncode(<String, String>{
       'email': Globals.email,
+      'password': Globals.password,
       'nombre': name,
     });
 
@@ -154,12 +137,34 @@ Future<void> settingsUser(String password, String name, String pais)async{
   if(pais!="" && Globals.country!=pais){
     body = jsonEncode(<String, String>{
       'email': Globals.email,
+      'password': Globals.password,
       'pais': pais,
     });
 
     exito=await upDateSettings(body);
     if(exito){
       Globals.country=pais;
+    }
+
+  }
+
+  if(password!="" && password!=Globals.password){
+    final key = Encrypter.Key.fromUtf8('KarenSparckJonesProyectoSoftware');
+    final iv = Encrypter.IV.fromLength(16);
+    final encrypter = Encrypter.Encrypter(Encrypter.AES(key,mode: Encrypter.AESMode.ecb));
+    final encrypted = encrypter.encrypt(password, iv: iv);
+    password=encrypted.base64;
+    print(password);
+
+    body = jsonEncode(<String, String>{
+      'email': Globals.email,
+      'password': Globals.password,
+      'new_password':password,
+    });
+
+    exito=await upDateSettings(body);
+    if(exito){
+      Globals.password=password;
     }
 
   }
