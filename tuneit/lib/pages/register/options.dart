@@ -255,7 +255,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
         }
         else{
           return const Text(
-            'No hay imagen loco',
+            'No hay imagen',
             textAlign: TextAlign.center,
           );
 
