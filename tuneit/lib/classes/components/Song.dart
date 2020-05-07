@@ -14,6 +14,7 @@ class Song extends Audio{
   List<String> artist;
   String url;
   int id;
+  List<String> genero;
   final String image;
 
   @override
@@ -40,7 +41,11 @@ class Song extends Audio{
   }
 
   String devolverGenero(){
-    return "";
+    String lista = "";
+    for(int i = 0; i < genero.length;i++){
+      lista = lista + genero[i].toString() + " ";
+    }
+    return lista;
   }
 
 
@@ -54,14 +59,16 @@ class Song extends Audio{
 
   }
 
-  Song({this.name,this.album, this.artist,this.url,this.id,this.image});
+  Song({this.name,this.album, this.artist,this.url,this.id,this.image,this.genero});
 
 
   factory Song.fromJson(Map<String, dynamic> parsedJson) {
 
     var streetsFromJson  = parsedJson['Artistas'];
+    var genreFromJson = parsedJson['Categorias'];
 
     List<String> losartistas = streetsFromJson.cast<String>();
+    List<String> losgeneros = genreFromJson.cast<String>();
 
     return Song(
       id: parsedJson['ID'],
@@ -69,7 +76,8 @@ class Song extends Audio{
       album: parsedJson['Album'],
       artist: losartistas,
       url :parsedJson['URL'],
-      image: parsedJson['Imagen']
+      image: parsedJson['Imagen'],
+      genero: losgeneros
     );
   }
 

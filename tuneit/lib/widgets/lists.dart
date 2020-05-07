@@ -138,7 +138,7 @@ List<Widget> listaParaAudios(BuildContext context,List<Audio> audios, String ind
 
             ),
             title: Text(audios[index].devolverTitulo()),
-            subtitle: Text(audios[index].devolverArtista()),
+            subtitle: Text(audios[index].devolverArtista() + ' | ' + audios[index].devolverGenero()),
             trailing: musicPod? PopupMenuButton<String>(
               onSelected: choiceAction,
               itemBuilder: (BuildContext context){

@@ -7,6 +7,7 @@ import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/widgets/AutoScrollableText.dart';
 
 
 
@@ -126,12 +127,14 @@ class _PlayerPageState extends State<PlayerPage> {
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('${audios[indice].devolverTitulo()}',
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontWeight: FontWeight.bold,
-                            fontSize: 32
-                        ),
+                      child: MarqueeWidget(
+                              child: Text('${audios[indice].devolverTitulo()}',
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontWeight: FontWeight.bold,
+                                    fontSize: 32
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -150,11 +153,13 @@ class _PlayerPageState extends State<PlayerPage> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(audios[indice].devolverArtista(),
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 32
+                  child: MarqueeWidget(
+                    child: Text(audios[indice].devolverArtista() + ' | ' + audios[indice].devolverGenero(),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontWeight: FontWeight.bold,
+                          fontSize: 32
+                      ),
                     ),
                   ),
                 ),

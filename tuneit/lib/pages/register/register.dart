@@ -235,6 +235,9 @@ class _RegisterState extends State<Register> {
     else if (_controller2.text.toString().length < 1) {
       mostrarError('Tu correo electrónico no puede estar vacío');
     }
+    else if(_controller2.text.toString().length > 50) {
+      mostrarError('Tu correo debe ser menor de 50 carácteres');
+    }
     else if(!EmailValidator.validate(_controller2.text.toString())){
       mostrarError('Tu correo electrónico debe ser un correo electrónico válido');
     }

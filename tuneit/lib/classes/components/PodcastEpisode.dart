@@ -39,7 +39,7 @@ class PodcastEpisode extends Audio {
   }
 
   String devolverGenero(){
-    return "podcast";
+    return "Podcast";
   }
 
   PodcastEpisode({this.id,this.name, this.image,this.description,this.audio,this.audio_length_sec,this.web_link});
