@@ -110,7 +110,6 @@ Future<List<Podcast>> fetchPodcastById(String ids) async {
   final http.Response response = await http.post(
     'https://' + baseURL + '/api/v2/podcasts',
     headers: <String, String>{
-      //'Content-Type': 'application/json; charset=UTF-8',
       'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1',
     },
     body: map,
@@ -142,8 +141,6 @@ Future<List<Podcast>> fetchFavPodcasts() async {
     List<String> list = (json.decode(response.body) as List)
         .map((data) => data.toString())
         .toList();
-    list.remove('a1');
-    list.remove('a2');
     String ids = list.join(',');
     List<Podcast> podcastList = await fetchPodcastById(ids);
 

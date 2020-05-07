@@ -8,10 +8,6 @@ import 'package:tuneit/classes/values/Globals.dart';
 
 const baseURL = 'psoftware.herokuapp.com';
 
-
-
-
-
 class Playlist {
   final int id;
   final String name;

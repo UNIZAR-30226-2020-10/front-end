@@ -7,6 +7,7 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/podcast/resultPodcasts.dart';
 import 'package:tuneit/pages/songs/resultPlaylist.dart';
 import 'package:tuneit/pages/songs/resultSongs.dart';
+import 'package:tuneit/pages/songs/searcherResult.dart';
 
 import 'Song.dart';
 
@@ -37,6 +38,10 @@ class _SearcherState extends State<Searcher> {
       ),
       child: TextField(
         //minLines: 3,
+        textInputAction: TextInputAction.search,
+        onSubmitted: (value) {
+          searchQuery();
+        },
         onChanged: (value) {
           //filterSearchResults(value);
         },
@@ -54,61 +59,69 @@ class _SearcherState extends State<Searcher> {
               icon: Icon(Icons.search, color: Colors.white70,),
               iconSize: 30,
               onPressed: ()async {
-                if(editingController.text.length>=3){
-
-
-                  if(musNpod){
-                    //Compruebo primero las canciones
-                    List<Song> lista_p = await buscar_canciones(editingController.text);
-                    // Si no hay ninguna cancion voy a comprobar las listas
-                    if(lista_p==null || lista_p.isEmpty){
-                      // Compruebo las listas
-                      List<Playlist> listaP = await buscar_una_lista(editingController.text,Globals.email);
-                      if(listaP==null || listaP.isEmpty){
-                        //Si no hay nada pues error
-                        _notFound(editingController.text);
-                      }
-                      else{
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
-                        ));
-                      }
-                    }
-                    else{
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ResultSongList(lista_p,editingController.text),
-                        ),
-                      );
-                    }
-                  }
-                  else{
-                    List<Podcast> listaPodcasts = await fetchPodcastByTitle(editingController.text);
-                    //Haz que sino encuentra nada devuelva null
-                    if(listaPodcasts==null|| listaPodcasts.isEmpty){
-                      _notFound(editingController.text);
-                    }
-                    else{
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ResultPodcasts(listaPodcasts, editingController.text),
-                        ),
-                      );
-                    }
-                  }
-                }
-                else{
-                  _notBigEnough();
-
-
-                }
+                searchQuery();
               }
           ),
         ),
       ),
     );
+  }
+
+  void searchQuery () async {
+    if(editingController.text.length>=3){
+
+
+      if(musNpod){
+        //Compruebo primero las canciones
+        List<Song> lista_p = await buscar_canciones(editingController.text);
+        List<Playlist> listaP = await buscar_una_lista(editingController.text,Globals.email);
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => SearcherResult(lista_p, listaP),
+        ));
+        // Si no hay ninguna cancion voy a comprobar las listas
+        /*if(lista_p==null || lista_p.isEmpty){
+          // Compruebo las listas
+
+          if(listaP==null || listaP.isEmpty){
+            //Si no hay nada pues error
+            _notFound(editingController.text);
+          }
+          else{
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
+            ));
+          }
+        }
+        else{
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResultSongList(lista_p,editingController.text),
+            ),
+          );
+        }*/
+      }
+      else{
+        List<Podcast> listaPodcasts = await fetchPodcastByTitle(editingController.text);
+        //Haz que sino encuentra nada devuelva null
+        if(listaPodcasts==null|| listaPodcasts.isEmpty){
+          _notFound(editingController.text);
+        }
+        else{
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResultPodcasts(listaPodcasts, editingController.text),
+            ),
+          );
+        }
+      }
+    }
+    else{
+      _notBigEnough();
+
+
+    }
   }
 
   // user defined function
