@@ -164,3 +164,53 @@ List<Widget> listaParaAudios(BuildContext context,List<Audio> audios, String ind
   );
 
 }
+
+List<Widget> listaParaAudiosCategorias(BuildContext context,List<Audio> audios, String indetificadorLista,bool musicPod,Function choiceAction){
+  return List.generate(
+    audios.length,
+        (index) {
+      return
+        Card(
+          key: Key('$index'),
+          child: new ListTile(
+            onTap:(){
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PlayerPage(audios:audios,indice: index),
+
+              ));
+            },
+
+            leading: GFAvatar(
+
+              backgroundImage: NetworkImage(audios[index].devolverImagen()),
+              backgroundColor: Colors.transparent,
+              shape: GFAvatarShape.standard,
+
+            ),
+            title: Text(audios[index].devolverTitulo()),
+            subtitle: Text(audios[index].devolverArtista()),
+            trailing: musicPod? PopupMenuButton<String>(
+              onSelected: choiceAction,
+              itemBuilder: (BuildContext context){
+                return optionMenuSongCategory.map((String choice){
+                  return PopupMenuItem<String>(
+                    value: (choice + "--"+audios[index].devolverID().toString()+"--"+indetificadorLista+"--"+index.toString()),
+                    child: Text(choice),
+                  );
+
+                }).toList();
+              },
+            ):IconButton(
+              icon: Icon(Icons.search),
+              onPressed: (){
+                launchInBrowser(audios[index].devolverTitulo(),audios[index].devolverArtista());
+              },
+            ),
+
+          ),
+        );
+
+    },
+  );
+
+}

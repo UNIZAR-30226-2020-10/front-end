@@ -35,7 +35,7 @@ class _FriendListPageState extends State<Friend_List> {
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: Text('Lista de Amigos'),
+          title: Text('LISTA DE AMIGOS'),
           bottom: TabBar(
             tabs: [
               Tab(icon: Icon(Icons.youtube_searched_for)),

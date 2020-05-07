@@ -33,9 +33,22 @@ const List<String> optionMenuSong =<String>[
 
   ];
 
+const List<String> optionMenuSongCategory =<String>[
+  agregar,
+  compartir,
+  buscar_info,
+  addFavoritos
+
+];
+
 
 const List<String> optionPlayList =<String>[
   eliminar,
+  ordenarPorArtista,
+  ordenarPorTitulo
+];
+
+const List<String> optionCategory =<String>[
   ordenarPorArtista,
   ordenarPorTitulo
 ];

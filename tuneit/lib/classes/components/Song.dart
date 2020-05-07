@@ -164,7 +164,6 @@ Future< SongLista> fetchSonglists(String id) async {
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
-  print(response.body);
 
   if (response.statusCode == 200) {
 
@@ -234,7 +233,52 @@ Future<bool> reposicionarCancion(String id_lista, String before,String after) as
 
 }
 
+Future<List<Song>> lastAddedSongs() async {
+
+  List<Song> list;
+
+  var uri = Uri.https(baseURL,'/list' , null);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
 
 
+  if (response.statusCode == 200) {
+    list = (json.decode(response.body) as List)
+        .map((data) => new Song.fromJson(data))
+        .toList();
 
+    return list;
+
+  } else {
+    throw Exception(response.body + ': Failed to load last added songs');
+  }
+}
+
+Future<List<Song>> songsByCategory(List<String> categories) async {
+
+  List<Song> list = List();
+
+  final http.Response response = await http.post(
+    'https://' + baseURL + '/filter_category',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, dynamic>{
+      'categorias' : categories
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    list = (json.decode(response.body) as List)
+        .map((data) => new Song.fromJson(data))
+        .toList();
+
+    return list;
+
+  } else {
+    throw Exception(response.body + ': Failed to load last added songs');
+  }
+}
 

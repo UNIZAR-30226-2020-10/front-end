@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/components/Category.dart';
+import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
+import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
+import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/podcast/showPodcast.dart';
-import 'package:tuneit/pages/songs/showList.dart';
+import 'package:tuneit/pages/showCategory.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
+import 'package:tuneit/widgets/optionSongs.dart';
 
 import '../main.dart';
 import '../widgets/LateralMenu.dart';
@@ -21,11 +28,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   List<Podcast> listaPodcast = List();
+  List<Song> listaUltCanc = List();
+  List<Category> listaCateg = List();
 
   void obtenerDatos() async{
     List<Podcast> listaPodc = await fetchBestPodcasts();
+    List<Song> listaUC = await lastAddedSongs();
+    List<Category> listaCat = await listCategories ();
+
     setState(() {
       listaPodcast = listaPodc;
+      listaUltCanc = listaUC.sublist(listaUC.length - 11, listaUC.length - 1).reversed.toList();
+      listaCateg = listaCat;
     });
   }
 
@@ -54,6 +68,14 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Align(
                 alignment: Alignment.centerLeft,
+                child: Text('   Géneros musicales', style: Theme.of(context).textTheme.subtitle,),
+              ),
+              Container(
+                height: 200,
+                child: completeListHorizontal(listaCateg, onTapCategory, []),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
                 child: Text('   Los mejores podcasts', style: Theme.of(context).textTheme.subtitle,),
               ),
               Container(
@@ -62,19 +84,16 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text('   Géneros musicales', style: Theme.of(context).textTheme.subtitle,),
+                child: Text('   Últimas canciones', style: Theme.of(context).textTheme.subtitle,),
               ),
-              Container(
-                height: 200,
-                child: completeListHorizontal(listaPodcast, onTapPodcasts, []),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text('   Los peores podcasts', style: Theme.of(context).textTheme.subtitle,),
-              ),
-              Container(
-                height: 200,
-                child: completeListHorizontal(listaPodcast, onTapPodcasts, []),
+              ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: listaUltCanc.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return listaParaAudiosCategorias(context, listaUltCanc, "NoLista", true, choiceAction) [index];
+                  }
               ),
             ],
           ),
@@ -84,54 +103,45 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void choiceAction(String choice) async{
+    List<String> hola=choice.split("--");
+    choice=hola[0];
+    int id_song=int.parse(hola[1]);
+    int indice=int.parse(hola[3]);
+
+    if(choice == optionMenuSong[0]){
+      List<Playlist>listas=await fetchPlaylists(Globals.email);
+      mostrarListas(context,listas,id_song);
+    }
+    else if(choice ==optionMenuSong[1]){
+
+    }
+    else if(choice ==optionMenuSong[2]){
+
+    }
+    else if(choice == optionMenuSong[3]){
+      launchInBrowser(listaUltCanc[indice].devolverTitulo(),listaUltCanc[indice].devolverArtista());
+    }
+    else if(choice == optionMenuSong[4]){
+      agregada(context,Globals.id_fav,listaUltCanc[indice].devolverTitulo());
+    }
+    else{
+      print ("Correct option was not found");
+
+    }
+
+  }
+
   void onTapPodcasts (int index) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => ShowPodcast(podcId: listaPodcast[index].id, podcName: listaPodcast[index].name),
     ));
   }
 
-  Widget templateList (String image, String playlistName) {
-    return Column(
-      children: <Widget>[
-        new CircleAvatar(
-              maxRadius: 60,
-              backgroundColor: Colors.brown.shade800,
-              backgroundImage: NetworkImage(image),
-        ),
-        Text(playlistName),
-      ],
-    );
-  }
-
-  Widget listBox (BuildContext context, index, list) {
-    return new GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name),
-          ));
-      },
-      child: templateList(
-           (list[index].image != null? list[index].image : "https://i.blogs.es/2596e6/sonic/450_1000.jpg"),
-          list[index].name
-      ),
-    );
-  }
-
-  Widget listCategories (BuildContext context, index, list) {
-    return new GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name),
-        ));
-      },
-      child: templateList(
-          (list[index].image != null? list[index].image : "https://i.blogs.es/2596e6/sonic/450_1000.jpg"),
-          list[index].name
-      ),
-    );
+  void onTapCategory (int index) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ShowCategory(name: listaCateg[index].name),
+    ));
   }
 
   Future <void> almacenarMensaje() {
