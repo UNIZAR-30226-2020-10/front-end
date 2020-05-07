@@ -117,13 +117,26 @@ class _PlayerPageState extends State<PlayerPage> {
         length: 5,
         child: Scaffold(
           appBar: AppBar(
+            actions: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: IconButton(
+                    iconSize: 20.0,
+                    icon: Icon(_audioPlayerClass.existeCancionFav(audios[indice])
+                        ? Icons.favorite
+                        : Icons.favorite_border),
+                    onPressed: () {
+
+                    }
+                ),
+              )
+            ],
             backgroundColor: Colors.transparent,
             elevation: 0.0,
           )
           ,
           body:  Column(
             children: [
-
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -138,18 +151,6 @@ class _PlayerPageState extends State<PlayerPage> {
                       ),
                     ),
                   ),
-              // IconButton(
-              //    iconSize: 60.0,
-              //    icon: Icon(_audioPlayerClass.existeCancionFav(audios[indice])
-              //        ? Icons.favorite
-              //        : Icons.favorite_border),
-              //    onPressed: () {
-              //
-              //    }
-              // ),
-
-
-
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
