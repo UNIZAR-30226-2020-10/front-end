@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:getflutter/getflutter.dart';
+import 'package:tuneit/classes/components/Notificacion.dart';
 import 'package:tuneit/model/message.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
@@ -15,42 +17,29 @@ class Notificaciones extends StatefulWidget{
 class _NotificacionesState extends State<Notificaciones> {
   final List<Message> messages = [];
 
-  Message ultimo_add=new Message(title: 'Nada', body: 'Nada');
+  Message ultimo_add = new Message(title: 'Nada', body: 'Nada');
 
 
-  Future<void> fillthemesages ( ) async{
-
-
+  Future<void> fillthemesages() async {
 //###################################################################
-  //Aqui leeriamos de nuestra base de datos los mensajes anteriores
+    //Aqui leeriamos de nuestra base de datos los mensajes anteriores
     // ###################################################################
-
-
 
 
   }
 
 
-  void ObtenerDatos() async{
+  void ObtenerDatos() async {
     await fillthemesages();
-    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
-    if(arguments!= null){
-      setState(() {
-        messages.add(new Message(title: arguments['title'], body:  arguments['body']));
-      });
-    }
-
   }
 
 
   @override
-  void initState(){
+  void initState() {
     // TODO: implement initState
 
     super.initState();
     ObtenerDatos();
-
-
   }
 
   @override
@@ -69,31 +58,58 @@ class _NotificacionesState extends State<Notificaciones> {
         centerTitle: true,
       ),
       drawer: LateralMenu(),
-      body:  ListView.builder(
-            itemCount: messages.length,
-            itemBuilder:( context,index){
-              return Card(
-                child: ListTile(
-                  onTap:(){
+      body: Container(),
 
-                //Implementar que cuando pulse en el mensaje vaya al perfil de la cancion
-                  },
-
-                  /*leading: CircleAvatar(
-                    backgroundImage: NetworkImage(),
-
-                  ),*/
-                  title: Text('${messages[index].title}'),
-
-                  subtitle: Text('${messages[index].body}'),
-
-
-                ),
-              );
-            }
-    ),
       bottomNavigationBar: bottomExpandableAudio(),
     );
   }
+
 }
+
+
+  /*List<Widget> listaParaNotificaciones(BuildContext context,List<Notificacion> amigos){
+    if(amigos.length>0){
+      return List.generate(
+        amigos.length,
+            (index) {
+          return
+            Card(
+              key: Key('$index'),
+              child: new ListTile(
+                onTap:(){
+
+                },
+
+                leading: GFAvatar(
+
+                  backgroundImage: NetworkImage(amigos[index].photo),
+                  backgroundColor: Colors.transparent,
+                  shape: GFAvatarShape.standard,
+
+                ),
+                title: Text(amigos[index].name),
+                subtitle: Text(amigos[index].date),
+
+              ),
+            );
+
+        },
+      );
+    }
+
+
+    else{
+      return  <Widget>[
+
+        Center(child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text("No encontrados amigos"),
+        ))
+
+      ];
+    }
+
+
+  }
+}*/
 

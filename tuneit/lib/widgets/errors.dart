@@ -96,3 +96,20 @@ void operacionExito(BuildContext context) {
   );
 }
 
+void solicitudEnviada(BuildContext context,String amigo) {
+  // flutter defined function
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: new Text(exito_mensaje),
+        content: new Text("Ha enviado una solicitud de amistad a " + amigo),
+        actions: <Widget>[
+          simpleButton(context, () {Navigator.of(context).pop();}, [], 'Confirmar')
+        ],
+
+      );
+    },
+  );
+}
+

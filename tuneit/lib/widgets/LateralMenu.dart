@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/equalizer.dart';
 import "package:tuneit/pages/profile.dart";
-import 'package:tuneit/pages/social/friendList.dart';
+import 'package:tuneit/pages/social/friend.dart';
 import 'package:tuneit/pages/social/notificaciones.dart';
 import 'package:tuneit/pages/audio/playlists.dart';
 

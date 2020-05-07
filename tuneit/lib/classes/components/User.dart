@@ -14,22 +14,84 @@ class User {
   final String password;
   final String date;
   final String country;
+  final String photo;
 
 
-  User({this.name, this.email, this.password, this.date, this.country});
+  User({this.name, this.email, this.password, this.date, this.country,this.photo});
 
   factory User.fromJson(Map<String, dynamic> json) {
+    print(json['Imagen']);
     return User(
-      name: json['nombre'],
-      email: json['email'],
-      password: json['password'],
-      date: json['fecha'],
-      country: json['pais'],
+      name: json['Nombre'],
+      email: json['Email'],
+      password: json['Password'],
+      date: json['Fecha'],
+      country: json['Pais'],
+      photo: json['Imagen'],
     );
   }
 
 }
 
+Future<List<User>> searchUsers(String nombre) async {
+  List<User> list=[];
+
+  var queryParameters = {
+    'nombre' : nombre,
+  };
+  var uri = Uri.http(baseURL, '/search_users', queryParameters);
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+  if(response.statusCode==200){
+
+
+    list = (json.decode(response.body) as List)
+        .map((data) => new User.fromJson(data))
+        .toList();
+
+
+    print(list.length);
+    if(list!=[]){
+      print(list[0].name);
+    }
+
+
+  }
+  else{
+    print("No se han encontrado resultados para amigos");
+    print(response.statusCode);
+
+  }
+
+  return list;
+
+
+}
+
+
+Future<bool> enviarSolicitud(
+    String emisor,String receptor
+    ) async {
+
+  final http.Response response = await http.post(
+    'https://' + baseURL + '/solicitud_amistad',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'emisor': emisor,
+      'receptor': receptor,
+    }),
+  );
+
+  print(response.body);
+  if (response.body == 'Success') {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 const baseURL = 'psoftware.herokuapp.com';
 
@@ -69,6 +131,40 @@ Future<bool> fetchUser(String email, String password) async {
   } else {
     return false;
   }
+}
+
+//final _cancionStreamController
+
+Future<List<User>> listarAmigos() async{
+
+  List<User> list=[];
+
+  var queryParameters = {
+    'email' : Globals.email,
+  };
+  var uri = Uri.http(baseURL, '/list_friends', queryParameters);
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+  if(response.statusCode==200){
+
+
+    list = (json.decode(response.body) as List)
+        .map((data) => new User.fromJson(data))
+        .toList();
+
+    print(response.body);
+    print(list.length);
+
+  }
+  else{
+    print("No se han encontrado resultados para amigos");
+    print(response.statusCode);
+
+  }
+  return list;
+
+
 }
 
 Future<List<String>> infoUser(String email) async {
