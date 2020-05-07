@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
-import 'package:tuneit/classes/components/Notificacion.dart';
+import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
+import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
 import 'package:tuneit/model/message.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
@@ -15,31 +16,27 @@ class Notificaciones extends StatefulWidget{
 }
 
 class _NotificacionesState extends State<Notificaciones> {
-  final List<Message> messages = [];
-
-  Message ultimo_add = new Message(title: 'Nada', body: 'Nada');
+   List<Peticion> peticiones = [];
 
 
-  Future<void> fillthemesages() async {
-//###################################################################
-    //Aqui leeriamos de nuestra base de datos los mensajes anteriores
-    // ###################################################################
 
-
-  }
 
 
   void ObtenerDatos() async {
-    await fillthemesages();
+    List<Peticion> prueba = await buscarPeticiones();
+    print(prueba.length);
+    setState(() {
+      peticiones=prueba;
+    });
   }
 
 
   @override
   void initState() {
     // TODO: implement initState
-
-    super.initState();
     ObtenerDatos();
+    super.initState();
+
   }
 
   @override
@@ -58,7 +55,7 @@ class _NotificacionesState extends State<Notificaciones> {
         centerTitle: true,
       ),
       drawer: LateralMenu(),
-      body: Container(),
+      body: Column(children:listaParaNotificaciones(context,peticiones)),
 
       bottomNavigationBar: bottomExpandableAudio(),
     );
@@ -67,10 +64,11 @@ class _NotificacionesState extends State<Notificaciones> {
 }
 
 
-  /*List<Widget> listaParaNotificaciones(BuildContext context,List<Notificacion> amigos){
-    if(amigos.length>0){
+  List<Widget> listaParaNotificaciones(BuildContext context,List<Notificacion> list){
+  print(list.length);
+    if(list.length>0){
       return List.generate(
-        amigos.length,
+        list.length,
             (index) {
           return
             Card(
@@ -79,18 +77,23 @@ class _NotificacionesState extends State<Notificaciones> {
                 onTap:(){
 
                 },
+                title: Text(list[index].devolverMensaje()),
+                subtitle: Text(list[index].devolverEmisor()),
+                /*trailing: PopupMenuButton<String>(
+                  onSelected: choiceAction,
+                  itemBuilder: (BuildContext context){
+                    return optionMenuSong.map((String choice){
+                      return PopupMenuItem<String>(
+                        value: (choice + "--"+audios[index].devolverID().toString()+"--"+indetificadorLista+"--"+index.toString()),
+                        child: Text(choice),
+                      );
 
-                leading: GFAvatar(
-
-                  backgroundImage: NetworkImage(amigos[index].photo),
-                  backgroundColor: Colors.transparent,
-                  shape: GFAvatarShape.standard,
-
-                ),
-                title: Text(amigos[index].name),
-                subtitle: Text(amigos[index].date),
-
+                    }).toList();
+                  },
+                ),*/
               ),
+
+
             );
 
         },
@@ -111,5 +114,4 @@ class _NotificacionesState extends State<Notificaciones> {
 
 
   }
-}*/
 

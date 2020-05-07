@@ -20,7 +20,6 @@ class User {
   User({this.name, this.email, this.password, this.date, this.country,this.photo});
 
   factory User.fromJson(Map<String, dynamic> json) {
-    print(json['Imagen']);
     return User(
       name: json['Nombre'],
       email: json['Email'],
