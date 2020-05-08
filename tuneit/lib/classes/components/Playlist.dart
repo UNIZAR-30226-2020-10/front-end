@@ -103,12 +103,9 @@ Future<void> nuevaLista(String nombre, String desc, String email) async {
   );
 
   if (response.statusCode == 200) {
-    // If the server did return a 201 CREATED response,
-    // then parse the JSON.
-    print(response.body);
+
   } else {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
+
     throw Exception('Failed to create a new list');
   }
 
@@ -130,12 +127,9 @@ Future<void> borrarLista(String id) async {
   );
 
   if (response.statusCode == 200) {
-    // If the server did return a 201 CREATED response,
-    // then parse the JSON.
-    print(response.body);
+
   } else {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
+
     throw Exception('Failed to create a new list');
   }
 

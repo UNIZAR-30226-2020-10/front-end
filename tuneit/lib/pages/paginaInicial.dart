@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Artist.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Category.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
@@ -7,6 +8,7 @@ import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/pages/artistProfile.dart';
 import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/pages/showCategory.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
@@ -30,16 +32,19 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Podcast> listaPodcast = List();
   List<Song> listaUltCanc = List();
   List<Category> listaCateg = List();
+  List<Artist> listaArtistas = List();
 
   void obtenerDatos() async{
     List<Podcast> listaPodc = await fetchBestPodcasts();
     List<Song> listaUC = await lastAddedSongs();
     List<Category> listaCat = await listCategories ();
+    List<Artist> listaArt = await listArtists ();
 
     setState(() {
       listaPodcast = listaPodc;
       listaUltCanc = listaUC.sublist(listaUC.length - 11, listaUC.length - 1).reversed.toList();
       listaCateg = listaCat;
+      listaArtistas = listaArt;
     });
   }
 
@@ -81,6 +86,14 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 height: 200,
                 child: completeListHorizontal(listaPodcast, onTapPodcasts, []),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text('   Artistas destacados', style: Theme.of(context).textTheme.subtitle,),
+              ),
+              Container(
+                height: 200,
+                child: completeListHorizontal(listaArtistas, onTapArtist, []),
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -141,6 +154,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void onTapCategory (int index) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => ShowCategory(name: listaCateg[index].name),
+    ));
+  }
+
+  void onTapArtist (int index) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ArtistProfile(name: listaArtistas[index].name),
     ));
   }
 

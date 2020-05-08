@@ -107,7 +107,7 @@ Widget completeListHorizontal (List lista, Function func, List arguments) {
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 8.0),
       itemCount: lista.length,
       itemBuilder: (BuildContext context, int index) {
-        return elementOfList(context, func, arguments + [index], lista[index].image, lista[index].name);
+        return elementOfList(context, func, arguments + [index], lista[index].image, lista[index].name == null? 'Name is null' : lista[index].name);
       }
   );
 }
