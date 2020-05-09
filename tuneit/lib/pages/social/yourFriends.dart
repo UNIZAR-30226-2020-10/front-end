@@ -83,6 +83,7 @@ List<Widget> listaParaAmigos(BuildContext context,List<User> amigos){
                     operacionExito(context);
                     print('Que te jodan '+ amigos[index].name );
 
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
