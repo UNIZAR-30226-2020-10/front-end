@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 class Category {
   String name;
@@ -21,7 +22,6 @@ class Category {
 
 }
 
-const baseURL = 'psoftware.herokuapp.com';
 
 Future<List<Category>> listCategories () async{
   List<Category> list = List();

@@ -1,5 +1,7 @@
 abstract class Notificacion{
   String devolverEmisor();
-  String devolverReceptor();
   String devolverMensaje();
+  String devolverImagen();
 }
+
+///responder_peticion

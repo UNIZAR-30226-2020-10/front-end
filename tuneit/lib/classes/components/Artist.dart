@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-
+import 'package:tuneit/classes/values/Constants.dart';
 import 'Album.dart';
 
 class Artist {
@@ -28,7 +28,6 @@ class Artist {
 
 }
 
-const baseURL = 'psoftware.herokuapp.com';
 
 Future<List<Artist>> listArtists () async{
   List<Artist> list = List();

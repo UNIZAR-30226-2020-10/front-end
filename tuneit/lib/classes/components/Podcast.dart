@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 
 
@@ -50,10 +51,10 @@ class Podcast {
 
 }
 
-const baseURL = 'listen-api.listennotes.com';
+
 
 Future<List<Podcast>> fetchBestPodcasts() async {
-  var uri = Uri.https(baseURL, '/api/v2/best_podcasts');
+  var uri = Uri.https(baseURL_POD, '/api/v2/best_podcasts');
   final http.Response response = await http.get(
     uri,
     headers: <String, String>{
@@ -81,7 +82,7 @@ Future<List<Podcast>> fetchPodcastByTitle(String title) async {
     "type" : "podcast",
     "language" : "Spanish"
   };
-  var uri = Uri.https(baseURL, "/api/v2/search", queryParameters);
+  var uri = Uri.https(baseURL_POD, "/api/v2/search", queryParameters);
   final http.Response response = await http.get(
     uri,
     headers: <String, String>{
@@ -108,7 +109,7 @@ Future<List<Podcast>> fetchPodcastById(String ids) async {
     'ids': ids,
   };
   final http.Response response = await http.post(
-    'https://' + baseURL + '/api/v2/podcasts',
+    'https://' + baseURL_POD + '/api/v2/podcasts',
     headers: <String, String>{
       'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1',
     },
@@ -128,13 +129,12 @@ Future<List<Podcast>> fetchPodcastById(String ids) async {
   }
 }
 
-const baseURLBD = 'psoftware.herokuapp.com';
 
 Future<List<Podcast>> fetchFavPodcasts() async {
   var queryParameters = {
     'email' : Globals.email,
   };
-  var uri = Uri.http(baseURLBD, '/list_podcast', queryParameters);
+  var uri = Uri.http(baseURL, '/list_podcast', queryParameters);
   final http.Response response = await http.get(uri);
 
   if (response.statusCode == 200) {
@@ -154,7 +154,7 @@ Future<List<Podcast>> fetchFavPodcasts() async {
 Future<void> isFav(String id, String name) async {
 
   final http.Response response = await http.post(
-    'https://' + baseURLBD + '/podcast_fav',
+    'https://' + baseURL + '/podcast_fav',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -172,7 +172,7 @@ Future<void> isFav(String id, String name) async {
 
 Future<void> isNotFav(String id) async {
   final http.Response response = await http.post(
-    'https://' + baseURLBD + '/delete_podcast_fav',
+    'https://' + baseURL + '/delete_podcast_fav',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -192,7 +192,7 @@ Future<bool> checkFav(String id) async {
     'podcast' : id,
     'email' : Globals.email,
   };
-  var uri = Uri.http(baseURLBD, '/podcast_is_fav', queryParameters);
+  var uri = Uri.http(baseURL, '/podcast_is_fav', queryParameters);
   final http.Response response = await http.get(uri);
 
   if (response.body == 'True') {

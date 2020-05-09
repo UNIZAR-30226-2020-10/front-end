@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 
 
@@ -69,6 +70,7 @@ class Song extends Audio{
 
     List<String> losartistas = streetsFromJson.cast<String>();
     List<String> losgeneros = genreFromJson.cast<String>();
+    print(parsedJson['Imagen']);
 
     return Song(
       id: parsedJson['ID'],
@@ -82,7 +84,7 @@ class Song extends Audio{
   }
 
 }
-const baseURL = 'psoftware.herokuapp.com';
+
 
 class SongLista{
 

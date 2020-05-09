@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 
 class PodcastEpisode extends Audio {
@@ -63,9 +64,8 @@ class PodcastEpisode extends Audio {
 
 }
 
-const baseURL = 'listen-api.listennotes.com';
 Future<List<PodcastEpisode>> fetchEpisodes(String podc) async {
-  var uri = Uri.https(baseURL, '/api/v2/podcasts/${podc}');
+  var uri = Uri.https(baseURL_POD, '/api/v2/podcasts/${podc}');
   final http.Response response = await http.get(
     uri,
     headers: <String, String>{
@@ -97,7 +97,7 @@ Future<List<PodcastEpisode>> fetchEpisodeByTitle(String title) async {
     "type" : "episode",
     "language" : "Spanish"
   };
-  var uri = Uri.https(baseURL, "/api/v2/search", queryParameters);
+  var uri = Uri.https(baseURL_POD, "/api/v2/search", queryParameters);
   final http.Response response = await http.get(
     uri,
     headers: <String, String>{

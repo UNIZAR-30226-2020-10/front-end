@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 
 class User {
@@ -92,7 +93,7 @@ Future<bool> enviarSolicitud(
   }
 }
 
-const baseURL = 'psoftware.herokuapp.com';
+
 
 Future<bool> registerUser(
     String name, String email, String password, String date, String country

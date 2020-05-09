@@ -60,7 +60,7 @@ List<Widget> listaParaAmigos(BuildContext context,List<User> amigos){
 
               ),
               title: Text(amigos[index].name),
-              subtitle: Text(amigos[index].date),
+              subtitle: Text(amigos[index].email),
 
             ),
           );

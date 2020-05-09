@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/model/message.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
@@ -41,6 +44,8 @@ class _NotificacionesState extends State<Notificaciones> {
 
   @override
   Widget build(BuildContext context) {
+    final size_width = MediaQuery.of(context).size.width;
+    final size_height= MediaQuery.of(context).size.height;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -55,7 +60,7 @@ class _NotificacionesState extends State<Notificaciones> {
         centerTitle: true,
       ),
       drawer: LateralMenu(),
-      body: Column(children:listaParaNotificaciones(context,peticiones)),
+      body: Column(children:listaParaNotificaciones(context,peticiones,size_width,size_height)),
 
       bottomNavigationBar: bottomExpandableAudio(),
     );
@@ -64,8 +69,7 @@ class _NotificacionesState extends State<Notificaciones> {
 }
 
 
-  List<Widget> listaParaNotificaciones(BuildContext context,List<Notificacion> list){
-  print(list.length);
+  List<Widget> listaParaNotificaciones(BuildContext context,List<Notificacion> list,anchura,altura){
     if(list.length>0){
       return List.generate(
         list.length,
@@ -77,20 +81,39 @@ class _NotificacionesState extends State<Notificaciones> {
                 onTap:(){
 
                 },
+                leading: GFAvatar(
+
+                  backgroundImage: NetworkImage(list[index].devolverImagen()),
+                  backgroundColor: Colors.transparent,
+                  shape: GFAvatarShape.standard,
+
+                ),
                 title: Text(list[index].devolverMensaje()),
                 subtitle: Text(list[index].devolverEmisor()),
-                /*trailing: PopupMenuButton<String>(
-                  onSelected: choiceAction,
-                  itemBuilder: (BuildContext context){
-                    return optionMenuSong.map((String choice){
-                      return PopupMenuItem<String>(
-                        value: (choice + "--"+audios[index].devolverID().toString()+"--"+indetificadorLista+"--"+index.toString()),
-                        child: Text(choice),
-                      );
 
-                    }).toList();
-                  },
-                ),*/
+
+                trailing: Container(
+                  width: anchura*0.25,
+                  height: altura*0.25,
+                  child: Row(
+                      children: <Widget>[
+                           IconButton(
+                             color:Colors.green,
+                            onPressed: () {},
+                            icon:Icon(Icons.check_circle),
+                             tooltip: aceptar_mensaje,
+                          ),
+                        IconButton(
+
+                            color:Colors.red,
+                            onPressed: () {},
+                            icon:Icon(Icons.cancel),
+                            tooltip: rechazar_mensaje,
+                          ),
+
+                      ],
+                  ),
+                ),
               ),
 
 

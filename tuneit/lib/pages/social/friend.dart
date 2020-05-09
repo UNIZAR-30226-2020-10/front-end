@@ -3,7 +3,7 @@ import 'package:tuneit/pages/social/yourFriends.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 
-import 'finFriends.dart';
+import 'findFriends.dart';
 
 class Friend_List extends StatefulWidget {
   @override
@@ -39,7 +39,7 @@ class _FriendListPageState extends State<Friend_List> {
           bottom: TabBar(
             tabs: [
               Tab(icon: Icon(Icons.youtube_searched_for)),
-              Tab(icon: Icon(Icons.child_friendly)),
+              Tab(icon: Icon(Icons.face)),
             ],
           ),
           centerTitle: true,

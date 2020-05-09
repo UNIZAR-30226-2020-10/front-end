@@ -2,42 +2,54 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 
+import '../User.dart';
+
 class Peticion extends Notificacion{
-  String emisor;
-  String receptor;
+
   String id;
-  Peticion({this.emisor,this.receptor,this.id});
+  String emisor_nombre;
+  String emisor_email;
+  String photo_emisor=Globals.default_image;
+  Peticion({this.emisor_nombre,this.emisor_email,this. photo_emisor,this.id});
+
 
   //[{"Id": , "Emisor": email, "Receptor": email}, {…}]
 
   String devolverEmisor(){
-    return emisor;
+    return emisor_nombre;
 
   }
-  String devolverReceptor(){
-    return receptor;
 
-  }
   String devolverMensaje(){
-    return "El usario "+ emisor+" quiere ser tu amigo";
+    String des="Quiere ser tu amigo: ";
+    des+=emisor_nombre;
+    return des;
 
+  }
+
+  String devolverImagen(){
+    return photo_emisor;
   }
 
   factory Peticion.fromJson(Map<String, dynamic> json) {
+    List<dynamic> prueba1=json['Emisor'];
+    Map emisormap=prueba1[0];
+    print(emisormap);
     return Peticion(
-     emisor: json['Emisor'].toString(),
-      receptor: json['Receptor'].toString(),
-      id:json['Id'].toString(),
+      emisor_nombre:emisormap['Nombre'],
+      emisor_email: emisormap['Email'],
+      photo_emisor:emisormap['Imagen'],
+      id:json['Id'],
     );
   }
 
 }
 
-const baseURL = 'psoftware.herokuapp.com';
 Future<List<Peticion>> buscarPeticiones() async {
   List<Peticion> list=[];
 //email: email del usuario cuya información se muestra

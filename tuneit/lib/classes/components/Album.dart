@@ -4,12 +4,10 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 
 import 'Artist.dart';
 import 'Song.dart';
-
-
-const baseURL = 'psoftware.herokuapp.com';
 
 class Album {
   String name;
