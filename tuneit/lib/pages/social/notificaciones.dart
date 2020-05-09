@@ -10,6 +10,7 @@ import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/model/message.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
+import 'package:tuneit/widgets/errors.dart';
 
 
 class Notificaciones extends StatefulWidget{
@@ -99,14 +100,34 @@ class _NotificacionesState extends State<Notificaciones> {
                       children: <Widget>[
                            IconButton(
                              color:Colors.green,
-                            onPressed: () {},
+                            onPressed: () async {
+                              bool prueba= await reactNotificacion(list[index].devolverID(),'Acepto');
+                              if(prueba){
+                                operacionExito(context);
+                              }
+                              else{
+                                mostrarError(context,'No se ha podido aceptar la petición');
+
+                              }
+                            },
                             icon:Icon(Icons.check_circle),
                              tooltip: aceptar_mensaje,
                           ),
                         IconButton(
 
                             color:Colors.red,
-                            onPressed: () {},
+                            onPressed: () async {
+                              bool prueba= await reactNotificacion(list[index].devolverID(),'Rechazo');
+                              if(prueba){
+                                operacionExito(context);
+                              }
+                              else{
+
+                                mostrarError(context,'No se ha podido rechazar la petición');
+
+                              }
+
+                            },
                             icon:Icon(Icons.cancel),
                             tooltip: rechazar_mensaje,
                           ),

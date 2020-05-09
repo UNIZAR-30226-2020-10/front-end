@@ -25,6 +25,10 @@ class Peticion extends Notificacion{
 
   }
 
+  String devolverID(){
+    return id;
+  }
+
   String devolverMensaje(){
     String des="Quiere ser tu amigo: ";
     des+=emisor_nombre;
@@ -80,4 +84,28 @@ Future<List<Peticion>> buscarPeticiones() async {
   return list;
 
 
+}
+
+Future<bool> reactNotificacion(String id,String respuesta) async {
+
+  bool exito=false;
+  final http.Response response = await http.post(
+    'https://' + baseURL + '/responder_peticion',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, dynamic>{
+      'peticion' : id,
+      'respuesta':respuesta,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+   exito=true;
+
+  } else {
+    print(response.body + ': problema al '+respuesta);
+
+  }
+  return exito;
 }
