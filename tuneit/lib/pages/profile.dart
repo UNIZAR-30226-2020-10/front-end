@@ -22,12 +22,13 @@ class Profile extends StatefulWidget {
   String country;
   String date;
   String image;
+  String token;
   bool esUser;
 
-  Profile({Key key, @required this.name,@required this.email,@required this.country,@required this.date,@required this.image,@required this.esUser}):super(key : key);
+  Profile({Key key, @required this.name,@required this.email,@required this.country,@required this.date,@required this.image,@required this.esUser,@required this.token}):super(key : key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState (name, email,country,date,image,esUser);
+  _ProfilePageState createState() => _ProfilePageState (name, email,country,date,image,esUser,token);
 
 
 }
@@ -41,9 +42,10 @@ class _ProfilePageState extends State<Profile> {
   String country;
   String date;
   String image;
+  String token;
   bool esUser;
   bool encontrado;
-  _ProfilePageState( this.name, this.email,this.country,this.date,this.image,this.esUser);
+  _ProfilePageState( this.name, this.email,this.country,this.date,this.image,this.esUser,this.token);
 
   void obtenerDatos() async{
     List<Playlist> lista = await listasUsuario(email);
@@ -81,7 +83,7 @@ class _ProfilePageState extends State<Profile> {
                 tooltip: 'Agregar amigo',
                 onPressed: ()async{
 
-                  bool resultado = await enviarSolicitud(Globals.email, email);
+                  bool resultado = await enviarSolicitud(Globals.email, email,token);
 
                   setState(() {
                     encontrado=resultado;

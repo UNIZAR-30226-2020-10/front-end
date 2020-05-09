@@ -44,6 +44,7 @@ class LateralMenu extends StatelessWidget {
           ),
           new ListTile(
               title: Text('PODCASTS'),
+
               onTap:(){
                 Navigator.push(
                   context,
@@ -55,6 +56,7 @@ class LateralMenu extends StatelessWidget {
           ),
           new ListTile(
             title: Text('NOTIFICACIONES'),
+              trailing:Globals.mensaje_nuevo ? Icon(Icons.email): Icon(Icons.delete),
             onTap:() {
               Navigator.push(
               context,
@@ -63,6 +65,8 @@ class LateralMenu extends StatelessWidget {
                 ),
               );
             }
+
+
           ),
           new ListTile(
               title: Text('AMIGOS'),

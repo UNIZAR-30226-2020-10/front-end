@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/pages/paginaInicial.dart';
 import 'package:tuneit/pages/register/mainView.dart';
 
 void main() => runApp(MyApp());
@@ -11,6 +12,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
+
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/home': (context) => MyHomePage(),
+      },
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.deepPurple,

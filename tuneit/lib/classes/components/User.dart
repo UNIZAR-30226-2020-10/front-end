@@ -5,6 +5,8 @@ import 'dart:async';
 
 import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:http/http.dart' as http;
+import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
+import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 
@@ -16,14 +18,16 @@ class User {
   final String date;
   final String country;
   final String photo;
+  final String token;
 
 
-  User({this.name, this.email, this.password, this.date, this.country,this.photo});
+  User({this.name, this.email, this.password, this.date, this.country,this.photo,this.token});
 
   factory User.fromJson(Map<String, dynamic> json) {
     print('b');
     String fecha="";
     String pais="";
+    String token="";
     if(json['Fecha']==null){
       print("a llorar");
       fecha=Globals.date;
@@ -38,7 +42,13 @@ class User {
     else{
       pais=json['Pais'];
     }
-    print('a');
+    if(json['Token']==null){
+      token=Globals.mi_token;
+    }
+    else{
+      token=json['Token'];
+    }
+
     return User(
       name: json['Nombre'],
       email: json['Email'],
@@ -46,6 +56,7 @@ class User {
       date: fecha,
       country: pais,
       photo: json['Imagen'],
+      token: token,
     );
   }
 
@@ -89,7 +100,7 @@ Future<List<User>> searchUsers(String nombre) async {
 
 
 Future<bool> enviarSolicitud(
-    String emisor,String receptor
+    String emisor,String receptor,String token
     ) async {
 
   final http.Response response = await http.post(
@@ -105,6 +116,7 @@ Future<bool> enviarSolicitud(
 
   print(response.body);
   if (response.body == 'Success') {
+    sendNotification('Solcitud de amistad',emisor+' quiere ser tu amigo',token);
     return true;
   } else {
     return false;
@@ -116,6 +128,13 @@ Future<bool> enviarSolicitud(
 Future<bool> registerUser(
     String name, String email, String password, String date, String country
     ) async {
+
+
+  /*Aqui en el futuro habra que añadir esto*/
+  var pus1=PushProvider();
+  String token=pus1.devolverToken();
+
+  //Meter el token en el json  <-----
 
   final http.Response response = await http.post(
     'https://' + baseURL + '/register',

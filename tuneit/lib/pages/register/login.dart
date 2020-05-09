@@ -2,6 +2,7 @@ import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/paginaInicial.dart';
 import 'package:tuneit/widgets/buttons.dart';
@@ -90,6 +91,12 @@ class _LoginState extends State<Login> {
           Globals.date = list[2];
           Globals.country = list[3];
           Globals.image = list[4];
+
+          //------
+          //Esto habra que cambiarlo por lo que backend
+          //-----
+          var pus1=PushProvider();
+          Globals.mi_token=pus1.devolverToken();
 
           Navigator.push(
             context,

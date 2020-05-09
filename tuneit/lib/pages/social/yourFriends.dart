@@ -106,8 +106,6 @@ List<Widget> listaParaAmigos(BuildContext context,List<User> amigos){
       },
     );
   }
-
-
     else{
       return  <Widget>[
 

@@ -140,7 +140,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                           onPressed: (
 
                               ) {
-
                             confirmarCambios(context,password.text,nombre.text,pais);
 
                           },

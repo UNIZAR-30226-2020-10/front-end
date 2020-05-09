@@ -7,6 +7,7 @@ import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/model/message.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
@@ -39,6 +40,7 @@ class _NotificacionesState extends State<Notificaciones> {
   void initState() {
     // TODO: implement initState
     ObtenerDatos();
+    Globals.mensaje_nuevo=false;
     super.initState();
 
   }
@@ -101,7 +103,7 @@ class _NotificacionesState extends State<Notificaciones> {
                            IconButton(
                              color:Colors.green,
                             onPressed: () async {
-                              bool prueba= await reactNotificacion(list[index].devolverID(),'Acepto');
+                              bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Acepto');
                               if(prueba){
                                 operacionExito(context);
                               }
@@ -117,7 +119,7 @@ class _NotificacionesState extends State<Notificaciones> {
 
                             color:Colors.red,
                             onPressed: () async {
-                              bool prueba= await reactNotificacion(list[index].devolverID(),'Rechazo');
+                              bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Rechazo');
                               if(prueba){
                                 operacionExito(context);
                               }

@@ -1,17 +1,41 @@
 import 'dart:async';
 
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:tuneit/model/message.dart';
+import 'package:tuneit/pages/social/notificaciones.dart';
+
+
+
+
+
+
+
 
 
 class PushProvider{
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  String nuestro_token;
 
 
 
 
   final _mensajesStreamController = StreamController<Message>.broadcast();
   Stream<Message> get mensaje => _mensajesStreamController.stream;
+
+  static final PushProvider _singleton = PushProvider._internal();
+
+  factory PushProvider() {
+    return _singleton;
+  }
+
+  String devolverToken(){
+    return nuestro_token;
+  }
+
+  PushProvider._internal();
 
 
 
@@ -24,8 +48,12 @@ class PushProvider{
 
 
     _firebaseMessaging.getToken().then((token) {
-      print('====== FCM token');
-      print(token);
+
+
+      nuestro_token=token;
+
+      nuestro_token=nuestro_token.replaceFirst('\n','');
+
     });
 
     _firebaseMessaging.subscribeToTopic('all');
@@ -35,10 +63,6 @@ class PushProvider{
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         final notification = message['notification'];
-        /*setState(() {
-          messages.add(Message(
-              title: notification['title'], body: notification['body']));
-        });*/
 
         _mensajesStreamController.sink.add(Message(
             title: notification['title'], body: notification['body']));
@@ -47,14 +71,10 @@ class PushProvider{
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
         final notification = message['notification'];
-        /*setState(() {
-          messages.add(Message(
-              title: notification['title'], body: notification['body']));
 
-
-        });*/
         _mensajesStreamController.sink.add(Message(
             title: notification['title'], body: notification['body']));
+
 
       },
       onResume: (Map<String, dynamic> message) async {
@@ -63,15 +83,13 @@ class PushProvider{
         _mensajesStreamController.sink.add(Message(
             title: notification['title'], body: notification['body']));
 
-
       },
     );
   }
 
   void sendTokenToServer(String fcmToken) {
     print('Token: $fcmToken');
-    // send key to your server to allow server to use
-    // this token to send push notifications
+
   }
 
 

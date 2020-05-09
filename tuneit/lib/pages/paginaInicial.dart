@@ -11,6 +11,7 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/artistProfile.dart';
 import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/pages/showCategory.dart';
+import 'package:tuneit/pages/social/notificaciones.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
@@ -169,27 +170,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void reaccionarNotificacion() async {
 
-    final pushProvider = new PushProvider();
-    pushProvider.initNotifications();
+    var pus1=PushProvider();
 
-    pushProvider.mensaje.listen((argumento) async{
+    pus1.mensaje.listen((argumento) async{
       String data = argumento.title;
       String cuerpo = argumento.body;
+      if(data!=null && cuerpo!=null){
+        print("Ha llegado");
+        setState(() {
+          Globals.mensaje_nuevo=true;
+        });
 
-      //AQUI FALTARIA GUARDAR EL MENSAJE EN NUESTRA BASE DE DATOS
+      }
 
-      await almacenarMensaje();
-
-      navigatorKey.currentState.pushNamed('/notificaciones', arguments:{
-        'title': '${data}',
-        'body': '${cuerpo}',
-      } );
-
-      /*Navigator.pushNamed(context, '/notificaciones' ,arguments: {
-        'title': '${data}',
-        'body': '${cuerpo}',
-      });*/
-      //navigatorKey.currentState.pushNamed('/notificaciones',arguments: data);
     });
+
+
   }
 }

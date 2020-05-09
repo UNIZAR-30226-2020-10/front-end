@@ -42,6 +42,7 @@ void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_so
             new FlatButton(
               onPressed: (){
                 Navigator.pop(context);
+
                 operacionCancelada(context);
               },
               child: new Text("Cancelar"))

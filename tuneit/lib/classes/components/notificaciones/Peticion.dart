@@ -11,7 +11,7 @@ import '../User.dart';
 
 class Peticion extends Notificacion{
 
-  String id;
+  int id;
   String emisor_nombre;
   String emisor_email;
   String photo_emisor=Globals.default_image;
@@ -25,7 +25,7 @@ class Peticion extends Notificacion{
 
   }
 
-  String devolverID(){
+  int devolverID(){
     return id;
   }
 
@@ -51,7 +51,7 @@ class Peticion extends Notificacion{
       emisor_nombre:emisormap['Nombre'],
       emisor_email: emisormap['Email'],
       photo_emisor:emisormap['Imagen'],
-      id:json['Id'],
+      id:json['ID'],
     );
   }
 

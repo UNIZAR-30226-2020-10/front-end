@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
 import 'package:tuneit/pages/register/login.dart';
 import 'package:tuneit/pages/register/register.dart';
 import 'package:tuneit/widgets/buttons.dart';
@@ -11,6 +12,14 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    var pus1=PushProvider();
+    pus1.initNotifications();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

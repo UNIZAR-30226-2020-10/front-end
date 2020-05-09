@@ -77,26 +77,24 @@ return Center(
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Profile(name:user.name,email: user.email,country: user.country,date: user.date,esUser: false,image: user.photo,),
+                builder: (context) => Profile(name:user.name,email: user.email,country: user.country,date: user.date,esUser: false,image: user.photo,token:user.token),
               ),
             );
           },
           trailing: IconButton(
             tooltip: 'Agregar amigo',
             onPressed: ()async{
-              print("A");
-              bool resultado = await enviarSolicitud(Globals.email, user.email);
+              bool resultado = await enviarSolicitud(Globals.email, user.email,user.token);
 
               setState(() {
                 encontrado=resultado;
               });
               if(encontrado){
-                print("FRIEND");
+
                 solicitudEnviada(context,user.name.toString());
 
               }
               else{
-                print("NO FRIEND");
                 mostrarError(context,"No se ha podido entregar la solicitud");
               }
             },

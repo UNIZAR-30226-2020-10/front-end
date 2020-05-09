@@ -10,4 +10,6 @@ class Globals {
   static String image = 'x';
   static String id_fav='1';
   static String default_image= "https://psoftware.s3.amazonaws.com/album_defecto.jpg";
+  static bool mensaje_nuevo=false;
+  static String mi_token="";
 }

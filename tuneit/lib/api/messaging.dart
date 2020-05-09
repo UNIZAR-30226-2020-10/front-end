@@ -10,6 +10,7 @@ class Messaging {
   // --> project settings --> cloud messaging --> "Server key"
   static const String serverKey =
       'AAAAYVSoiZA:APA91bH0t7QF885p70vGUwCIq8qEYSF8WYQrMnrN8LQYJ7z3DRSOrqLsg6eKarJPAmOdrbagW4HVaQXzRZxdUWr0JopbF6X9jpFCdd2EfkqlSjvn4O9PHrPx7ADZRn92lS8XsuzyEipk';
+      //AAAAYVSoiZA:APA91bH0t7QF885p70vGUwCIq8qEYSF8WYQrMnrN8LQYJ7z3DRSOrqLsg6eKarJPAmOdrbagW4HVaQXzRZxdUWr0JopbF6X9jpFCdd2EfkqlSjvn4O9PHrPx7ADZRn92lS8XsuzyEipk
 
   static Future<Response> sendToAll({
     @required String title,
