@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/equalizer.dart';
 import "package:tuneit/pages/profile.dart";
@@ -56,7 +57,16 @@ class LateralMenu extends StatelessWidget {
           ),
           new ListTile(
             title: Text('NOTIFICACIONES'),
-              trailing:Globals.mensaje_nuevo ? Icon(Icons.email): Icon(Icons.delete),
+              trailing:Globals.mensaje_nuevo ? Container(
+                width: 100,
+                height: 50,
+                child:
+                    Icon(Icons.add_alert,
+                    color:Colors.green),
+
+
+              ): Icon(Icons.add_alert,
+                  color:Colors.grey),
             onTap:() {
               Navigator.push(
               context,

@@ -11,6 +11,7 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/model/message.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
+import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/errors.dart';
 
 
@@ -63,7 +64,7 @@ class _NotificacionesState extends State<Notificaciones> {
         centerTitle: true,
       ),
       drawer: LateralMenu(),
-      body: Column(children:listaParaNotificaciones(context,peticiones,size_width,size_height)),
+      body: ListView(children:listaParaNotificaciones(context,peticiones,size_width,size_height)),
 
       bottomNavigationBar: bottomExpandableAudio(),
     );
@@ -105,7 +106,8 @@ class _NotificacionesState extends State<Notificaciones> {
                             onPressed: () async {
                               bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Acepto');
                               if(prueba){
-                                operacionExito(context);
+                                _operacionExito(context);
+
                               }
                               else{
                                 mostrarError(context,'No se ha podido aceptar la petición');
@@ -121,7 +123,9 @@ class _NotificacionesState extends State<Notificaciones> {
                             onPressed: () async {
                               bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Rechazo');
                               if(prueba){
-                                operacionExito(context);
+                                _operacionExito(context);
+
+
                               }
                               else{
 
@@ -160,4 +164,23 @@ class _NotificacionesState extends State<Notificaciones> {
 
 
   }
+void _operacionExito(BuildContext context) {
+  // flutter defined function
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: new Text(exito_mensaje),
+        content: new Text("Operacion realizada de forma exitosa"),
+        actions: <Widget>[
+          simpleButton(context, () {Navigator.of(context).pop();
+          Navigator.pop(context);
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Notificaciones(),
+          ));}, [], 'Confirmar')
+        ],
 
+      );
+    },
+  );
+}

@@ -38,7 +38,7 @@ class _yourFriendsState extends State<yourFriends> {
   Widget build(BuildContext context) {
 
     return Center(
-      child: Column(
+      child: ListView(
         children: listaParaAmigos(context,amigos),
       ),
     );
