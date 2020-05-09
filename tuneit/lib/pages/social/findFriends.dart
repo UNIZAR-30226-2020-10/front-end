@@ -6,6 +6,7 @@ import 'package:getflutter/getflutter.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/pages/profile.dart';
 import 'package:tuneit/widgets/errors.dart';
 
 class buscarAmigos extends StatefulWidget {
@@ -73,7 +74,12 @@ return Center(
           title:Text( user.name.toString()),
 
           onTap: (){
-              print("K");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Profile(name:user.name,email: user.email,country: user.country,date: user.date,esUser: false,image: user.photo,),
+              ),
+            );
           },
           trailing: IconButton(
             tooltip: 'Agregar amigo',

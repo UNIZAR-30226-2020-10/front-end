@@ -81,22 +81,11 @@ class LateralMenu extends StatelessWidget {
                 Navigator.push(
                 context,
                 MaterialPageRoute(
-                   builder: (context) => Profile(),
+                   builder: (context) => Profile(name:Globals.name,email: Globals.email,country: Globals.country,date: Globals.date,esUser: true,image: Globals.image,),
                   ),
                 );
               }
           ),
-          new ListTile(
-              title: Text('ECUALIZADOR'),
-              onTap:() {
-                Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Equalizer(),
-                  ),
-                );
-              }
-            ),
         ],
       ),
     );

@@ -43,7 +43,10 @@ class Peticion extends Notificacion{
   factory Peticion.fromJson(Map<String, dynamic> json) {
     List<dynamic> prueba1=json['Emisor'];
     Map emisormap=prueba1[0];
-    print(emisormap);
+    print("Cual es?");
+    print(json['id']);
+    print(json['Id']);
+    print('dadadd');
     return Peticion(
       emisor_nombre:emisormap['Nombre'],
       emisor_email: emisormap['Email'],
@@ -60,6 +63,7 @@ Future<List<Peticion>> buscarPeticiones() async {
   var queryParameters = {
     'email' : Globals.email,
   };
+  print(baseURL);
   var uri = Uri.http(baseURL, '/list_peticiones_recibidas', queryParameters);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
@@ -86,9 +90,51 @@ Future<List<Peticion>> buscarPeticiones() async {
 
 }
 
+/**
+
+    Eliminar amigo /delete_friend
+
+    Entrada:
+    email: email del usuario
+    amigo: email del amigo a eliminar
+    Salida:
+    "Success"
+    "No existe usuario"
+    "No existe amigo"
+    "Error"
+*/
+
+Future<bool> deleteFriend(String email,String amigo) async {
+
+  bool exito=false;
+  final http.Response response = await http.post(
+    'https://' + baseURL + '/delete_friend',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, dynamic>{
+      'email' : email,
+      'amigo':amigo,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    exito=true;
+
+  } else {
+    print(response.body + ': problema al borrar amigo');
+
+  }
+  return exito;
+}
+
+
+
 Future<bool> reactNotificacion(String id,String respuesta) async {
 
   bool exito=false;
+  print(id);
+  print("aaaaa??");
   final http.Response response = await http.post(
     'https://' + baseURL + '/responder_peticion',
     headers: <String, String>{

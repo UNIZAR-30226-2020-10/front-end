@@ -135,12 +135,12 @@ Future<void> borrarLista(String id) async {
 
 }
 
-Future<List<Playlist>> listasUsuario() async {
+Future<List<Playlist>> listasUsuario(String email) async {
 
   List<Playlist> list = List();
 
   var queryParameters = {
-    'usuario' : Globals.email,
+    'usuario' : email,
   };
 
   var uri = Uri.https(baseURL,'/list_lists', queryParameters);

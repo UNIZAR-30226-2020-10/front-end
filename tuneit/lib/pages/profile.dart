@@ -10,21 +10,43 @@ import 'package:tuneit/widgets/AutoScrollableText.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/buttons.dart';
+import 'package:tuneit/widgets/errors.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/textFields.dart';
+import 'package:tuneit/widgets/usuarios/iconText.dart';
 
 class Profile extends StatefulWidget {
+
+  String name;
+  String email;
+  String country;
+  String date;
+  String image;
+  bool esUser;
+
+  Profile({Key key, @required this.name,@required this.email,@required this.country,@required this.date,@required this.image,@required this.esUser}):super(key : key);
+
   @override
-  _ProfilePageState createState() => _ProfilePageState ();
+  _ProfilePageState createState() => _ProfilePageState (name, email,country,date,image,esUser);
+
+
 }
 
 
 class _ProfilePageState extends State<Profile> {
 
   List<Playlist> list = List();
+  String name;
+  String email;
+  String country;
+  String date;
+  String image;
+  bool esUser;
+  bool encontrado;
+  _ProfilePageState( this.name, this.email,this.country,this.date,this.image,this.esUser);
 
   void obtenerDatos() async{
-    List<Playlist> lista = await listasUsuario();
+    List<Playlist> lista = await listasUsuario(email);
     setState(() {
       list = lista;
     });
@@ -43,7 +65,7 @@ class _ProfilePageState extends State<Profile> {
           title: Text('PERFIL'),
           centerTitle: true,
           actions: <Widget>[
-            IconButton(
+            esUser  ? IconButton(
               tooltip: 'Configurar perfil',
               icon: Icon(Icons.settings),
               onPressed: () {
@@ -55,7 +77,27 @@ class _ProfilePageState extends State<Profile> {
                 );
 
               },
-            ),
+            ): IconButton(
+                tooltip: 'Agregar amigo',
+                onPressed: ()async{
+
+                  bool resultado = await enviarSolicitud(Globals.email, email);
+
+                  setState(() {
+                    encontrado=resultado;
+                  });
+                  if(encontrado){
+                    print("FRIEND");
+                    solicitudEnviada(context,name.toString());
+
+                  }
+                  else{
+                    print("NO FRIEND");
+                    mostrarError(context,"No se ha podido entregar la solicitud");
+                  }
+                },
+                icon: Icon(Icons.group_add),
+              ),
           ],
         ),
         drawer: LateralMenu(),
@@ -81,7 +123,7 @@ class _ProfilePageState extends State<Profile> {
                             ),
                             image: new DecorationImage(
                                 fit: BoxFit.cover,
-                                image: new NetworkImage(Globals.image)
+                                image: new NetworkImage(image)
                             )
                         )
                     ),
@@ -91,22 +133,22 @@ class _ProfilePageState extends State<Profile> {
                         children: <Widget>[
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: iconText(Globals.name, Icons.person),
+                            child: iconText(context,name, Icons.person),
                           ),
                           SizedBox(height: 5,),
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: iconText(Globals.email, Icons.mail_outline),
+                            child: iconText(context,email, Icons.mail_outline),
                           ),
                           SizedBox(height: 5,),
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: iconText(Globals.country, Icons.place),
+                            child: iconText(context,country, Icons.place),
                           ),
                           SizedBox(height: 5,),
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: iconText(Globals.date, Icons.cake),
+                            child: iconText(context,date, Icons.cake),
                           ),
                         ],
                       ),
@@ -116,7 +158,7 @@ class _ProfilePageState extends State<Profile> {
                 SizedBox(height: 15,),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('   Tus listas de reproducción', style: Theme.of(context).textTheme.subtitle,),
+                  child: Text('Listas de reproducción', style: Theme.of(context).textTheme.subtitle,),
                 ),
                 SizedBox(height: 7,),
                 completeListNotScrollable(list, onTapPlaylists, []),
@@ -134,19 +176,6 @@ class _ProfilePageState extends State<Profile> {
     ));
   }
 
-  Widget iconText (String text, IconData ic) {
-    return Row(
-      children: <Widget>[
-        SizedBox(width: 10,),
-        Icon(ic, size: 20,),
-        SizedBox(width: 10,),
-        Expanded(
-          child: MarqueeWidget(
-            child: Text(text, style: Theme.of(context).textTheme.body1,),
-          ),
-        )
-      ],
-    );
-  }
+
 
 }

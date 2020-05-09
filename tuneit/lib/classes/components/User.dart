@@ -21,12 +21,30 @@ class User {
   User({this.name, this.email, this.password, this.date, this.country,this.photo});
 
   factory User.fromJson(Map<String, dynamic> json) {
+    print('b');
+    String fecha="";
+    String pais="";
+    if(json['Fecha']==null){
+      print("a llorar");
+      fecha=Globals.date;
+    }
+    else{
+    fecha=json['Fecha'];
+    }
+
+    if(json['Pais']==null){
+      pais=Globals.country;
+    }
+    else{
+      pais=json['Pais'];
+    }
+    print('a');
     return User(
       name: json['Nombre'],
       email: json['Email'],
       password: json['Password'],
-      date: json['Fecha'],
-      country: json['Pais'],
+      date: fecha,
+      country: pais,
       photo: json['Imagen'],
     );
   }
