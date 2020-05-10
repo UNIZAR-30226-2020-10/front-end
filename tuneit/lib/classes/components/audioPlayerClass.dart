@@ -264,6 +264,7 @@ class audioPlayerClass {
 
   Future<void> shuffle() async {
     if(audios != null) {
+      audiosShuffle = new List<int>();
       for (int i = 0; i < audios.length; i++) {
         audiosShuffle.add(i);
       }
