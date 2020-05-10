@@ -71,7 +71,7 @@ class _State extends State<ShowAlbum> {
                 padding: const EdgeInsets.all(8),
                 scrollDirection: Axis.vertical,
                 onReorder: _onReorder,
-                children: listaParaAudiosCategorias(context,album.songs,album.name,true,choiceAction),
+                children: listaParaAudiosCategorias(context,album.songs,album.name,false,choiceAction),
               ),
             ),
           ]
