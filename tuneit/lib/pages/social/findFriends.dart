@@ -26,12 +26,12 @@ class _State extends State<buscarAmigos> {
 return Center(
   child:   Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: searchFriends(),
+    child: searchFriends(context),
   ),
 );
   }
 
-  Widget searchFriends(){
+  Widget searchFriends(BuildContext context){
     return SearchBar<User>(
       hintText: "Buscar amigos",
       searchBarStyle: SearchBarStyle(
@@ -74,12 +74,7 @@ return Center(
           title:Text( user.name.toString()),
 
           onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Profile(name:user.name,email: user.email,country: user.country,date: user.date,esUser: false,image: user.photo,token:user.token),
-              ),
-            );
+            mostrarError(context,"Tienes que ser amigo de " +user.name.toString() +" para ver su perfil.");
           },
           trailing: IconButton(
             tooltip: 'Agregar amigo',
