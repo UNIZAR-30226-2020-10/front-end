@@ -248,6 +248,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                                 _audioPlayerClass.rellenarNotificaciones();
                                 _audioPlayerClass.Changeplay();
                                 _audioPlayerClass.setPlaying(true);
+                                audios_show = _audioPlayerClass.getAudio();
                                 initAudioPlayer();
                               }
                               else{
