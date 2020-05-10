@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
@@ -22,7 +23,7 @@ class _State extends State<ShowList> {
   List<Audio> audios =[];
   String list_title;
   String indetificadorLista;
-
+  audioPlayerClass _audioPlayerClass;
   _State(this.indetificadorLista,this.list_title);
 
   void ObtenerDatos() async{
@@ -38,6 +39,7 @@ class _State extends State<ShowList> {
   void initState(){
   ObtenerDatos();
     super.initState();
+  _audioPlayerClass = new audioPlayerClass();
   }
 
   @override
@@ -141,6 +143,9 @@ class _State extends State<ShowList> {
     else if(choice ==optionMenuSong[2]){
       eliminarCancion(context,list_title,id_lista,id_song);
       // Pedir la lista de favoritos actualizada
+      SongLista cancionesFavoritas = await fetchSonglists( _audioPlayerClass.getIdFavoritas());
+      List<Audio> audiosFavoritos=cancionesFavoritas.songs;
+      _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);
     }
     else if(choice == optionMenuSong[3]){
       launchInBrowser(audios[indice].devolverTitulo(),audios[indice].devolverArtista());
@@ -148,6 +153,9 @@ class _State extends State<ShowList> {
     else if(choice == optionMenuSong[4]){
       agregada(context,Globals.id_fav,audios[indice].devolverTitulo());
       // Pedir la lista de favoritos actualizada
+      SongLista cancionesFavoritas = await fetchSonglists( _audioPlayerClass.getIdFavoritas());
+      List<Audio> audiosFavoritos=cancionesFavoritas.songs;
+      _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);
     }
     else{
       print ("Correct option was not found");

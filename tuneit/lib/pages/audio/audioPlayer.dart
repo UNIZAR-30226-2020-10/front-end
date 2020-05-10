@@ -64,7 +64,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
 
   Color _iconRepeatColor = Colors.grey;
   Color _iconShuffleColor = Colors.grey;
-  Color _iconFavoriteColor = Colors.white;
+  IconData _iconFavorite = Icons.favorite;
 
   PlayerState _playerState = PlayerState.RELEASED;
   StreamSubscription _durationSubscription;
@@ -136,18 +136,22 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                 padding: EdgeInsets.only(right: 20.0),
                 child: IconButton(
                     iconSize: 20.0,
-                    icon: Icon(Icons.favorite_border),
-                    color:  _audioPlayerClass.existeCancionFav(audios[indice])
-                    ?_iconFavoriteColor = ColorSets.colorPink
-                    : _iconFavoriteColor ,
-                    onPressed: () {
+                    icon: Icon(_audioPlayerClass.existeCancionFav(audios[indice])
+                        ? Icons.favorite
+                        : Icons.favorite_border),
+                    onPressed: () async {
                       if(_audioPlayerClass.existeCancionFav(audios[indice])){
-                        setState((){_iconRepeatColor = ColorSets.colorGrey;});
                         eliminarCancionDeLista(_audioPlayerClass.getIdFavoritas(),audios[indice].devolverID().toString());
+                        SongLista cancionesFavoritas = await fetchSonglists( _audioPlayerClass.getIdFavoritas());
+                        List<Audio> audiosFavoritos=cancionesFavoritas.songs;
+                        setState((){ _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);});
                       }
                       else{
                         setState((){_iconRepeatColor = ColorSets.colorPink;});
                         agregarCancion(_audioPlayerClass.getIdFavoritas().toString(),audios[indice].devolverID().toString());
+                        SongLista cancionesFavoritas = await fetchSonglists( _audioPlayerClass.getIdFavoritas());
+                        List<Audio> audiosFavoritos=cancionesFavoritas.songs;
+                        setState((){ _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);});
                       }
                     }
                 ),
