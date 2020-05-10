@@ -125,7 +125,7 @@ List<Widget> listaParaAudios(BuildContext context,List<Audio> audios, String ind
           child: new ListTile(
             onTap:(){
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => PlayerPage(audios:audios,indice: index, indetificadorLista: indetificadorLista),
+                builder: (context) => PlayerPage(audios:audios,indice: index, indetificadorLista: indetificadorLista,escanciones: musicPod,),
 
               ));
             },

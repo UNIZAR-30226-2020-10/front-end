@@ -29,7 +29,6 @@ class User {
     String pais="";
     String token="";
     if(json['Fecha']==null){
-      print("a llorar");
       fecha=Globals.date;
     }
     else{

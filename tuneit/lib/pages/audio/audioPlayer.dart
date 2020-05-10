@@ -132,7 +132,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
     return Scaffold(
           appBar: AppBar(
             actions: <Widget>[
-              Padding(
+              escanciones ?Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: IconButton(
                     iconSize: 20.0,
@@ -151,7 +151,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                       }
                     }
                 ),
-              )
+              ):Container(width: 0,height: 0,)
             ],
             backgroundColor: Colors.transparent,
             elevation: 0.0,
