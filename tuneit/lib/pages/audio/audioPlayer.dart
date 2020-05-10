@@ -1,13 +1,19 @@
 import 'dart:async';
 
+import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_exoplayer/audio_notification.dart';
 import 'package:flutter_exoplayer/audioplayer.dart';
+import 'package:getflutter/components/avatar/gf_avatar.dart';
+import 'package:getflutter/shape/gf_avatar_shape.dart';
 import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/widgets/AutoScrollableText.dart';
+import 'package:tuneit/widgets/bottomExpandableAudio.dart';
+import 'package:tuneit/widgets/lists.dart';
 
 
 
@@ -17,24 +23,26 @@ class PlayerPage extends StatefulWidget {
   List<Audio> audios;
   int indice;
   bool escanciones;
+  String indetificadorLista;
 
-  PlayerPage({Key key, @required this.audios,@required this.indice,@required this.escanciones}):super(key : key);
+  PlayerPage({Key key, @required this.audios,@required this.indice,@required this.escanciones, @required this.indetificadorLista}):super(key : key);
 
   @override
-  _PlayerPageState createState() => _PlayerPageState (audios,indice,escanciones);
+  _PlayerPageState createState() => _PlayerPageState (audios,indice,escanciones, indetificadorLista);
 }
 
-class _PlayerPageState extends State<PlayerPage> {
+class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateMixin {
 
-  _PlayerPageState(this.audios,this.indice,this.escanciones);
+  _PlayerPageState(this.audios,this.indice,this.escanciones, this.indetificadorLista);
 
   //----------------------------------------------------//
 
   List<Audio> audios;
   int indice;
   bool escanciones;
+  String indetificadorLista;
 
-
+  List<Audio> audios_show;
   //Cargar datos
   Future <void> funcion_auxiliar()async{await rellenarDatos();}
   Future <void> rellenarDatos()async{}
@@ -52,8 +60,11 @@ class _PlayerPageState extends State<PlayerPage> {
   Duration _duration;
   Duration _position;
 
+  BottomBarController audio_controller = null;
+
   Color _iconRepeatColor = Colors.grey;
   Color _iconShuffleColor = Colors.grey;
+  Color _iconFavoriteColor = Colors.white;
 
   PlayerState _playerState = PlayerState.RELEASED;
   StreamSubscription _durationSubscription;
@@ -64,6 +75,8 @@ class _PlayerPageState extends State<PlayerPage> {
   StreamSubscription _playerIndexSubscription;
   StreamSubscription _playerAudioSessionIdSubscription;
   StreamSubscription _notificationActionCallbackSubscription;
+
+  bool esFavorita;
 
   final List<AudioNotification> audioNotifications = new List<AudioNotification>();
 
@@ -79,6 +92,18 @@ class _PlayerPageState extends State<PlayerPage> {
     super.initState();
     _audioPlayerClass = new audioPlayerClass();
     initAudioPlayer();
+    audio_controller = BottomBarController(vsync: this, dragLength: 100, snap: true);
+    if(_audioPlayerClass.getShuffle()){
+      audios_show =  _audioPlayerClass.getAudioShuffle();
+    }
+    else {
+      if (_audioPlayerClass.getAudio() != null) {
+        audios_show = _audioPlayerClass.getAudio();
+      }
+      else{
+        audios_show = audios;
+      }
+    }
   }
 
   @override
@@ -103,30 +128,27 @@ class _PlayerPageState extends State<PlayerPage> {
   @override
   Widget build(BuildContext context) {
     funcion_auxiliar();
-    print(_audioPlayerClass.getAudio() == audios);
-    print(_audioPlayerClass.getIndice() == indice);
-    print(_audioPlayerClass.getPlaying());
-    print(_audioPlayerClass.getIndice());
-    print(_audioPlayerClass.getIndice());
-    print(_audioPlayerClass.getIndice());
-    print(indice);
-    print(indice);
-    print(indice);
-    print(indice);
-    return DefaultTabController(
-        length: 5,
-        child: Scaffold(
+
+    return Scaffold(
           appBar: AppBar(
             actions: <Widget>[
               Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: IconButton(
                     iconSize: 20.0,
-                    icon: Icon(_audioPlayerClass.existeCancionFav(audios[indice])
-                        ? Icons.favorite
-                        : Icons.favorite_border),
+                    icon: Icon(Icons.favorite_border),
+                    color:  _audioPlayerClass.existeCancionFav(audios[indice])
+                    ?_iconFavoriteColor = ColorSets.colorPink
+                    : _iconFavoriteColor ,
                     onPressed: () {
-
+                      if(_audioPlayerClass.existeCancionFav(audios[indice])){
+                        setState((){_iconRepeatColor = ColorSets.colorGrey;});
+                        eliminarCancionDeLista(_audioPlayerClass.getIdFavoritas(),audios[indice].devolverID().toString());
+                      }
+                      else{
+                        setState((){_iconRepeatColor = ColorSets.colorPink;});
+                        agregarCancion(_audioPlayerClass.getIdFavoritas().toString(),audios[indice].devolverID().toString());
+                      }
                     }
                 ),
               )
@@ -135,8 +157,8 @@ class _PlayerPageState extends State<PlayerPage> {
             elevation: 0.0,
           )
           ,
-          body:  Column(
-            children: [
+          body: Column(
+                children: [
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -151,11 +173,11 @@ class _PlayerPageState extends State<PlayerPage> {
                       ),
                     ),
                   ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MarqueeWidget(
-                    child: Text(audios[indice].devolverArtista() + ' | ' + audios[indice].devolverGenero(),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MarqueeWidget(
+                      child: Text(audios[indice].devolverArtista() + ' | ' + audios[indice].devolverGenero(),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontWeight: FontWeight.bold,
@@ -171,19 +193,19 @@ class _PlayerPageState extends State<PlayerPage> {
 
 
 
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Image(
                       image: NetworkImage(audios[indice].devolverImagen()),fit: BoxFit.fill,
-                      width: 300,
-                      height: 300,
+                      width: 200,
+                      height: 200,
                     ),
 
                 ),
               ),
-              Center(
-                child: Padding(
+                Center(
+                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -192,7 +214,7 @@ class _PlayerPageState extends State<PlayerPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
-                              iconSize: 64,
+                              iconSize: 60,
                               icon: Icon(Icons.skip_previous),
                               onPressed: () {
                                 _audioPlayerClass.previous();
@@ -261,10 +283,17 @@ class _PlayerPageState extends State<PlayerPage> {
                                   _audioPlayerClass.setShuffle(true);
                                   setState((){_iconShuffleColor = ColorSets.colorBlue;});
                                   _audioPlayerClass.shuffle();
+                                  audios_show =  _audioPlayerClass.getAudioShuffle();
                                 }
                                 else{
                                   _audioPlayerClass.setShuffle(false);
                                   setState((){_iconShuffleColor = ColorSets.colorGrey;});
+                                  if (_audioPlayerClass.getAudio() != null) {
+                                    audios_show = _audioPlayerClass.getAudio();
+                                  }
+                                  else{
+                                    audios_show = audios;
+                                  }
                                 }
                               }),
                           IconButton(
@@ -280,10 +309,12 @@ class _PlayerPageState extends State<PlayerPage> {
                 )
                 ,
               ),
-              SizedBox(
-                  width: 400,
-                  height: 30,
-                  child: SliderTheme(
+                Flexible(
+                child:
+                  SizedBox(
+                    width: 400,
+                    height: 30,
+                   child: SliderTheme(
                     data: SliderThemeData(
                       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
                       trackHeight: 3,
@@ -314,8 +345,9 @@ class _PlayerPageState extends State<PlayerPage> {
                       },
                     ),
                   ),
-                ),
-                Row(
+                )),
+                Flexible(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
@@ -325,17 +357,63 @@ class _PlayerPageState extends State<PlayerPage> {
                       style: TextStyle(fontSize: 24.0),
                     ),
                   ],
-                ),
+                )),
             ],
           ),
 
-          //colaReproduccion(List<Song> canciones,int actual)
+          bottomNavigationBar: PreferredSize(
+            preferredSize: Size.fromHeight(audio_controller.dragLength),
+            child: BottomExpandableAppBar(
+              controller: audio_controller,
+              expandedHeight: audio_controller.dragLength,
+              horizontalMargin: 0,
+              expandedBackColor: Theme.of(context).backgroundColor,
+              attachSide: Side.Bottom,
+              bottomOffset: 20.0,
+              // Your bottom sheet code here
+              expandedBody: GestureDetector(
+                onVerticalDragUpdate: audio_controller.onDrag,
+                onVerticalDragEnd: audio_controller.onDragEnd,
+                child: Card(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        "",
+                        textAlign: TextAlign.center,
+                      ),
+                   Expanded(
+                    child: ReorderableListView(
+                      padding: const EdgeInsets.all(8),
+                      scrollDirection: Axis.vertical,
+                      onReorder: _onReorder,
+                      children: List.generate(
+                        audios_show.length, (index) {
+                          return
+                            Card(
+                              key: Key('$index'),
+                              child: new ListTile(
+                                leading: GFAvatar(
 
-        ),
+                                  backgroundImage: NetworkImage(audios_show[index].devolverImagen()),
+                                  backgroundColor: Colors.transparent,
+                                  shape: GFAvatarShape.standard,
 
-
-      );
-    //);
+                                ),
+                                title: Text(audios_show[index].devolverTitulo()),
+                                subtitle: Text(audios_show[index].devolverArtista() + ' | ' + audios_show[index].devolverGenero()),
+                              ),
+                            );
+                        },
+                      ),
+                    ),
+                  )],
+                ),
+              )
+              ),
+              ),
+            ),
+          );
   }
 
   void initAudioPlayer() {
@@ -378,6 +456,20 @@ class _PlayerPageState extends State<PlayerPage> {
         _position = Duration(milliseconds: 0);
         print('Current player is completed');
       }
+      );
+    }
+  }
+  void _onReorder(int oldIndex, int newIndex) async{
+    bool exito =await reposicionarCancion(indetificadorLista,oldIndex.toString(),newIndex.toString());
+    if(exito){
+      setState(
+            () {
+          if (newIndex > oldIndex) {
+            newIndex -= 1;
+          }
+          final Song item = audios.removeAt(oldIndex);
+          audios.insert(newIndex, item);
+        },
       );
     }
   }

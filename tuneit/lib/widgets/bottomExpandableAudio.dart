@@ -53,6 +53,7 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
     controller = BottomBarController(vsync: this, dragLength: 200, snap: true);
     _audioPlayerClass = new audioPlayerClass();
     _initAudioPlayer();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -69,6 +70,7 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
                     .of(context)
                     .backgroundColor,
                 attachSide: Side.Bottom,
+                bottomOffset: 20.0,
                 // Your bottom sheet code here
                 expandedBody: GestureDetector(
                     onVerticalDragUpdate: controller.onDrag,
@@ -76,10 +78,8 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
                     child: Card(
 
                       child: Column(
-
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-
                             ListTile(
 
                               leading:  audios != null && indice != null ?
@@ -158,8 +158,12 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 IconButton(icon: Icon(Icons.skip_previous),
-                                  onPressed: () {_audioPlayerClass.previous();
-                                  },),
+                                  onPressed: () {
+                                    if (_audioPlayerClass.getAudio() != null) {
+                                      _audioPlayerClass.previous();
+                                    }
+                                  },
+                                ),
                                 IconButton(icon: Icon(Icons.repeat,
                                     color: iconRepeatColor),
                                   onPressed: () {
@@ -182,14 +186,17 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
                                 IconButton(icon: Icon(_audioPlayerClass.getPlaying()
                                     ? Icons.pause_circle_filled
                                     : Icons.play_circle_filled),
-                                  onPressed: () {if(!_audioPlayerClass.getPlaying()) {
-                                                    _audioPlayerClass.play();
-                                                    _audioPlayerClass.setPlaying(true);
-                                                  }
-                                                  else{
-                                                    _audioPlayerClass.pause();
-                                                    _audioPlayerClass.setPlaying(false);
-                                                  }
+                                  onPressed: () {
+                                    if (_audioPlayerClass.getAudio() != null) {
+                                      if (!_audioPlayerClass.getPlaying()) {
+                                        _audioPlayerClass.play();
+                                        _audioPlayerClass.setPlaying(true);
+                                      }
+                                      else {
+                                        _audioPlayerClass.pause();
+                                        _audioPlayerClass.setPlaying(false);
+                                      }
+                                    }
                                   }),
                                 IconButton(icon: Icon(Icons.shuffle),
                                   color: iconShuffleColor,
@@ -207,7 +214,12 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
                                     }
                                   },),
                                 IconButton(icon: Icon(Icons.skip_next),
-                                  onPressed: () {_audioPlayerClass.next();},),
+                                  onPressed: () {
+                                     if (_audioPlayerClass.getAudio() != null) {
+                                       _audioPlayerClass.next();
+                                     }
+                                  },
+                                ),
                               ],
 
                             ),

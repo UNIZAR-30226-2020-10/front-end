@@ -24,12 +24,15 @@ class audioPlayerClass {
 
   // Variables Shuffle
   List<int> audiosShuffle = new List<int>();
+  List<Audio> audiosShuffleShow = new List<Audio>();
   int indiceShuffle;
   int primera = 0;
 
   // Variables Canciones y Podcast Favoritos
   List<Audio> cancionesFav;
-
+  String idFavoritas;
+  String nombreFavoritas;
+  // Variables Notificaciones
   List<AudioNotification> audioNotifications = new List<AudioNotification>();
   //////////////////////////////
   // Funciones Set y Get de parametros
@@ -43,6 +46,8 @@ class audioPlayerClass {
   void setIndice(int el_indice) => indice = el_indice;
   void setPlaying(bool playing) => this.playing = playing;
   void setCancionesFavoritas(List<Audio> audiosFavoritos) => cancionesFav =  audiosFavoritos;
+  void setIdFavoritas(String idFavoritas) => this.idFavoritas = idFavoritas;
+  void setNombreFavoritas(String nombreFavoritas) => this.nombreFavoritas = nombreFavoritas;
   AudioPlayer getAudioPlayer() {
     return _audioPlayer;
   }
@@ -61,8 +66,17 @@ class audioPlayerClass {
   List getAudio(){
     return audios;
   }
+  List getAudioShuffle(){
+    return audiosShuffleShow;
+  }
   bool getPlaying(){
     return playing;
+  }
+  String getIdFavoritas(){
+    return idFavoritas;
+  }
+  String getNombreFavoritas(){
+    return nombreFavoritas;
   }
 
   Future<void> goTo(int indice_a_ir) async {
@@ -260,6 +274,10 @@ class audioPlayerClass {
       audiosShuffle[index_primera_shuffle] = valor_index_0;
       audiosShuffle[0] = primera;
       indiceShuffle = 0;
+      audiosShuffleShow = new List<Audio>();
+      for (int i = 0; i < audios.length; i++) {
+        audiosShuffleShow.add(audios[audiosShuffle[i]]);
+      }
     }
   }
 
