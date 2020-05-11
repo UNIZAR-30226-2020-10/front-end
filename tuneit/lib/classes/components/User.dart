@@ -155,18 +155,14 @@ Future<bool> registerUser(
   }
 }
 
-Future<bool> fetchUser(String email, String password) async {
+Future<String> fetchUser(String email, String password) async {
   var queryParameters = {
     'email' : email,
     'password' : password,
   };
   var uri = Uri.http(baseURL, '/sign_in', queryParameters);
   final http.Response response = await http.get(uri);
-  if (response.body == 'Success') {
-    return true;
-  } else {
-    return false;
-  }
+  return response.body;
 }
 
 //final _cancionStreamController

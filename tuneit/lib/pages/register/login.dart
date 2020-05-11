@@ -81,8 +81,7 @@ class _LoginState extends State<Login> {
     final encrypted = encrypter.encrypt(_controller2.text, iv: iv);
     setState(() {
       fetchUser(_controller1.text,  encrypted.base64).then((value) async {
-        if (value) {
-
+        if (value == 'Success') {
           Globals.isLoggedIn = true;
           Globals.email = _controller1.text;
           List<String> list = await infoUser(_controller1.text);
@@ -101,6 +100,20 @@ class _LoginState extends State<Login> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MyHomePage()),
+          );
+        }
+        else if(value == 'Sin confirmar'){
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('ERROR'),
+                  content: Text('El email no ha sido confirmado'),
+                  actions: <Widget>[
+                    simpleButton(context, () {Navigator.of(context).pop();}, [], 'Volver')
+                  ],
+                );
+              }
           );
         }
         else {
