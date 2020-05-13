@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Artist.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
-import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
-import 'package:tuneit/classes/values/Globals.dart';
-import 'package:tuneit/pages/register/mainView.dart';
-import 'package:tuneit/pages/register/options.dart';
 import 'package:tuneit/pages/showAlbum.dart';
-import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/widgets/AutoScrollableText.dart';
-import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
-import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/lists.dart';
-import 'package:tuneit/widgets/textFields.dart';
 
 class ArtistProfile extends StatefulWidget {
 
@@ -29,13 +20,18 @@ class _ArtistProfileState extends State<ArtistProfile> {
 
   String name;
   Artist artist;
+  bool fav;
+  bool initFav;
 
   _ArtistProfileState({this.name});
 
   void obtenerDatos() async{
     Artist aux = await artistByName(name);
+    bool favorito = await checkFav(name);
     setState(() {
       artist = aux;
+      fav = favorito;
+      initFav = favorito;
     });
   }
 
@@ -51,6 +47,36 @@ class _ArtistProfileState extends State<ArtistProfile> {
       appBar: AppBar(
         title: Text('PERFIL DEL ARTISTA'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: (){
+            if (fav != initFav) {
+              if (fav) isFav(name);
+              else isNotFav(name);
+            }
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            size: 26.0,
+          ),
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: (){
+                setState(() {
+                  fav = !fav;
+                });
+              },
+              child: Icon(
+                fav? Icons.star : Icons.star_border,
+                size: 26.0,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Container(
         margin: const EdgeInsets.only(left: 10, right: 10),

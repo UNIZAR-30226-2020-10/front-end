@@ -70,7 +70,7 @@ class _ShowCategoryState extends State<ShowCategory> {
                 padding: const EdgeInsets.all(8),
                 scrollDirection: Axis.vertical,
                 onReorder: _onReorder,
-                children: listaParaAudiosCategorias(context, songs, name, true, choiceAction),
+                children: listaParaAudiosCategorias(context, songs, name, false, choiceAction),
               ),
             ),
           ]

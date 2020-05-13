@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/pages/artists.dart';
 import 'package:tuneit/pages/audio/equalizer.dart';
 import "package:tuneit/pages/profile.dart";
 import 'package:tuneit/pages/social/friend.dart';
@@ -51,6 +52,18 @@ class LateralMenu extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => PlayLists(false),
+                  ),
+                );
+              }
+          ),
+          new ListTile(
+              title: Text('ARTISTAS'),
+
+              onTap:(){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Artists(),
                   ),
                 );
               }
