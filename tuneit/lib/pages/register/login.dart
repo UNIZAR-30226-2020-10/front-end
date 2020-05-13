@@ -1,6 +1,7 @@
 import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
 import 'package:tuneit/classes/values/Globals.dart';
@@ -91,6 +92,8 @@ class _LoginState extends State<Login> {
           Globals.country = list[3];
           Globals.image = list[4];
 
+          List<Playlist> listaPlay = await fetchPlaylists(Globals.email);
+          Globals.idFavorite = listaPlay[0].id.toString();
           //------
           //Esto habra que cambiarlo por lo que backend
           //-----

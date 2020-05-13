@@ -40,13 +40,6 @@ class _PlayListsState extends State<PlayLists> {
       setState(() {
         listaPlaylists = listaPlay;
       });
-      // Aprovecho y me guardo la lista de favoritos
-      SongLista cancionesFavoritas =await fetchSonglists(listaPlaylists[0].id.toString());
-      List<Audio> audiosFavoritos=cancionesFavoritas.songs;
-      audioPlayerClass _audioPlayerClass = new audioPlayerClass();
-      _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);
-      _audioPlayerClass.setIdFavoritas(listaPlaylists[0].id.toString());
-      _audioPlayerClass.setNombreFavoritas(listaPlaylists[0].name);
     }
     else {
       List<Podcast> listaPodc = await fetchFavPodcasts();

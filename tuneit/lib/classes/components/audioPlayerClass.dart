@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter_exoplayer/audio_notification.dart';
 import 'package:flutter_exoplayer/audioplayer.dart';
+import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 import 'Audio.dart';
+import 'package:http/http.dart' as http;
 
 class audioPlayerClass {
 
@@ -28,10 +32,8 @@ class audioPlayerClass {
   int indiceShuffle;
   int primera = 0;
 
-  // Variables Canciones y Podcast Favoritos
-  List<Audio> cancionesFav;
-  String idFavoritas;
-  String nombreFavoritas;
+
+  bool iniciado = false;
   // Variables Notificaciones
   List<AudioNotification> audioNotifications = new List<AudioNotification>();
   //////////////////////////////
@@ -45,9 +47,7 @@ class audioPlayerClass {
   void setShuffle (bool shuffleMode) => _shuffleMode = shuffleMode;
   void setIndice(int el_indice) => indice = el_indice;
   void setPlaying(bool playing) => this.playing = playing;
-  void setCancionesFavoritas(List<Audio> audiosFavoritos) => cancionesFav =  audiosFavoritos;
-  void setIdFavoritas(String idFavoritas) => this.idFavoritas = idFavoritas;
-  void setNombreFavoritas(String nombreFavoritas) => this.nombreFavoritas = nombreFavoritas;
+  void setIniciado(bool iniciado) => this.iniciado = iniciado;
   AudioPlayer getAudioPlayer() {
     return _audioPlayer;
   }
@@ -72,12 +72,10 @@ class audioPlayerClass {
   bool getPlaying(){
     return playing;
   }
-  String getIdFavoritas(){
-    return idFavoritas;
+  bool getIniciado(){
+    return iniciado;
   }
-  String getNombreFavoritas(){
-    return nombreFavoritas;
-  }
+
 
   Future<void> goTo(int indice_a_ir) async {
     final Result result = await _audioPlayer.seekIndex(indice_a_ir);
@@ -282,11 +280,22 @@ class audioPlayerClass {
     }
   }
 
-  bool existeCancionFav (Audio cancion ) {
-    for (Audio cancionBusqueda in cancionesFav) {
-      if (cancion.devolverTitulo() == cancionBusqueda.devolverTitulo()
-          && cancion.devolverArtista() == cancion.devolverArtista()) return true;
+  Future<bool> existeCancionFav (Audio cancion ) async {
+    final http.Response response = await http.post(
+      'https://' + baseURL + '/is_fav',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'cancion': cancion.devolverID().toString(),
+        'email': Globals.email.toString(),
+      }),
+    );
+    if (response.body == 'True') {
+      return  Future<bool>.value(true);
+    } else {
+      return  Future<bool>.value(false);
     }
-    return false;
   }
+
 }

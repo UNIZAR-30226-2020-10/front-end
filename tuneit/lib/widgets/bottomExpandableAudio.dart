@@ -57,9 +57,9 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
   }
   @override
   Widget build(BuildContext context) {
-          _initAudioPlayer();
-          audios = _audioPlayerClass.getAudio();
-          indice = _audioPlayerClass.getIndice();
+    _initAudioPlayer();
+    audios = _audioPlayerClass.getAudio();
+    indice = _audioPlayerClass.getIndice();
           return PreferredSize(
             preferredSize: Size.fromHeight(controller.dragLength),
             child: BottomExpandableAppBar(

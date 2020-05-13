@@ -47,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
       listaCateg = listaCat;
       listaArtistas = listaArt;
     });
+
   }
 
   void initState() {
@@ -106,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: listaUltCanc.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return listaParaAudiosCategorias(context, listaUltCanc, "NoLista",false, choiceAction,) [index];
+                    return listaParaAudiosCategorias(context, listaUltCanc, "NoLista",true, choiceAction,) [index];
                   }
               ),
             ],

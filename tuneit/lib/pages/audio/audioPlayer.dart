@@ -11,6 +11,7 @@ import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/widgets/AutoScrollableText.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
@@ -45,7 +46,21 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   List<Audio> audios_show;
   //Cargar datos
   Future <void> funcion_auxiliar()async{await rellenarDatos();}
-  Future <void> rellenarDatos()async{}
+  Future <void> rellenarDatos()async{
+    if(esFavorita == null){
+      setState(() {
+        _audioPlayerClass.existeCancionFav(audios[indice]).then((value) async {
+          if (value) {
+            print(value);
+            esFavorita = true;
+          }
+          else {
+            esFavorita = false;
+          }
+        });
+      });
+    }
+  }
 
   //----------------------------------------------------//
 
@@ -104,6 +119,17 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
         audios_show = audios;
       }
     }
+    setState(() {
+      _audioPlayerClass.existeCancionFav(audios[indice]).then((value) async {
+        if (value) {
+          print(value);
+          esFavorita = true;
+        }
+        else {
+          esFavorita = false;
+        }
+      });
+    });
   }
 
   @override
@@ -128,7 +154,6 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     funcion_auxiliar();
-
     return Scaffold(
           appBar: AppBar(
             actions: <Widget>[
@@ -136,22 +161,17 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                 padding: EdgeInsets.only(right: 20.0),
                 child: IconButton(
                     iconSize: 20.0,
-                    icon: Icon(_audioPlayerClass.existeCancionFav(audios[indice])
+                    icon: Icon(esFavorita != null
                         ? Icons.favorite
                         : Icons.favorite_border),
-                    onPressed: () async {
-                      if(_audioPlayerClass.existeCancionFav(audios[indice])){
-                        eliminarCancionDeLista(_audioPlayerClass.getIdFavoritas(),audios[indice].devolverID().toString());
-                        SongLista cancionesFavoritas = await fetchSonglists( _audioPlayerClass.getIdFavoritas());
-                        List<Audio> audiosFavoritos=cancionesFavoritas.songs;
-                        setState((){ _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);});
+                    onPressed: (){
+                      if(esFavorita != null){
+                        eliminarCancionDeLista(Globals.idFavorite,audios[indice].devolverID().toString());
+                        setState(() {esFavorita = false;});
                       }
                       else{
-                        setState((){_iconRepeatColor = ColorSets.colorPink;});
-                        agregarCancion(_audioPlayerClass.getIdFavoritas().toString(),audios[indice].devolverID().toString());
-                        SongLista cancionesFavoritas = await fetchSonglists( _audioPlayerClass.getIdFavoritas());
-                        List<Audio> audiosFavoritos=cancionesFavoritas.songs;
-                        setState((){ _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);});
+                        agregarCancion(Globals.idFavorite,audios[indice].devolverID().toString());
+                        setState(() {esFavorita = true;});
                       }
                     }
                 ),
@@ -222,6 +242,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                               icon: Icon(Icons.skip_previous),
                               onPressed: () {
                                 _audioPlayerClass.previous();
+                                esFavorita = null;
                               }),
                           IconButton(
                             onPressed:(){
@@ -250,6 +271,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                                 _audioPlayerClass.setPlaying(true);
                                 audios_show = _audioPlayerClass.getAudio();
                                 initAudioPlayer();
+                                _audioPlayerClass.setIniciado(true);
                               }
                               else{
                                 if(_audioPlayerClass.getIndice() == indice){
@@ -306,6 +328,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                               icon: Icon(Icons.skip_next),
                               onPressed: () {
                                 _audioPlayerClass.next();
+                                esFavorita = null;
                               }),
                         ],
                       ),
@@ -478,6 +501,8 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
       );
     }
   }
+
+
 }
 
 

@@ -142,20 +142,12 @@ class _State extends State<ShowList> {
     }
     else if(choice ==optionMenuSong[2]){
       eliminarCancion(context,list_title,id_lista,id_song);
-      // Pedir la lista de favoritos actualizada
-      SongLista cancionesFavoritas = await fetchSonglists( _audioPlayerClass.getIdFavoritas());
-      List<Audio> audiosFavoritos=cancionesFavoritas.songs;
-      _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);
     }
     else if(choice == optionMenuSong[3]){
       launchInBrowser(audios[indice].devolverTitulo(),audios[indice].devolverArtista());
     }
     else if(choice == optionMenuSong[4]){
       agregada(context,Globals.id_fav,audios[indice].devolverTitulo());
-      // Pedir la lista de favoritos actualizada
-      SongLista cancionesFavoritas = await fetchSonglists( _audioPlayerClass.getIdFavoritas());
-      List<Audio> audiosFavoritos=cancionesFavoritas.songs;
-      _audioPlayerClass.setCancionesFavoritas(audiosFavoritos);
     }
     else{
       print ("Correct option was not found");
