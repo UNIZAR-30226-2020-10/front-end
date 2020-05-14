@@ -83,7 +83,7 @@ class _ProfilePageState extends State<Profile> {
                 tooltip: 'Agregar amigo',
                 onPressed: ()async{
 
-                  bool resultado = await enviarSolicitud(Globals.email, email,token);
+                  bool resultado = await enviarSolicitud(Globals.email, email);
 
                   setState(() {
                     encontrado=resultado;

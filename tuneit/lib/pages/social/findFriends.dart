@@ -79,7 +79,7 @@ return Center(
           trailing: IconButton(
             tooltip: 'Agregar amigo',
             onPressed: ()async{
-              bool resultado = await enviarSolicitud(Globals.email, user.email,user.token);
+              bool resultado = await enviarSolicitud(Globals.email, user.email);
 
               setState(() {
                 encontrado=resultado;

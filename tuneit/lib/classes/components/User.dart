@@ -27,7 +27,7 @@ class User {
     print('b');
     String fecha="";
     String pais="";
-    String token="";
+
     if(json['Fecha']==null){
       fecha=Globals.date;
     }
@@ -41,21 +41,14 @@ class User {
     else{
       pais=json['Pais'];
     }
-    if(json['Token']==null){
-      token=Globals.mi_token;
-    }
-    else{
-      token=json['Token'];
-    }
-
+    String email=json['Email'];
     return User(
       name: json['Nombre'],
-      email: json['Email'],
+      email: email,
       password: json['Password'],
       date: fecha,
       country: pais,
       photo: json['Imagen'],
-      token: token,
     );
   }
 
@@ -99,7 +92,7 @@ Future<List<User>> searchUsers(String nombre) async {
 
 
 Future<bool> enviarSolicitud(
-    String emisor,String receptor,String token
+    String emisor,String receptor
     ) async {
 
   final http.Response response = await http.post(
@@ -115,10 +108,57 @@ Future<bool> enviarSolicitud(
 
   print(response.body);
   if (response.body == 'Success') {
+    String token= await getToken(receptor);
+    print(token);
     sendNotification('Solcitud de amistad',emisor+' quiere ser tu amigo',token);
     return true;
   } else {
     return false;
+  }
+}
+
+
+Future<bool> setToken(
+    String email,String token
+    ) async {
+
+  final http.Response response = await http.post(
+    'https://' + baseURL + '/set_token',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email':email,
+      'token':token,
+    }),
+  );
+  if (response.body == 'Success') {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Future<String> getToken(
+    String email
+    ) async {
+
+  final http.Response response = await http.post(
+    'https://' + baseURL + '/get_token',
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email':email,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    String token=response.body;
+    token=token.replaceAll('"','');
+    return token;
+  } else {
+    return null;
   }
 }
 

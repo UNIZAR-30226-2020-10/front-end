@@ -117,6 +117,7 @@ Future<bool> deleteFriend(String email,String amigo) async {
       'amigo':amigo,
     }),
   );
+  print(response.statusCode);
 
   if (response.statusCode == 200) {
     exito=true;

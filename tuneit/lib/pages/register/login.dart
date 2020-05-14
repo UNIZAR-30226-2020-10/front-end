@@ -99,6 +99,9 @@ class _LoginState extends State<Login> {
           //-----
           var pus1=PushProvider();
           Globals.mi_token=pus1.devolverToken();
+          setToken(
+             Globals.email,Globals.mi_token
+          );
 
           Navigator.push(
             context,
