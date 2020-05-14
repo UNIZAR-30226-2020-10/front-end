@@ -15,15 +15,18 @@ class Artist {
   List<Album> albums = List();
   String image = 'https://i.blogs.es/6c558d/luna-400mpx/450_1000.jpg';
 
-  Artist({this.name,this.alias,this.country,this.date,this.albums});
+  Artist({this.name,this.alias,this.country,this.date,this.albums,this.image});
 
   factory Artist.fromJson(Map<String, dynamic> parsedJson) {
+    //{Imagen: https://psoftware.s3.amazonaws.com/alan_walker.jpg, Nombre: Alan Walker, Pais: null}
+    print(parsedJson);
     return Artist(
       name: parsedJson['Nombre'],
       alias: parsedJson['alias'],
       country: parsedJson['Pais'],
       date: parsedJson['fecha'],
       albums: parsedJson['Albumes'],
+      image:parsedJson['Imagen'],
     );
   }
 
@@ -69,6 +72,7 @@ Future<Artist> artistByName (String name) async{
       alias: parsedJson['alias'] == null? '' : parsedJson['Nombre'],
       country: parsedJson['Pais'] == null? 'Pais es null' : parsedJson['Pais'],
       date: parsedJson['fecha'] == null? 'Fecha desconocida' : parsedJson['fecha'],
+        image: parsedJson['Imagen'] == null? 'https://i.blogs.es/6c558d/luna-400mpx/450_1000.jpg' : parsedJson['Imagen'],
       albums:
         (parsedJson['Albumes'] as List)
             .map((data) => new Album.fromJson(data))

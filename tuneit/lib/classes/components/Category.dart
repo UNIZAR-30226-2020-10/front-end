@@ -10,13 +10,16 @@ class Category {
   String description;
   String image = 'https://i.blogs.es/6c558d/luna-400mpx/450_1000.jpg';
 
-  Category({this.name,this.description});
+  Category({this.name,this.image});
 
   factory Category.fromJson(Map<String, dynamic> parsedJson) {
-    print(parsedJson['name']);
+    print(parsedJson);
+    print(parsedJson['Nombre']);
+    print(parsedJson['Imagen']);
+
     return Category(
-        name: parsedJson['name'],
-        description: parsedJson['description'],
+        name: parsedJson['Nombre'],
+        image: parsedJson['Imagen'],
     );
   }
 
