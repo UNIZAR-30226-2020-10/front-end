@@ -19,9 +19,10 @@ class ArtistProfile extends StatefulWidget {
 class _ArtistProfileState extends State<ArtistProfile> {
 
   String name;
-  Artist artist;
-  bool fav;
+  Artist artist = Artist();
+  bool fav = false;
   bool initFav;
+  bool loaf = false;
 
   _ArtistProfileState({this.name});
 
@@ -32,6 +33,7 @@ class _ArtistProfileState extends State<ArtistProfile> {
       artist = aux;
       fav = favorito;
       initFav = favorito;
+      loaf = true;
     });
   }
 

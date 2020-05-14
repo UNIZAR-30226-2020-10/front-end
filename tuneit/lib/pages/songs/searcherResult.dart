@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Artist.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
@@ -8,23 +9,27 @@ import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 
+import '../artistProfile.dart';
+
 class SearcherResult extends StatefulWidget {
 
   List<Audio> songs = new List<Song>();
   List<Playlist> playlists = new List<Playlist>();
+  List<Artist> artists = new List<Artist>();
 
-  SearcherResult(this.songs, this.playlists);
+  SearcherResult(this.songs, this.playlists, this.artists);
 
   @override
-  _SearcherResultState createState() => _SearcherResultState(songs, playlists);
+  _SearcherResultState createState() => _SearcherResultState(songs, playlists, artists);
 }
 
 class _SearcherResultState extends State<SearcherResult> {
 
   List<Audio> songs= new List<Song>();
   List<Playlist> playlists = new List<Playlist>();
+  List<Artist> artists = new List<Artist>();
 
-  _SearcherResultState(this.songs, this.playlists);
+  _SearcherResultState(this.songs, this.playlists, this.artists);
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +41,7 @@ class _SearcherResultState extends State<SearcherResult> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            artistsNotEmpty(),
             playlistsNotEmpty(),
             songsNotEmpty(),
           ],
@@ -96,9 +102,39 @@ class _SearcherResultState extends State<SearcherResult> {
     );
   }
 
+  Widget artistsNotEmpty () {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 15,),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text('   Artistas', style: Theme.of(context).textTheme.subtitle,),
+        ),
+        SizedBox(height: 10,),
+        // Vertical: completeListNotScrollable(playlists, onTapPlaylist, []),
+        artists.isEmpty?
+        Align(
+          alignment: Alignment.center,
+          child: Text('No hay resultados', style: Theme.of(context).textTheme.subtitle,),
+        )
+            :
+        Container(
+          height: 200,
+          child: completeListHorizontal(artists, onTapArtist, []),
+        ),
+      ],
+    );
+  }
+
   void onTapPlaylist (int index) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => ShowList(indetificadorLista: playlists[index].id.toString(), list_title: playlists[index].name),
+    ));
+  }
+
+  void onTapArtist (int index) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ArtistProfile(name: artists[index].name),
     ));
   }
 

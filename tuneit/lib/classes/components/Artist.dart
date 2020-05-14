@@ -8,12 +8,12 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'Album.dart';
 
 class Artist {
-  String name = '';
-  String alias = '';
-  String country = '';
-  String date = '';
+  String name;
+  String alias;
+  String country;
+  String date;
   List<Album> albums = List();
-  String image = 'https://i.blogs.es/6c558d/luna-400mpx/450_1000.jpg';
+  String image;
 
   Artist({this.name,this.alias,this.country,this.date,this.albums,this.image});
 

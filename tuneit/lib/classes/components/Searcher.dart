@@ -1,14 +1,19 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/podcast/resultPodcasts.dart';
-import 'package:tuneit/pages/songs/resultPlaylist.dart';
-import 'package:tuneit/pages/songs/resultSongs.dart';
 import 'package:tuneit/pages/songs/searcherResult.dart';
 
+import 'Album.dart';
+import 'Artist.dart';
 import 'Song.dart';
 
 class Searcher extends StatefulWidget {
@@ -73,33 +78,12 @@ class _SearcherState extends State<Searcher> {
 
       if(musNpod){
         //Compruebo primero las canciones
-        List<Song> lista_p = await buscar_canciones(editingController.text);
+        List resultados = await busqueda(editingController.text);
+        //List<Song> lista_p = await buscar_canciones(editingController.text);
         List<Playlist> listaP = await buscar_una_lista(editingController.text,Globals.email);
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => SearcherResult(lista_p, listaP),
+          builder: (context) => SearcherResult(resultados[0], listaP, resultados[2]),
         ));
-        // Si no hay ninguna cancion voy a comprobar las listas
-        /*if(lista_p==null || lista_p.isEmpty){
-          // Compruebo las listas
-
-          if(listaP==null || listaP.isEmpty){
-            //Si no hay nada pues error
-            _notFound(editingController.text);
-          }
-          else{
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ResultListPlaylist(list_title: editingController.text,list: listaP,),
-            ));
-          }
-        }
-        else{
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResultSongList(lista_p,editingController.text),
-            ),
-          );
-        }*/
       }
       else{
         List<Podcast> listaPodcasts = await fetchPodcastByTitle(editingController.text);
@@ -119,8 +103,39 @@ class _SearcherState extends State<Searcher> {
     }
     else{
       _notBigEnough();
+    }
+  }
+
+  Future<List> busqueda(String contenido) async {
+    var queryParameters = {
+      'nombre' : contenido
+    };
+
+    var uri = Uri.https(baseURL,'/search' ,queryParameters);
+
+    final http.Response response = await http.get(uri, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    });
 
 
+    if (response.statusCode == 200) {
+      Map<String, dynamic> parsedJson = json.decode(response.body);
+      List<Song> list = (parsedJson['Canciones'] as List)
+          .map((data) => new Song.fromJson(data))
+          .toList();
+      List<Album> list2 = (parsedJson['Albums'] as List)
+          .map((data) => new Album.fromJson(data))
+          .toList();
+      List<Artist> list3 = (parsedJson['Artistas'] as List)
+          .map((data) => new Artist.fromJson(data))
+          .toList();
+
+      return [list,list2,list3];
+
+    } else {
+
+      print('Failed to load playlists');
+      return null;
     }
   }
 
