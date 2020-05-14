@@ -3,6 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
@@ -13,6 +18,9 @@ import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/errors.dart';
+import 'package:tuneit/widgets/lists.dart';
+import 'package:tuneit/pages/songs/showList.dart';
+import 'package:tuneit/widgets/optionSongs.dart';
 
 
 class Notificaciones extends StatefulWidget{
@@ -23,6 +31,39 @@ class Notificaciones extends StatefulWidget{
 
 class _NotificacionesState extends State<Notificaciones> {
    List<Peticion> peticiones = [];
+   List<CompartidaCancion> songs=[];
+   List<Playlist> playlists=[];
+
+   void choiceAction(String choice) async{
+     List<String> hola=choice.split("--");
+     choice=hola[0];
+     int id_song=int.parse(hola[1]);
+     int indice=int.parse(hola[3]);
+
+     if(choice == optionMenuSong[0]){
+       List<Playlist>listas=await fetchPlaylists(Globals.email);
+       mostrarListas(context,listas,id_song);
+     }
+     else if(choice ==optionMenuSong[1]){
+       List<User> amigos=await listarAmigos();
+       mostrarAmigos(context,amigos,id_song);
+
+     }
+     else if(choice ==optionMenuSong[2]){
+
+     }
+     else if(choice == optionMenuSong[3]){
+       launchInBrowser(songs[indice].cancion.devolverTitulo(),songs[indice].cancion.devolverArtista());
+     }
+     else if(choice == optionMenuSong[4]){
+       agregada(context,Globals.id_fav,songs[indice].cancion.devolverTitulo());
+     }
+     else{
+       print ("Correct option was not found");
+
+     }
+
+   }
 
 
 
@@ -30,9 +71,14 @@ class _NotificacionesState extends State<Notificaciones> {
 
   void ObtenerDatos() async {
     List<Peticion> prueba = await buscarPeticiones();
+
+    List<CompartidaCancion> canciones=await canciones_compartidas_conmigo();
+    List<Playlist> listas;
     print(prueba.length);
     setState(() {
       peticiones=prueba;
+      songs=canciones;
+      playlists=listas;
     });
   }
 
@@ -64,123 +110,53 @@ class _NotificacionesState extends State<Notificaciones> {
         centerTitle: true,
       ),
       drawer: LateralMenu(),
-      body: ListView(children:listaParaNotificaciones(context,peticiones,size_width,size_height)),
+      body:  SingleChildScrollView(
+          child: Column(
+              children:[
+                SizedBox(height: size_height*0.01,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('  Peticiones de amistad', style: Theme.of(context).textTheme.subtitle,),
+                ),
+                SizedBox(height: size_height*0.01,),
+                listaParaNotificaciones(context,peticiones,size_width,size_height),
+                SizedBox(height: size_height*0.01,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('   Canciones compartidas', style: Theme.of(context).textTheme.subtitle,),
+                ),
+                SizedBox(height:  size_height*0.01,),
+                Column(
+                  //listaParaAudiosCompartidos(BuildContext context,List<Audio> audios, String indetificadorLista,Function choiceAction)
+                  children: listaParaAudiosCompartidos(context,songs,"none",choiceAction),
+                ),
+                SizedBox(height:  size_height*0.01,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('  Listar de reproducción compartidas', style: Theme.of(context).textTheme.subtitle,),
+                ),
+                SizedBox(height:  size_height*0.01,),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  //child: completeListHorizontal(playlists, onTapPlaylist, []),
+                ),
+                SizedBox(height:  size_height*0.01,),
+
+
+              ]
+                 //
+          ),
+        ),
+
 
       bottomNavigationBar: bottomExpandableAudio(),
     );
   }
 
-}
+   void onTapPlaylist (int index) {
+     Navigator.of(context).push(MaterialPageRoute(
+       builder: (context) => ShowList(indetificadorLista: playlists[index].id.toString(), list_title: playlists[index].name),
+     ));
+   }
 
-
-  List<Widget> listaParaNotificaciones(BuildContext context,List<Notificacion> list,anchura,altura){
-    if(list.length>0){
-      return List.generate(
-        list.length,
-            (index) {
-          return
-            Card(
-              key: Key('$index'),
-              child: new ListTile(
-                onTap:(){
-
-                },
-                leading: GFAvatar(
-
-                  backgroundImage: NetworkImage(list[index].devolverImagen()),
-                  backgroundColor: Colors.transparent,
-                  shape: GFAvatarShape.standard,
-
-                ),
-                title: Text(list[index].devolverMensaje()),
-                subtitle: Text(list[index].devolverEmisor()),
-
-
-                trailing: Container(
-                  width: anchura*0.25,
-                  height: altura*0.25,
-                  child: Row(
-                      children: <Widget>[
-                           IconButton(
-                             color:Colors.green,
-                            onPressed: () async {
-                              bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Acepto');
-                              if(prueba){
-                                _operacionExito(context);
-
-                              }
-                              else{
-                                mostrarError(context,'No se ha podido aceptar la petición');
-
-                              }
-                            },
-                            icon:Icon(Icons.check_circle),
-                             tooltip: aceptar_mensaje,
-                          ),
-                        IconButton(
-
-                            color:Colors.red,
-                            onPressed: () async {
-                              bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Rechazo');
-                              if(prueba){
-                                _operacionExito(context);
-
-
-                              }
-                              else{
-
-                                mostrarError(context,'No se ha podido rechazar la petición');
-
-                              }
-
-                            },
-                            icon:Icon(Icons.cancel),
-                            tooltip: rechazar_mensaje,
-                          ),
-
-                      ],
-                  ),
-                ),
-              ),
-
-
-            );
-
-        },
-      );
-    }
-
-
-    else{
-      return  <Widget>[
-
-        Center(child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("No encontrados amigos"),
-        ))
-
-      ];
-    }
-
-
-  }
-void _operacionExito(BuildContext context) {
-  // flutter defined function
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: new Text(exito_mensaje),
-        content: new Text("Operacion realizada de forma exitosa"),
-        actions: <Widget>[
-          simpleButton(context, () {Navigator.of(context).pop();
-          Navigator.pop(context);
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Notificaciones(),
-          ));}, [], 'Confirmar')
-        ],
-
-      );
-    },
-  );
 }

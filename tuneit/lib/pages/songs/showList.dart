@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
@@ -138,6 +139,8 @@ class _State extends State<ShowList> {
       mostrarListas(context,listas,id_song);
     }
     else if(choice ==optionMenuSong[1]){
+      List<User> amigos=await listarAmigos();
+      mostrarAmigos(context,amigos,id_song);
 
     }
     else if(choice ==optionMenuSong[2]){

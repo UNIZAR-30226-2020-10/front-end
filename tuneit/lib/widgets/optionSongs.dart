@@ -4,6 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/widgets/errors.dart';
@@ -151,6 +153,61 @@ void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async
   );
 
 }
+
+
+void mostrarAmigos(BuildContext context,List<User> amigos, int id_song)async{
+
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: AlertDialog(
+            content:Container(
+
+              width: double.maxFinite,
+              child:
+              //itemCount: snapshot.data.songs.length,
+              ListView.builder(
+
+                padding: const EdgeInsets.all(8),
+                scrollDirection: Axis.vertical,
+                itemCount: amigos.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: new ListTile(
+                      onTap:() async {
+                        bool resultado = await compartirCancion(amigos[index].email,id_song.toString(),amigos[index].email,Globals.name);
+                        Navigator.pop(context);
+                        if(resultado){
+                          operacionExito(context);
+                        }
+                        else{
+                            mostrarError(context, "No se ha podido compartir la canción");
+                        }
+                      },
+                      title: Text(amigos[index].name),
+                    ),
+                  );
+
+                },
+              ),
+
+            ),
+          ),
+        );
+      }
+  );
+
+}
+
 
 
 

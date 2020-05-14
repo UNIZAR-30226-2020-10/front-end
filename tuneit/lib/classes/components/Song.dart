@@ -4,7 +4,10 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 
 
 
@@ -157,6 +160,7 @@ void agregarCancion( String  id_lista, String id_song) async{
 
 }
 
+
 Future< SongLista> fetchSonglists(String id) async {
 
   var queryParameters = {
@@ -281,6 +285,52 @@ Future<List<Song>> songsByCategory(List<String> categories) async {
 
   } else {
     throw Exception(response.body + ': Failed to load last added songs');
+  }
+}
+
+/*Compartir cancion /share_song
+Comparte una cancion a un usuario
+
+    Entrada
+        cancion: id de la cancion a compartir
+        emisor: emisor de la cancion
+        receptor: receptor de la cancion
+    Salida
+        "Mismo usuario": no se puede enviar cosas a sí mismo
+        "Elemento ya compartido con ese usuario": ya se ha compartido antes
+        "Error"
+        "Success"
+*/
+
+Future<bool>  compartirCancion(String amigo, String id_song, String receptor, String emisor) async {
+
+  var queryParameters = {
+    'cancion':id_song,
+    'emisor' : Globals.email,
+    'receptor':amigo
+  };
+
+  var uri = Uri.https(baseURL,'/share_song' ,queryParameters);
+  print(uri);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+
+  print(response.body);
+  print(response.statusCode);
+      if (response.statusCode == 200 && response.body== 'Success' ) {
+
+        String token= await getToken(receptor);
+        print(token);
+        sendNotification('Recomendación',emisor+' te ha recomendado una canción',token);
+
+    return true;
+
+  } else {
+
+    print('Error al compartir la canción');
+    return false;
   }
 }
 

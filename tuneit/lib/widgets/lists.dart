@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
+import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
+import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/audioPlayer.dart';
+import 'package:tuneit/widgets/errors.dart';
 
 import 'AutoScrollableText.dart';
 
@@ -205,6 +209,174 @@ List<Widget> listaParaAudiosCategorias(BuildContext context,List<Audio> audios, 
               onPressed: (){
                 launchInBrowser(audios[index].devolverTitulo(),audios[index].devolverArtista());
               },
+            ),
+
+          ),
+        );
+
+    },
+  );
+
+}
+
+
+
+Widget listaParaNotificaciones(BuildContext context,List<Notificacion> list,anchura,altura){
+  if(list.length>0){
+    return Column(
+      children:List.generate(
+        list.length,
+            (index) {
+          return
+            Card(
+              key: Key('$index'),
+              child: new ListTile(
+                onTap:(){
+
+                },
+                leading: GFAvatar(
+
+                  backgroundImage: NetworkImage(list[index].devolverImagen()),
+                  backgroundColor: Colors.transparent,
+                  shape: GFAvatarShape.standard,
+
+                ),
+                title: Text(list[index].devolverMensaje()),
+                subtitle: Text(list[index].devolverEmisor()),
+
+
+                trailing: Container(
+                  width: anchura*0.25,
+                  height: altura*0.25,
+                  child: Row(
+                    children: <Widget>[
+                      IconButton(
+                        color:Colors.green,
+                        onPressed: () async {
+                          bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Acepto');
+                          if(prueba){
+                            operacionExito(context);
+
+                          }
+                          else{
+                            mostrarError(context,'No se ha podido aceptar la petición');
+
+                          }
+                        },
+                        icon:Icon(Icons.check_circle),
+                        tooltip: aceptar_mensaje,
+                      ),
+                      IconButton(
+
+                        color:Colors.red,
+                        onPressed: () async {
+                          bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Rechazo');
+                          if(prueba){
+                            operacionExito(context);
+
+
+                          }
+                          else{
+
+                            mostrarError(context,'No se ha podido rechazar la petición');
+
+                          }
+
+                        },
+                        icon:Icon(Icons.cancel),
+                        tooltip: rechazar_mensaje,
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
+
+
+            );
+
+        },
+      ),
+    );
+
+  }
+
+
+  else{
+    return Column(
+      children: <Widget>[
+        Center(child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text("No se han encontrado notificaciones"),
+        ))
+
+      ],
+
+    );
+  }
+
+
+}
+
+
+List<Widget> listaParaAudiosCompartidos(BuildContext context,List<CompartidaCancion> audios, String indetificadorLista,Function choiceAction){
+  List<Audio> prueba=[];
+  return List.generate(
+    audios.length,
+        (index) {
+      return
+        Card(
+          key: Key('$index'),
+          child: new ListTile(
+
+            onTap:(){
+              prueba.add(audios[index].cancion);
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PlayerPage(audios:prueba,indice: index, indetificadorLista: indetificadorLista,escanciones:true,),
+
+              ));
+            },
+
+            leading: GFAvatar(
+              backgroundImage: NetworkImage(audios[index].cancion.devolverImagen()),
+              backgroundColor: Colors.transparent,
+              shape: GFAvatarShape.standard,
+
+            ),
+            title: Text(audios[index].cancion.devolverTitulo()),
+            subtitle: Text("Recomendada por "+audios[index].emisor.name),
+            trailing:Container(
+              height: 100,
+              width: 100,
+              child: Row(
+                children: <Widget>[
+                  PopupMenuButton<String>(
+                    onSelected: choiceAction,
+                    itemBuilder: (BuildContext context){
+                      return optionMenuSong.map((String choice){
+                        return PopupMenuItem<String>(
+                          value: (choice + "--"+audios[index].devolverID().toString()+"--"+indetificadorLista+"--"+index.toString()),
+                          child: Text(choice),
+                        );
+
+                      }).toList();
+                    },
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      bool resultado=await canciones_compartidas_eliminar(audios[index].id.toString());
+                      if(resultado){
+                        operacionExito(context);
+
+                      }
+                      else{
+                        mostrarError(context,'No se ha podido eliminar la recomendación');
+                      }
+                    },
+                    icon:Icon(Icons.delete_forever),
+                  ),
+                ],
+              ),
             ),
 
           ),
