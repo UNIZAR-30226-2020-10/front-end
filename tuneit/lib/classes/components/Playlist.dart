@@ -32,7 +32,7 @@ class Playlist {
   List<Playlist> list = List();
 
   var queryParameters = {
-    'usuario' : user
+    'email' : user
   };
 
   var uri = Uri.https('psoftware.herokuapp.com','/list_lists' ,queryParameters);
@@ -41,7 +41,8 @@ class Playlist {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
 
-
+  print(response.statusCode);
+  print(response.body);
 
 
   if (response.statusCode == 200) {
@@ -62,7 +63,7 @@ Future<List<Playlist>> buscar_una_lista(String data, String user) async {
 
   var queryParameters = {
     'lista' : data,
-    'usuario':user
+    'email':user
   };
   ///search_list
 
@@ -98,7 +99,7 @@ Future<void> nuevaLista(String nombre, String desc, String email) async {
     body: jsonEncode(<String, String>{
       'lista': nombre,
       'desc': desc,
-      'usuario':email
+      'email':email
     }),
   );
 
@@ -140,7 +141,7 @@ Future<List<Playlist>> listasUsuario(String email) async {
   List<Playlist> list = List();
 
   var queryParameters = {
-    'usuario' : email,
+    'email' : email,
   };
 
   var uri = Uri.https(baseURL,'/list_lists', queryParameters);

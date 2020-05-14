@@ -13,6 +13,7 @@ class Category {
   Category({this.name,this.description});
 
   factory Category.fromJson(Map<String, dynamic> parsedJson) {
+    print(parsedJson['name']);
     return Category(
         name: parsedJson['name'],
         description: parsedJson['description'],
@@ -32,8 +33,10 @@ Future<List<Category>> listCategories () async{
   });
 
   if (response.statusCode == 200) {
+;
+
     list = (json.decode(response.body) as List)
-        .map((data) => new Category(name: data, description: 'ey'))
+        .map((data) => new Category.fromJson(data))
         .toList();
 
     return list;
