@@ -174,7 +174,7 @@ class _ProfilePageState extends State<Profile> {
 
   void onTapPlaylists (int index) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name),
+      builder: (context) => ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name,esAmigo:true),
     ));
   }
 

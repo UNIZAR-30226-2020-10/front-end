@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/playlists.dart';
@@ -159,6 +160,59 @@ void eliminarPlaylist(BuildContext context, String id_lista) async {
       );
     },
   );
+}
+
+void mostrarAmigosLista (BuildContext context,List<User> amigos, String id_lista)async{
+
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: AlertDialog(
+            content:Container(
+
+              width: double.maxFinite,
+              child:
+              //itemCount: snapshot.data.songs.length,
+              ListView.builder(
+
+                padding: const EdgeInsets.all(8),
+                scrollDirection: Axis.vertical,
+                itemCount: amigos.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: new ListTile(
+                      onTap:() async {
+                        bool resultado = await compartirLista(amigos[index].email,id_lista,amigos[index].email,Globals.name);
+                        Navigator.pop(context);
+                        if(resultado){
+                          operacionExito(context);
+                        }
+                        else{
+                          mostrarError(context, "No se ha podido compartir la canción");
+                        }
+                      },
+                      title: Text(amigos[index].name),
+                    ),
+                  );
+
+                },
+              ),
+
+            ),
+          ),
+        );
+      }
+  );
+
 }
 
 

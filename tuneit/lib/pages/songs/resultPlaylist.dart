@@ -105,7 +105,7 @@ Widget list_box (BuildContext context, index) {
     onTap: () {
 
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name),
+        builder: (context) => ShowList(indetificadorLista: list[index].id.toString(), list_title: list[index].name,esAmigo: false,),
       ));
 
     },

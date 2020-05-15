@@ -48,7 +48,6 @@ class _State extends State<ShowAlbum> {
         title:Text('ALBUM: ' + album.name),
         centerTitle: true,
         actions: <Widget>[
-
           PopupMenuButton<String>(
             onSelected: ActionPlaylist,
             itemBuilder: (BuildContext context){
@@ -71,7 +70,7 @@ class _State extends State<ShowAlbum> {
                 padding: const EdgeInsets.all(8),
                 scrollDirection: Axis.vertical,
                 onReorder: _onReorder,
-                children: listaParaAudiosCategorias(context,album.songs,album.name,false,choiceAction),
+                children: listaParaAudiosCategorias(context,album.songs,album.name,true,choiceAction),
               ),
             ),
           ]
@@ -141,7 +140,6 @@ class _State extends State<ShowAlbum> {
     }
     else if(choice == optionMenuSongCategory[3]){
       agregada(context,Globals.id_fav,album.songs[indice].devolverTitulo());
-      // Pedir la lista de favoritos actualizada
     }
     else{
       print ("Correct option was not found");

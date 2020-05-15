@@ -74,7 +74,7 @@ return Center(
           title:Text( user.name.toString()),
 
           onTap: (){
-            mostrarError(context,"Tienes que ser amigo de " +user.name.toString() +" para ver su perfil.");
+            //mostrarError(context,"Tienes que ser amigo de " +user.name.toString() +" para ver su perfil.");
           },
           trailing: IconButton(
             tooltip: 'Agregar amigo',

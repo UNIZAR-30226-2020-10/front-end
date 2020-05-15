@@ -126,7 +126,7 @@ class _PlayListsState extends State<PlayLists> {
 
   void onTapPlaylists (int index) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ShowList(indetificadorLista: listaPlaylists[index].id.toString(), list_title: listaPlaylists[index].name),
+      builder: (context) => ShowList(indetificadorLista: listaPlaylists[index].id.toString(), list_title: listaPlaylists[index].name,esAmigo: false,),
     ));
   }
 

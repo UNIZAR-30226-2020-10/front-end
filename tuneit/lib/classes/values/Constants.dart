@@ -21,10 +21,11 @@ const String textoResultado='Resultados obtenidos ';
 
 const String ListaFavorita="Favoritos";
 
-
 const String error_mensaje="Error";
 const String exito_mensaje="Exito";
 
+
+const String agregarListaAmigo="Agregar a tus listas de reproducción";
 const String aceptar_mensaje="Aceptar";
 const String rechazar_mensaje="Rechazar";
 
@@ -51,7 +52,8 @@ const List<String> optionMenuSongCategory =<String>[
 const List<String> optionPlayList =<String>[
   eliminar,
   ordenarPorArtista,
-  ordenarPorTitulo
+  ordenarPorTitulo,
+  compartir
 ];
 
 const List<String> optionCategory =<String>[

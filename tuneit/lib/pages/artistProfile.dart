@@ -9,7 +9,6 @@ import 'package:tuneit/widgets/lists.dart';
 class ArtistProfile extends StatefulWidget {
 
   String name;
-
   ArtistProfile({this.name});
 
   @override

@@ -46,14 +46,9 @@ class CompartidaCancion extends Notificacion{
   factory CompartidaCancion.fromJson(Map<String, dynamic> json) {
     List<dynamic> prueba1=json['Emisor'];
     Map emisormap=prueba1[0];
-    print("Cual es?");
-    print(json['id']);
-    print(json['Id']);
-    print('dadadd');
     User emisor=new User.fromJson(json['Emisor'][0]);
     User receptor=new User.fromJson(json['Receptor'][0]);
     Song song=new Song.fromJson(json['Cancion']);
-    print("hecho bien");
     return CompartidaCancion(
       emisor:emisor,
       receptor: receptor,

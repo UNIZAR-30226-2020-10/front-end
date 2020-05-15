@@ -8,6 +8,7 @@ import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
+import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
@@ -32,7 +33,7 @@ class Notificaciones extends StatefulWidget{
 class _NotificacionesState extends State<Notificaciones> {
    List<Peticion> peticiones = [];
    List<CompartidaCancion> songs=[];
-   List<Playlist> playlists=[];
+   List<CompartidaLista>  playlists=[];
 
    void choiceAction(String choice) async{
      List<String> hola=choice.split("--");
@@ -65,27 +66,23 @@ class _NotificacionesState extends State<Notificaciones> {
 
    }
 
-
-
-
-
   void ObtenerDatos() async {
     List<Peticion> prueba = await buscarPeticiones();
-
     List<CompartidaCancion> canciones=await canciones_compartidas_conmigo();
-    List<Playlist> listas;
+    List<CompartidaLista>  listas=await listasCompartidas();
+
     print(prueba.length);
     setState(() {
+      playlists=listas;
       peticiones=prueba;
       songs=canciones;
-      playlists=listas;
+
     });
   }
 
 
   @override
   void initState() {
-    // TODO: implement initState
     ObtenerDatos();
     Globals.mensaje_nuevo=false;
     super.initState();
@@ -96,16 +93,8 @@ class _NotificacionesState extends State<Notificaciones> {
   Widget build(BuildContext context) {
     final size_width = MediaQuery.of(context).size.width;
     final size_height= MediaQuery.of(context).size.height;
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text('Notificaciones'),
         centerTitle: true,
       ),
@@ -126,36 +115,26 @@ class _NotificacionesState extends State<Notificaciones> {
                   child: Text('   Canciones compartidas', style: Theme.of(context).textTheme.subtitle,),
                 ),
                 SizedBox(height:  size_height*0.01,),
-                Column(
-                  //listaParaAudiosCompartidos(BuildContext context,List<Audio> audios, String indetificadorLista,Function choiceAction)
-                  children: listaParaAudiosCompartidos(context,songs,"none",choiceAction),
-                ),
+               listaParaAudiosCompartidos(context,songs,"none",choiceAction),
                 SizedBox(height:  size_height*0.01,),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text('  Listar de reproducción compartidas', style: Theme.of(context).textTheme.subtitle,),
                 ),
                 SizedBox(height:  size_height*0.01,),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  //child: completeListHorizontal(playlists, onTapPlaylist, []),
-                ),
+                listaParaListasCompartidos(context,playlists),
                 SizedBox(height:  size_height*0.01,),
-
-
               ]
                  //
           ),
         ),
-
-
       bottomNavigationBar: bottomExpandableAudio(),
     );
   }
 
    void onTapPlaylist (int index) {
      Navigator.of(context).push(MaterialPageRoute(
-       builder: (context) => ShowList(indetificadorLista: playlists[index].id.toString(), list_title: playlists[index].name),
+       builder: (context) => ShowList(indetificadorLista: playlists[index].id.toString(), list_title: playlists[index].lista.name,esAmigo: true,),
      ));
    }
 

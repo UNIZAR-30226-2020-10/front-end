@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
+import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 
@@ -163,3 +166,172 @@ Future<List<Playlist>> listasUsuario(String email) async {
   }
 }
 
+
+//***Compartir lista
+///share_list
+//Comparte una lista de reproducción a un usuario
+//
+//    Entrada
+//        lista: id de la lista a compartir
+//        emisor: emisor de la cancion
+//        receptor: receptor de la cancion
+//    Salida
+//        "Mismo usuario": no se puede enviar cosas a sí mismo
+//        "Elemento ya compartido con ese usuario": ya se ha compartido antes
+//        "Error"
+//        "Success"**/
+Future<bool>  compartirLista(String amigo, String id_lista, String receptor, String emisor) async {
+
+  var queryParameters = {
+    'lista':id_lista,
+    'emisor' : Globals.email,
+    'receptor':amigo
+  };
+
+  var uri = Uri.https(baseURL,'/share_list' ,queryParameters);
+  print(uri);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+
+  print(response.body);
+  print(response.statusCode);
+  if (response.statusCode == 200 && response.body== 'Success' ) {
+
+    String token= await getToken(receptor);
+    sendNotification('Recomendación',emisor+' te ha recomendado una lista de reproducción',token);
+
+    return true;
+
+  } else {
+
+    print('Error al compartir la lista de reproducción');
+    return false;
+  }
+}
+/**************Dejar de compartir lista
+    /unshare_list
+    Elimina la compartición de una lista de reproducción
+
+    Entrada
+    lista: id de la lista_compartida, no id de lista de reproduccion
+    Salida
+    "No existe": no existe la compartición a eliminar
+    "Error"
+    "Success"
+ *******************/
+
+Future<bool>  dejarDeCompartirLista(String id_compartida) async {
+
+  var queryParameters = {
+    'lista':id_compartida
+  };
+
+  var uri = Uri.https(baseURL,'/unshare_list' ,queryParameters);
+  print(uri);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+
+  print(response.body);
+  print(response.statusCode);
+  if (response.statusCode == 200 && response.body== 'Success' ) {
+
+    return true;
+
+  } else {
+
+    print('Error al dejar de compartir la lista de reproducción');
+    return false;
+  }
+}
+
+
+/****Añadir lista compartida a propias
+/add_list
+Añade una copia de una lista de reproducción ajena a la lista de listas de reproducción de un usuario
+
+Entrada
+lista: id de la lista a copiar
+email: email del usuario que recibe la lista
+Salida
+"No existe usuario"
+"No existe lista"
+"Success"
+"Error"
+*********/
+
+
+Future<bool>  agregarLista(String id_lista) async {
+
+  var queryParameters = {
+    'lista':id_lista,
+    'email': Globals.email
+  };
+
+  var uri = Uri.https(baseURL,'/add_list' ,queryParameters);
+  print(uri);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+
+  print(response.body);
+  print(response.statusCode);
+  if (response.statusCode == 200 && response.body== 'Success' ) {
+
+    return true;
+
+  } else {
+
+    print('Error al agregar la lista de reproducción');
+    return false;
+  }
+}
+
+
+
+/***listar_listas_compartidas_conmigo
+    /list_listas_compartidas_conmigo
+    Devuelve una lista con las listas compartidas a un usuario
+
+    Entrada:
+    email: email del usuario cuya información se muestra
+    Salida:
+    [{"ID": , "Emisor": (info_usuario), "Receptor": (info_usuario), "Lista": (list_lists_data : sin canciones), "Notificacion": }, {…}]
+    “Error”
+    "No existe usuario"
+ *********/
+
+Future<List<CompartidaLista>>  listasCompartidas() async {
+  List<CompartidaLista> list=[];
+
+  var queryParameters = {
+    'email': Globals.email
+  };
+
+  var uri = Uri.https(baseURL,'/list_listas_compartidas_conmigo' ,queryParameters);
+  print(uri);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+  list = (json.decode(response.body) as List)
+      .map((data) => new CompartidaLista.fromJson(data))
+      .toList();
+
+
+  if (response.statusCode == 200) {
+
+    return list;
+
+  } else {
+    print(response.body);
+    print(response.statusCode);
+    print('Error al agregar la lista de reproducción');
+    return list;
+  }
+
+}

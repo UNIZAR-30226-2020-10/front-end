@@ -7,6 +7,7 @@ import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
+import 'package:tuneit/widgets/errors.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/playlistOption.dart';
@@ -14,18 +15,20 @@ import 'package:tuneit/widgets/playlistOption.dart';
 
 class ShowList extends StatefulWidget {
   @override
-  _State createState() => _State(indetificadorLista,list_title);
+  _State createState() => _State(indetificadorLista,list_title,esAmigo);
   String list_title;
   String indetificadorLista;
-  ShowList({Key key, @required this.list_title,@required this.indetificadorLista}):super(key : key);
+  bool esAmigo;
+  ShowList({Key key, @required this.list_title,@required this.indetificadorLista,@required this.esAmigo}):super(key : key);
 }
 
 class _State extends State<ShowList> {
   List<Audio> audios =[];
   String list_title;
+  bool esAmigo;
   String indetificadorLista;
   audioPlayerClass _audioPlayerClass;
-  _State(this.indetificadorLista,this.list_title);
+  _State(this.indetificadorLista,this.list_title,this.esAmigo);
 
   void ObtenerDatos() async{
     SongLista canciones =await fetchSonglists(indetificadorLista);
@@ -52,7 +55,19 @@ class _State extends State<ShowList> {
         centerTitle: true,
         actions: <Widget>[
 
-          PopupMenuButton<String>(
+          esAmigo?IconButton(icon: Icon(Icons.add_circle),
+          tooltip: agregarListaAmigo,
+          onPressed: () async {
+            bool resultado = await agregarLista(
+                indetificadorLista);
+            if (resultado) {
+              operacionExito(context);
+            }
+            else {
+              mostrarError(context,
+                  'No se ha podido agregar la lista');
+            }
+          },):PopupMenuButton<String>(
             onSelected: ActionPlaylist,
             itemBuilder: (BuildContext context){
               return optionPlayList.map((String choice){
@@ -94,7 +109,6 @@ class _State extends State<ShowList> {
           }
           final Song item = audios.removeAt(oldIndex);
           audios.insert(newIndex, item);
-
         },
       );
     }
@@ -122,11 +136,19 @@ class _State extends State<ShowList> {
         audios=ordenarPorTituloAudios(audios);
       });
     }
+
+    else if(opciones[0]==optionPlayList[3]){
+      print(opciones[0]);
+      List<User> amigos=await listarAmigos();
+      mostrarAmigosLista ( context, amigos,  lista);
+    }
     else{
       print("Do nothing");
     }
 
   }
+
+
   void choiceAction(String choice) async{
     List<String> hola=choice.split("--");
     choice=hola[0];
