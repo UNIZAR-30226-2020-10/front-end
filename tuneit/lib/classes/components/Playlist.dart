@@ -96,6 +96,9 @@ Future<void> nuevaLista(String nombre, String desc, String email) async {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
+
+    /*        ◦ “list”: nombre de la lista
+        ◦ “desc”: descripción*/
     body: jsonEncode(<String, String>{
       'lista': nombre,
       'desc': desc,
@@ -197,8 +200,8 @@ Future<bool>  compartirLista(String amigo, String id_lista, String receptor, Str
   if (response.statusCode == 200 && response.body== 'Success' ) {
 
     String token= await getToken(receptor);
-    print(token);
     sendNotification('Recomendación',emisor+' te ha recomendado una lista de reproducción',token);
+
     return true;
 
   } else {
