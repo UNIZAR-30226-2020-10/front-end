@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if(choice == optionMenuSong[0]){
       List<Playlist>listas=await fetchPlaylists(Globals.email);
-      mostrarListas(context,listas,id_song);
+      mostrarListas(context,listas,id_song,false);
     }
     else if(choice ==optionMenuSong[1]){
 
@@ -138,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
       launchInBrowser(listaUltCanc[indice].devolverTitulo(),listaUltCanc[indice].devolverArtista());
     }
     else if(choice == optionMenuSong[4]){
-      agregada(context,Globals.id_fav,listaUltCanc[indice].devolverTitulo());
+      agregada(context,Globals.id_fav,listaUltCanc[indice].devolverTitulo(),false);
     }
     else{
       print ("Correct option was not found");

@@ -130,7 +130,7 @@ class _ShowCategoryState extends State<ShowCategory> {
 
     if(choice == optionMenuSongCategory[0]){
       List<Playlist>listas=await fetchPlaylists(Globals.email);
-      mostrarListas(context,listas,id_song);
+      mostrarListas(context,listas,id_song,false);
     }
     else if(choice ==optionMenuSongCategory[1]){
 
@@ -139,7 +139,7 @@ class _ShowCategoryState extends State<ShowCategory> {
       launchInBrowser(songs[indice].devolverTitulo(),songs[indice].devolverArtista());
     }
     else if(choice == optionMenuSongCategory[3]){
-      agregada(context,Globals.id_fav,songs[indice].devolverTitulo());
+      agregada(context,Globals.id_fav,songs[indice].devolverTitulo(),false);
       // Pedir la lista de favoritos actualizada
     }
     else{

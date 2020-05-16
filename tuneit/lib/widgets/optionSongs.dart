@@ -12,7 +12,7 @@ import 'package:tuneit/widgets/errors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_song) {
+void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_song,bool esAmigo) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -37,7 +37,7 @@ void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_so
                 Navigator.pop(context);
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ShowList(indetificadorLista: id_lista.toString(), list_title: nombre_lista),
+                  builder: (context) => ShowList(indetificadorLista: id_lista.toString(), list_title: nombre_lista,esAmigo: esAmigo,),
                 ));
               },
             ),
@@ -58,7 +58,7 @@ void eliminarCancion(BuildContext context,String nombre_lista,id_lista,int id_so
 
 
 
-void agregada(BuildContext context,String id_lista,String title) {
+void agregada(BuildContext context,String id_lista,String title,bool esAmigo) {
   // flutter defined function
   showDialog(
     context: context,
@@ -68,12 +68,12 @@ void agregada(BuildContext context,String id_lista,String title) {
 
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
-          onTapReload (context,id_lista,title);
+          onTapReload (context,id_lista,title,esAmigo);
 
 
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
-            onTapReload(context,id_lista,title);
+            onTapReload(context,id_lista,title,esAmigo);
 
           }
         },
@@ -92,7 +92,7 @@ void agregada(BuildContext context,String id_lista,String title) {
 
 
 
-void onTapReload (BuildContext context,String id_lista,String title) {
+void onTapReload (BuildContext context,String id_lista,String title,bool esAmigo) {
   Navigator.pop(context);
   Navigator.pop(context);
   Navigator.of(context).push(MaterialPageRoute(
@@ -104,7 +104,7 @@ void onTapReload (BuildContext context,String id_lista,String title) {
 
 
 
-void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async{
+void mostrarListas(BuildContext context,List<Playlist> listas, int id_song,bool esAmigo)async{
 
    showDialog(
       context: context,
@@ -135,7 +135,7 @@ void mostrarListas(BuildContext context,List<Playlist> listas, int id_song)async
                             onTap:(){
                               agregarCancion(listas[index].id.toString(),id_song.toString());
                               Navigator.pop(context);
-                              agregada(context,listas[index].id.toString(),listas[index].name);
+                              agregada(context,listas[index].id.toString(),listas[index].name,esAmigo);
 
 
                             },

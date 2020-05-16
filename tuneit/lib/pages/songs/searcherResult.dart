@@ -146,7 +146,7 @@ class _SearcherResultState extends State<SearcherResult> {
 
     if(choice == optionMenuSong[0]){
       List<Playlist>listas=await fetchPlaylists(Globals.email);
-      mostrarListas(context,listas,id_song);
+      mostrarListas(context,listas,id_song,false);
     }
     else if(choice ==optionMenuSong[1]){
 
@@ -158,7 +158,7 @@ class _SearcherResultState extends State<SearcherResult> {
       launchInBrowser(widget.songs[indice].devolverTitulo(),widget.songs[indice].devolverArtista());
     }
     else if(choice == optionMenuSong[4]){
-      agregada(context,Globals.id_fav,widget.songs[indice].devolverTitulo());
+      agregada(context,Globals.id_fav,widget.songs[indice].devolverTitulo(),false);
     }
     else{
       print ("Correct option was not found");

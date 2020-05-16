@@ -43,7 +43,7 @@ class _NotificacionesState extends State<Notificaciones> {
 
      if(choice == optionMenuSong[0]){
        List<Playlist>listas=await fetchPlaylists(Globals.email);
-       mostrarListas(context,listas,id_song);
+       mostrarListas(context,listas,id_song,false);
      }
      else if(choice ==optionMenuSong[1]){
        List<User> amigos=await listarAmigos();
@@ -57,7 +57,7 @@ class _NotificacionesState extends State<Notificaciones> {
        launchInBrowser(songs[indice].cancion.devolverTitulo(),songs[indice].cancion.devolverArtista());
      }
      else if(choice == optionMenuSong[4]){
-       agregada(context,Globals.id_fav,songs[indice].cancion.devolverTitulo());
+       agregada(context,Globals.id_fav,songs[indice].cancion.devolverTitulo(),false);
      }
      else{
        print ("Correct option was not found");

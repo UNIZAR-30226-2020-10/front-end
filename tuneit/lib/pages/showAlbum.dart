@@ -130,7 +130,7 @@ class _State extends State<ShowAlbum> {
 
     if(choice == optionMenuSongCategory[0]){
       List<Playlist>listas=await fetchPlaylists(Globals.email);
-      mostrarListas(context,listas,id_song);
+      mostrarListas(context,listas,id_song,false);
     }
     else if(choice ==optionMenuSongCategory[1]){
 
@@ -139,7 +139,7 @@ class _State extends State<ShowAlbum> {
       launchInBrowser(album.songs[indice].devolverTitulo(),album.songs[indice].devolverArtista());
     }
     else if(choice == optionMenuSongCategory[3]){
-      agregada(context,Globals.id_fav,album.songs[indice].devolverTitulo());
+      agregada(context,Globals.id_fav,album.songs[indice].devolverTitulo(),false);
     }
     else{
       print ("Correct option was not found");
