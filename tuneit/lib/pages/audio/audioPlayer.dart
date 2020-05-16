@@ -107,7 +107,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
     super.initState();
     _audioPlayerClass = new audioPlayerClass();
     initAudioPlayer();
-    audio_controller = BottomBarController(vsync: this, dragLength: 100, snap: true);
+    audio_controller = BottomBarController(vsync: this, dragLength: 533, snap: true);
     if(_audioPlayerClass.getShuffle()){
       audios_show =  _audioPlayerClass.getAudioShuffle();
     }
@@ -181,13 +181,15 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
             elevation: 0.0,
           )
           ,
-          body: Column(
+          body:
+                Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                  Flexible(
+                    child:SizedBox(
                       child: MarqueeWidget(
-                              child: Text('${audios[indice].devolverTitulo()}',
+                              child: Text('${audios[indice].devolverTitulo()} \n'+
+                                          audios[indice].devolverArtista() + ' | ' + audios[indice].devolverGenero(),
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(fontWeight: FontWeight.bold,
@@ -197,70 +199,65 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                       ),
                     ),
                   ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MarqueeWidget(
-                      child: Text(audios[indice].devolverArtista() + ' | ' + audios[indice].devolverGenero(),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold,
-                          fontSize: 32
-                      ),
-                    ),
-                  ),
-                ),
-              ),
 
-
-
-
-
-
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  Expanded(
+                    flex: 2,
+                    child:SizedBox(
                     child: Image(
                       image: NetworkImage(audios[indice].devolverImagen()),fit: BoxFit.fill,
                       width: 200,
-                      height: 200,
+                      height: 150,
                     ),
 
                 ),
               ),
-                Center(
-                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                              iconSize: 60,
-                              icon: Icon(Icons.skip_previous),
-                              onPressed: () {
-                                _audioPlayerClass.previous();
-                                esFavorita = null;
-                              }),
-                          IconButton(
-                            onPressed:(){
-                              if(_audioPlayerClass.getRepeat()){
-                                _audioPlayerClass.setRepeat(false);
-                                setState((){_iconRepeatColor = ColorSets.colorGrey;});
-                              }
-                              else{
-                                _audioPlayerClass.setRepeat(true);
-                                setState((){_iconRepeatColor = ColorSets.colorBlue;});
-                              }
-                              _audioPlayerClass.repeat();
-                            },
-                            iconSize: 60.0,
-                            icon:  Icon(Icons.repeat,
-                                color:_iconRepeatColor
-                            ),
-                          ),
+                    Flexible(child:SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 70,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                            child:
+                            Transform.scale(
+                              scale: 3,
+                              child:
+                              IconButton(
+                                icon: Icon(Icons.skip_previous),
+                                onPressed: () {
+                                  _audioPlayerClass.previous();
+                                  esFavorita = null;
+                                }
+                              )
+                            )),
+                              Flexible(
+                              child:
+                            Transform.scale(
+                              scale: 3,
+                              child:
+                              IconButton(
+                                onPressed:(){
+                                  if(_audioPlayerClass.getRepeat()){
+                                   _audioPlayerClass.setRepeat(false);
+                                    setState((){_iconRepeatColor = ColorSets.colorGrey;});
+                                  }
+                                  else{
+                                    _audioPlayerClass.setRepeat(true);
+                                   setState((){_iconRepeatColor = ColorSets.colorBlue;});
+                                  }
+                                  _audioPlayerClass.repeat();
+                                },
+                                icon:  Icon(Icons.repeat,
+                                  color:_iconRepeatColor
+                                ),
+                              )
+                            )),
+    Flexible(
+    child:
+                        Transform.scale(
+                          scale: 3,
+                          child:
                           IconButton(
                             onPressed:(){
                               if(_audioPlayerClass.getAudio() != audios){
@@ -293,16 +290,19 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                                 }
                               }
                             },
-                            iconSize: 60.0,
 
                             icon: Icon(_audioPlayerClass.getAudio() == audios
                                       && _audioPlayerClass.getIndice() == indice
                                       && _audioPlayerClass.getPlaying()
                                 ? Icons.pause_circle_filled
                                 : Icons.play_circle_filled),
-                          ),
+                          ))),
+    Flexible(
+    child:
+                        Transform.scale(
+                          scale: 3,
+                          child:
                           IconButton(
-                              iconSize: 60.0,
                               icon: Icon(Icons.shuffle),
                               color: _iconShuffleColor,
                               onPressed: () {
@@ -322,21 +322,19 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                                     audios_show = audios;
                                   }
                                 }
-                              }),
+                              }))),
+                            Transform.scale(
+                                scale: 3,
+                                child:
                           IconButton(
-                              iconSize: 60.0,
                               icon: Icon(Icons.skip_next),
                               onPressed: () {
                                 _audioPlayerClass.next();
                                 esFavorita = null;
-                              }),
+                              })),
                         ],
                       ),
-                    ],
-                  ),
-                )
-                ,
-              ),
+                      )),
                 Flexible(
                 child:
                   SizedBox(
