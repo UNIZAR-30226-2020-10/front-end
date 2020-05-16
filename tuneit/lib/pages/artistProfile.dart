@@ -18,7 +18,7 @@ class ArtistProfile extends StatefulWidget {
 class _ArtistProfileState extends State<ArtistProfile> {
 
   String name;
-  Artist artist = Artist();
+  Artist artist = Artist().initialize();
   bool fav = false;
   bool initFav;
   bool loaf = false;

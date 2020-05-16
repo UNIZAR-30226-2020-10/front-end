@@ -177,7 +177,6 @@ class _MyHomePageState extends State<MyHomePage> {
       String data = argumento.title;
       String cuerpo = argumento.body;
       if(data!=null && cuerpo!=null){
-        print("Ha llegado");
         setState(() {
           Globals.mensaje_nuevo=true;
         });

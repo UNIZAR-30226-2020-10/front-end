@@ -18,8 +18,6 @@ class Artist {
   Artist({this.name,this.alias,this.country,this.date,this.albums,this.image});
 
   factory Artist.fromJson(Map<String, dynamic> parsedJson) {
-    //{Imagen: https://psoftware.s3.amazonaws.com/alan_walker.jpg, Nombre: Alan Walker, Pais: null}
-    print(parsedJson);
     return Artist(
       name: parsedJson['Nombre'],
       alias: parsedJson['alias'],
@@ -28,6 +26,18 @@ class Artist {
       albums: parsedJson['Albumes'],
       image:parsedJson['Imagen'],
     );
+  }
+
+  Artist initialize () {
+    return Artist(
+        name: '',
+        alias: '',
+        country: '',
+        date: '',
+        albums: List(),
+        image: ''
+    );
+
   }
 
 }

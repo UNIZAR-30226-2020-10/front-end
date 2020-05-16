@@ -22,7 +22,7 @@ class ShowAlbum extends StatefulWidget {
 class _State extends State<ShowAlbum> {
 
   String name;
-  Album album;
+  Album album = Album().initialize();
 
   _State(this.name);
 
