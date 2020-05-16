@@ -71,7 +71,6 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                         Icons.edit
                         ),
 
-
                       SizedBox(height: size_height*0.05,),
 
 
@@ -132,21 +131,25 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                           alignment: Alignment.centerLeft,
                           child: Text('Confirmar cambios', style: Theme.of(context).textTheme.subtitle,),
                         ),
-                        SizedBox(width: size_width*0.1,),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.white)),
-                          onPressed: (
+                        SizedBox(width: size_width*0.05,),
+                        Container(
+                          width: size_width*0.25,
+                          height: size_height*0.05,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(size_width*0.2),
+                                side: BorderSide(color: Colors.white)),
+                            onPressed: (
 
-                              ) {
-                            confirmarCambios(context,password.text,nombre.text,pais);
+                                ) {
+                              confirmarCambios(context,password.text,nombre.text,pais);
 
-                          },
-                          color: Colors.deepPurple,
-                          textColor: Colors.white,
-                          child: Text("Confirmar".toUpperCase(),
-                              style: TextStyle(fontSize: 14)),
+                            },
+                            color: Colors.deepPurple,
+                            textColor: Colors.white,
+                            child: Text("Confirmar".toUpperCase(),
+                                style: TextStyle(fontSize: 0.015*size_height)),
+                          ),
                         ),
                       ],
                     ),
