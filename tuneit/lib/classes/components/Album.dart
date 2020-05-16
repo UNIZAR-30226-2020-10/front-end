@@ -30,6 +30,17 @@ class Album {
     );
   }
 
+  Album initialize () {
+    return Album(
+        name: '',
+        description: '',
+        date: '',
+        image : '',
+        artists: List(),
+        songs: List(),
+    );
+  }
+
 }
 
 
