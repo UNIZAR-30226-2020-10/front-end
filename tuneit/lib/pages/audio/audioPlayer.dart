@@ -13,9 +13,7 @@ import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/widgets/AutoScrollableText.dart';
-import 'package:tuneit/widgets/bottomExpandableAudio.dart';
-import 'package:tuneit/widgets/lists.dart';
-
+import 'package:http/http.dart' as http;
 
 
 typedef void OnError(Exception exception);
@@ -93,6 +91,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
 
   bool esFavorita;
 
+  int contador = 0;
   final List<AudioNotification> audioNotifications = new List<AudioNotification>();
 
   get _isPlaying => _playerState == PlayerState.PLAYING;
@@ -154,6 +153,19 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     funcion_auxiliar();
+    contador= contador + 1;
+    if(contador == 5){
+      print('Mandando tremenda Peticion a BackEnd');
+      contador = 0;
+      setState(() {
+        sendLastSong(Globals.email, audios[indice].devolverID(),
+            _position.inMilliseconds.toString()).then((value) async {
+          if (!value) {
+            print("Ha ocurrido un error en la peticion");
+          }
+        });
+      });
+    }
     return Scaffold(
           appBar: AppBar(
             actions: <Widget>[
@@ -500,6 +512,21 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
     }
   }
 
+  Future<bool> sendLastSong(String email, String cancion, String segundos) async {
+    var queryParameters = {
+      'email' : email,
+      'cancion' : cancion,
+      'segundo' : segundos,
+    };
+    var uri = Uri.http(baseURL, '/set_last_song', queryParameters);
+    final http.Response response = await http.get(uri);
+    if(response.body == 'Success'){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
 }
 

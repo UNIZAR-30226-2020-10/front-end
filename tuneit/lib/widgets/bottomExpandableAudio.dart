@@ -6,8 +6,9 @@ import 'package:flutter_exoplayer/audioplayer.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
-import 'package:tuneit/pages/audio/audioPlayer.dart';
-import 'package:tuneit/widgets/optionSongs.dart';
+import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/classes/values/Globals.dart';
+import 'package:http/http.dart' as http;
 
 import 'AutoScrollableText.dart';
 
@@ -28,7 +29,7 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
   AudioPlayer _audioPlayer;
   Duration _duration;
   Duration _position;
-
+  int contador = 0;
   Color iconRepeatColor = Colors.grey;
   Color iconShuffleColor = Colors.grey;
 
@@ -60,6 +61,19 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
     _initAudioPlayer();
     audios = _audioPlayerClass.getAudio();
     indice = _audioPlayerClass.getIndice();
+    contador= contador + 1;
+    if(contador == 5){
+      print('Mandando tremenda Peticion a BackEnd');
+      contador = 0;
+      setState(() {
+        sendLastSong(Globals.email, audios[indice].devolverID(),
+            _position.inMilliseconds.toString()).then((value) async {
+          if (!value) {
+            print("Ha ocurrido un error en la peticion");
+          }
+        });
+      });
+    }
           return PreferredSize(
             preferredSize: Size.fromHeight(controller.dragLength),
             child: BottomExpandableAppBar(
@@ -266,5 +280,21 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
       _position = Duration(milliseconds: 0);
       print('Current player is completed');
     });
+  }
+
+  Future<bool> sendLastSong(String email, String cancion, String segundos) async {
+    var queryParameters = {
+      'email' : email,
+      'cancion' : cancion,
+      'segundo' : segundos,
+    };
+    var uri = Uri.http(baseURL, '/set_last_song', queryParameters);
+    final http.Response response = await http.get(uri);
+    if(response.body == 'Success'){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 }

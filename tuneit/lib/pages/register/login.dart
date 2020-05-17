@@ -1,13 +1,20 @@
+import 'dart:convert';
+
 import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/paginaInicial.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/textFields.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   @override
@@ -15,6 +22,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  audioPlayerClass _audioPlayerClass;
+
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
@@ -22,6 +33,7 @@ class _LoginState extends State<Login> {
   //final _user = User();
   @override
   Widget build(BuildContext context) {
+    _audioPlayerClass = new audioPlayerClass();
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -102,6 +114,38 @@ class _LoginState extends State<Login> {
           setToken(
              Globals.email,Globals.mi_token
           );
+
+          final http.Response response = await http.post(
+            'https://' + baseURL + '/get_last_song',
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{
+              'email' : Globals.email
+            }),
+          );
+
+          if (response.statusCode == 200) {
+            Map<String, dynamic> parsedJson = json.decode(response.body);
+
+
+            List<Audio> lastSong = (parsedJson['Cancion'] as List)
+                .map((data) => new Song.fromJson(data))
+                .toList();
+            int segundos = parsedJson['Segundo'];
+            if(lastSong != null && segundos != null){
+              print("Aquí meto tremenda cancion al Reproductor");
+              _audioPlayerClass.setValoresIniciales(lastSong, 0);
+              _audioPlayerClass.rellenarUrl();
+              _audioPlayerClass.rellenarNotificaciones();
+              _audioPlayerClass.firstplay(segundos);
+              _audioPlayerClass.setPlaying(true);
+              _audioPlayerClass.setIniciado(true);
+            }
+          } else {
+            throw Exception(response.body + ': Failed to load last listened song');
+          }
+
 
           Navigator.push(
             context,

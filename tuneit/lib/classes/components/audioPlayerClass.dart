@@ -76,7 +76,12 @@ class audioPlayerClass {
     return iniciado;
   }
 
-
+  void dispose(){
+    _audioPlayer.dispose();
+  }
+  void create(){
+    _audioPlayer = AudioPlayer();
+  }
   Future<void> goTo(int indice_a_ir) async {
     final Result result = await _audioPlayer.seekIndex(indice_a_ir);
     if (result == Result.FAIL) {
@@ -96,6 +101,32 @@ class audioPlayerClass {
           audioNotifications: audioNotifications,
         );
         _playAll = true;
+        if (result == Result.ERROR) {
+          print("something went wrong in play method :(");
+        }
+
+      }
+      else{
+        final Result result = await _audioPlayer.resume();
+        if (result == Result.ERROR) {
+          print("something went wrong in play method :(");
+        }
+      }
+    }
+
+  }
+
+  Future<void> firstplay(int segundos) async {
+    if (audios != null) {
+      if(!_playAll) {
+        final Result result = await _audioPlayer.playAll(urls,index: indice,
+          repeatMode: false,
+          respectAudioFocus: false,
+          playerMode: PlayerMode.FOREGROUND,
+          audioNotifications: audioNotifications,
+        );
+        _playAll = true;
+        Duration duration = Duration(seconds: segundos);
         if (result == Result.ERROR) {
           print("something went wrong in play method :(");
         }

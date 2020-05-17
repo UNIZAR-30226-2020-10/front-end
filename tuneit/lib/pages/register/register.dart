@@ -265,9 +265,21 @@ class _RegisterState extends State<Register> {
             _controller1.text, _controller2.text, encrypted.base64, parsingDate(_date.toString()), pais
         ).then((value) {
           if (value) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Login()),
+
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('AVISO'),
+                    content: Text('Se ha enviado un mensaje de confirmación de correo a su cuenta'),
+                    actions: <Widget>[
+                      simpleButton(context, () {            Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Login()),
+                      );}, [], 'Aceptar')
+                    ],
+                  );
+                }
             );
           }
           else {
