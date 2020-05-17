@@ -124,9 +124,9 @@ class audioPlayerClass {
           respectAudioFocus: false,
           playerMode: PlayerMode.FOREGROUND,
           audioNotifications: audioNotifications,
+          position: Duration(milliseconds: segundos),
         );
         _playAll = true;
-        Duration duration = Duration(seconds: segundos);
         if (result == Result.ERROR) {
           print("something went wrong in play method :(");
         }
