@@ -128,14 +128,11 @@ class _LoginState extends State<Login> {
           if (response.statusCode == 200) {
             Map<String, dynamic> parsedJson = json.decode(response.body);
 
-            if(parsedJson['Cancion'] != null ) {
-              List<Audio> lastSong = (parsedJson['Cancion'] as List)
-                  .map((data) => new Song.fromJson(data))
-                  .toList();
-            }
-            else{
-              lastSong = null;
-            }
+            List<Audio> lastSong = (parsedJson['Cancion'] as List)
+                .map((data) => new Song.fromJson(data))
+                .toList();
+
+            lastSong = null;
             int segundos = parsedJson['Segundo'];
             if(lastSong != null && segundos != null){
               print("Aquí meto tremenda cancion al Reproductor");
