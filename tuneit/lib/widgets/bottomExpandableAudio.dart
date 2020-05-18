@@ -62,17 +62,18 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
     audios = _audioPlayerClass.getAudio();
     indice = _audioPlayerClass.getIndice();
     contador= contador + 1;
-    if(contador == 5){
-      print('Mandando tremenda Peticion a BackEnd');
-      contador = 0;
-      setState(() {
-        sendLastSong(Globals.email, audios[indice].devolverID(),
-            _position.inMilliseconds.toString()).then((value) async {
-          if (!value) {
-            print("Ha ocurrido un error en la peticion");
-          }
+    if (audios != null) {
+      if (contador == 5) {
+        contador = 0;
+        setState(() {
+          sendLastSong(Globals.email, audios[indice].devolverID(),
+              _position.inMilliseconds.toString()).then((value) async {
+            if (!value) {
+              print("Ha ocurrido un error en la peticion");
+            }
+          });
         });
-      });
+      }
     }
           return PreferredSize(
             preferredSize: Size.fromHeight(controller.dragLength),

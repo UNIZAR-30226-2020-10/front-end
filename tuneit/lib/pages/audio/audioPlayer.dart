@@ -45,19 +45,10 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   //Cargar datos
   Future <void> funcion_auxiliar()async{await rellenarDatos();}
   Future <void> rellenarDatos()async{
-    if(esFavorita == null){
-      setState(() {
-        _audioPlayerClass.existeCancionFav(audios[indice]).then((value) async {
-          if (value) {
-            print(value);
-            esFavorita = true;
-          }
-          else {
-            esFavorita = false;
-          }
-        });
-      });
-    }
+    bool favorita = await _audioPlayerClass.existeCancionFav(audios[indice]);
+    setState(() {
+      esFavorita = favorita;
+    });
   }
 
   //----------------------------------------------------//
@@ -89,7 +80,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   StreamSubscription _playerAudioSessionIdSubscription;
   StreamSubscription _notificationActionCallbackSubscription;
 
-  bool esFavorita;
+  bool esFavorita = false;
 
   int contador = 0;
   final List<AudioNotification> audioNotifications = new List<AudioNotification>();
@@ -118,17 +109,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
         audios_show = audios;
       }
     }
-    setState(() {
-      _audioPlayerClass.existeCancionFav(audios[indice]).then((value) async {
-        if (value) {
-          print(value);
-          esFavorita = true;
-        }
-        else {
-          esFavorita = false;
-        }
-      });
-    });
+    funcion_auxiliar();
   }
 
   @override
@@ -154,17 +135,18 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     funcion_auxiliar();
     contador= contador + 1;
-    if(contador == 5){
-      print('Mandando tremenda Peticion a BackEnd');
-      contador = 0;
-      setState(() {
-        sendLastSong(Globals.email, audios[indice].devolverID(),
-            _position.inMilliseconds.toString()).then((value) async {
-          if (!value) {
-            print("Ha ocurrido un error en la peticion");
-          }
+    if(_position != null) {
+      if (contador == 5) {
+        contador = 0;
+        setState(() {
+          sendLastSong(Globals.email, audios[indice].devolverID(),
+              _position.inMilliseconds.toString()).then((value) async {
+            if (!value) {
+              print("Ha ocurrido un error en la peticion");
+            }
+          });
         });
-      });
+      }
     }
     return Scaffold(
           appBar: AppBar(
@@ -173,11 +155,11 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                 padding: EdgeInsets.only(right: 20.0),
                 child: IconButton(
                     iconSize: 20.0,
-                    icon: Icon(esFavorita != null
+                    icon: Icon(esFavorita
                         ? Icons.favorite
                         : Icons.favorite_border),
                     onPressed: (){
-                      if(esFavorita != null){
+                      if(esFavorita){
                         eliminarCancionDeLista(Globals.idFavorite,audios[indice].devolverID().toString());
                         setState(() {esFavorita = false;});
                       }
@@ -218,7 +200,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                     child: Image(
                       image: NetworkImage(audios[indice].devolverImagen()),fit: BoxFit.fill,
                       width: 200,
-                      height: 150,
+                      height: 200,
                     ),
 
                 ),
@@ -233,9 +215,10 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                             Flexible(
                             child:
                             Transform.scale(
-                              scale: 3,
+                              scale: 1,
                               child:
                               IconButton(
+                                iconSize: 50.0,
                                 icon: Icon(Icons.skip_previous),
                                 onPressed: () {
                                   _audioPlayerClass.previous();
@@ -246,9 +229,10 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                               Flexible(
                               child:
                             Transform.scale(
-                              scale: 3,
+                              scale: 1,
                               child:
                               IconButton(
+                                iconSize: 50.0,
                                 onPressed:(){
                                   if(_audioPlayerClass.getRepeat()){
                                    _audioPlayerClass.setRepeat(false);
@@ -268,9 +252,10 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
     Flexible(
     child:
                         Transform.scale(
-                          scale: 3,
+                          scale: 1,
                           child:
                           IconButton(
+                            iconSize: 50.0,
                             onPressed:(){
                               if(_audioPlayerClass.getAudio() != audios){
                                 _audioPlayerClass.setValoresIniciales(audios,indice);
@@ -312,9 +297,10 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
     Flexible(
     child:
                         Transform.scale(
-                          scale: 3,
+                          scale: 1,
                           child:
                           IconButton(
+                              iconSize: 50.0,
                               icon: Icon(Icons.shuffle),
                               color: _iconShuffleColor,
                               onPressed: () {
@@ -336,9 +322,10 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                                 }
                               }))),
                             Transform.scale(
-                                scale: 3,
+                                scale: 1,
                                 child:
                           IconButton(
+                              iconSize: 50.0,
                               icon: Icon(Icons.skip_next),
                               onPressed: () {
                                 _audioPlayerClass.next();

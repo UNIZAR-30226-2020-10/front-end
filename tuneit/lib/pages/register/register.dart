@@ -27,6 +27,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
   final TextEditingController _controller3 = TextEditingController();
+  final TextEditingController _controller4 = TextEditingController();
   String pais = 'País de nacimiento';
 
 
@@ -106,6 +107,8 @@ class _RegisterState extends State<Register> {
                     textField(_controller2, false, 'Correo electrónico',
                         Icons.mail_outline),
                     textField(_controller3, true, 'Contraseña',
+                        Icons.lock_outline),
+                    textField(_controller4,true, 'Repetir Contraseña',
                         Icons.lock_outline),
                     Column(
                       children: <Widget>[
@@ -251,6 +254,9 @@ class _RegisterState extends State<Register> {
     mostrarError('Tu constraseña debe tener como mínimo 1 número y '
     'solo se aceptan minúsculas, mayúsculas y números ');
     }
+    else if(_controller4.text.toString() != _controller3.text.toString()){
+      mostrarError('Las contraseñas deben ser iguales');
+    }
     else if (pais == 'País de nacimiento') {
       mostrarError('Es necesario que indiques tu país de nacimiento');
     }
@@ -271,7 +277,7 @@ class _RegisterState extends State<Register> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: Text('AVISO'),
-                    content: Text('Se ha enviado un mensaje de confirmación de correo a su cuenta'),
+                    content: Text('Se ha enviado un mensaje de confirmacion a su correo'),
                     actions: <Widget>[
                       simpleButton(context, () {            Navigator.push(
                         context,
