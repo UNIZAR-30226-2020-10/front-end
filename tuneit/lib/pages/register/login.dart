@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
+import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/paginaInicial.dart';
@@ -25,6 +27,7 @@ class _LoginState extends State<Login> {
 
   audioPlayerClass _audioPlayerClass;
 
+  bool rememberMe = false;
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _controller1 = TextEditingController();
@@ -77,6 +80,18 @@ class _LoginState extends State<Login> {
                         Icons.mail_outline),
                     textField(_controller2, true, 'Contraseña',
                         Icons.lock_outline),
+                    Row(
+                        children: [
+                          Checkbox(
+                            value: rememberMe,
+                            checkColor: ColorSets.colorWhite,
+                            activeColor: ColorSets.colorDarkPurple ,
+                            onChanged: (bool value) {
+                              setState(() {
+                                rememberMe = value;
+                              });},
+                          ),
+                          Text("Recordar Usuario")]),
                     SizedBox(height: 100),
                     gradientButton(context, tryLogin, [], 'ENTRAR', 40, 150, 15),
                   ],
@@ -114,7 +129,15 @@ class _LoginState extends State<Login> {
           setToken(
              Globals.email,Globals.mi_token
           );
-
+          final prefs = await SharedPreferences.getInstance();
+          if(rememberMe) {
+            prefs.setString('user', _controller1.text);
+            prefs.setString('password', encrypted.base64);
+          }
+          else{
+            prefs.setString('user', '0');
+            prefs.setString('password', '0');
+          }
           final http.Response response = await http.post(
             'https://' + baseURL + '/get_last_song',
             headers: <String, String>{
@@ -192,5 +215,17 @@ class _LoginState extends State<Login> {
       });
     });
   }
+
+  void _onRememberMeChanged(bool newValue) => setState(() {
+    rememberMe = newValue;
+
+    if (rememberMe) {
+      // TODO: Here goes your functionality that remembers the user.
+      rememberMe = false;
+    } else {
+      // TODO: Forget the user
+      rememberMe = true;
+    }
+  });
 
 }

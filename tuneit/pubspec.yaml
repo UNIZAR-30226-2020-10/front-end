@@ -34,7 +34,7 @@ dependencies:
   encrypt: ^4.0.0
   email_validator: ^1.0.0
   flappy_search_bar: 1.4.1
-
+  shared_preferences: ^0.5.7+2
 
 
 
@@ -42,7 +42,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-
+^0:
+  5:
+    7+2:
 dev_dependencies:
   flutter_test:
     sdk: flutter

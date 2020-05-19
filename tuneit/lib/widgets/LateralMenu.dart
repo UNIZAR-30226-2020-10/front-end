@@ -4,6 +4,7 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/artists.dart';
 import 'package:tuneit/pages/audio/equalizer.dart';
 import "package:tuneit/pages/profile.dart";
+import 'package:tuneit/pages/register/login.dart';
 import 'package:tuneit/pages/social/friend.dart';
 import 'package:tuneit/pages/social/notificaciones.dart';
 import 'package:tuneit/pages/audio/playlists.dart';
@@ -106,9 +107,9 @@ class LateralMenu extends StatelessWidget {
               title: Text('PERFIL'),
               onTap:() {
                 Navigator.push(
-                context,
-                MaterialPageRoute(
-                   builder: (context) => Profile(name:Globals.name,email: Globals.email,country: Globals.country,date: Globals.date,esUser: true,image: Globals.image,),
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Profile(name:Globals.name,email: Globals.email,country: Globals.country,date: Globals.date,esUser: true,image: Globals.image,),
                   ),
                 );
               }

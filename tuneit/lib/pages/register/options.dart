@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/Foto.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
@@ -281,6 +282,10 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
           Globals.country = '';
           Globals.image = '';
           Globals.id_fav = '';
+
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('user', '0');
+          prefs.setString('password', '0');
 
           Navigator.push(
             context,
