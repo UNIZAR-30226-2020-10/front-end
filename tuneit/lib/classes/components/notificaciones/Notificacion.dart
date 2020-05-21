@@ -31,29 +31,20 @@ Future <int> contarNotificaciones()async {
 
     if(prueba[i].Notificacion){
       contador++;
-
     }
-
   }
 
   for(int i=0;i<canciones.length;i++){
     if(canciones[i].Notificacion){
       contador++;
     }
-
   }
-
 
   for(int i=0;i<listas.length;i++){
     if(listas[i].Notificacion){
       contador++;
     }
-
   }
 
-
   return contador;
-
-
-
 }
