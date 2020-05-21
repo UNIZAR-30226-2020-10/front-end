@@ -15,6 +15,7 @@ import 'package:tuneit/pages/social/notificaciones.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
+import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';
 
 import '../main.dart';
 import '../widgets/LateralMenu.dart';
@@ -35,18 +36,32 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Category> listaCateg = List();
   List<Artist> listaArtistas = List();
 
-  void obtenerDatos() async{
+  Future<bool> obtenerPodcasts() async{
     List<Podcast> listaPodc = await fetchBestPodcasts();
-    List<Song> listaUC = await lastAddedSongs();
-    List<Category> listaCat = await listCategories ();
-    List<Artist> listaArt = await listArtists ();
 
-    setState(() {
       listaPodcast = listaPodc;
-      listaUltCanc = listaUC.sublist(listaUC.length - 11, listaUC.length - 1).reversed.toList();
-      listaCateg = listaCat;
-      listaArtistas = listaArt;
-    });
+
+     return true;
+
+  }
+
+  Future<bool> obtenerGeneros() async{
+    List<Category> listaCat = await listCategories ();
+    listaCateg = listaCat;
+    return true;
+  }
+
+  Future<bool> obtenerArtistas() async{
+    List<Artist> listaArt = await listArtists ();
+    listaArtistas = listaArt;
+    return true;
+  }
+
+  Future<bool> obtenerCanciones() async{
+    List<Song> listaUC = await lastAddedSongs();
+    listaUltCanc = listaUC.sublist(listaUC.length - 11, listaUC.length - 1).reversed.toList();
+    return true;
+
 
   }
 
@@ -55,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //FUNCION PARA REACCIONAR A LAS NOTIFICACIONES
     reaccionarNotificacion();
-    obtenerDatos();
+    obtenerCanciones();
 
   }
 
@@ -79,7 +94,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 height: 200,
-                child: completeListHorizontal(listaCateg, onTapCategory, []),
+                child: FutureBuilder(
+                  future:obtenerGeneros()  ,
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                      if(snapshot.hasData) {
+                        return completeListHorizontal(listaCateg, onTapCategory, []);
+                      }
+                      else{
+                        return TuneITProgressIndicator();
+                      }
+
+                    }
+                ),//
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -87,7 +113,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 height: 200,
-                child: completeListHorizontal(listaPodcast, onTapPodcasts, []),
+                child: FutureBuilder(
+                    future:obtenerPodcasts() ,
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                      if(snapshot.hasData) {
+                        return completeListHorizontal(listaPodcast, onTapPodcasts, []);
+                      }
+                      else{
+                        return TuneITProgressIndicator();
+                      }
+
+                    }
+                ),
+
+                //completeListHorizontal(listaPodcast, onTapPodcasts, []),
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -95,21 +134,49 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 height: 200,
-                child: completeListHorizontal(listaArtistas, onTapArtist, []),
+                child:FutureBuilder(
+                    future:obtenerArtistas() ,
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                      if(snapshot.hasData) {
+                        return completeListHorizontal(listaArtistas, onTapArtist, []);
+                      }
+                      else{
+                        return TuneITProgressIndicator();
+                      }
+
+                    }
+                ),
+
+
+
+                //completeListHorizontal(listaArtistas, onTapArtist, []),
               ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text('   Últimas canciones', style: Theme.of(context).textTheme.subtitle,),
               ),
-              ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: listaUltCanc.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return listaParaAudiosCategorias(context, listaUltCanc, "NoLista",true, choiceAction,) [index];
+
+              FutureBuilder(
+                  future:obtenerCanciones() ,
+                  builder: (BuildContext context, AsyncSnapshot snapshot){
+                    if(snapshot.hasData) {
+                      return               ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: listaUltCanc.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return listaParaAudiosCategorias(context, listaUltCanc, "NoLista",true, choiceAction,) [index];
+                          }
+                      );
+                    }
+                    else{
+                      return TuneITProgressIndicator();
+                    }
+
                   }
               ),
+
             ],
           ),
         )

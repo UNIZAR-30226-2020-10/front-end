@@ -5,6 +5,7 @@ import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
@@ -26,11 +27,12 @@ class _State extends State<ShowAlbum> {
 
   _State(this.name);
 
-  void ObtenerDatos() async{
+  Future<bool> ObtenerDatos() async{
     Album aux = await searchAlbum(name);
-    setState(() {
+
       album=aux;
-    });
+
+    return true;
 
   }
 
@@ -63,17 +65,30 @@ class _State extends State<ShowAlbum> {
         ],
       ),
 
-      body: Column(
-          children: <Widget>[
-            Expanded(
-              child: ReorderableListView(
-                padding: const EdgeInsets.all(8),
-                scrollDirection: Axis.vertical,
-                onReorder: _onReorder,
-                children: listaParaAudiosCategorias(context,album.songs,album.name,true,choiceAction),
-              ),
-            ),
-          ]
+      body:
+        FutureBuilder(
+            future: ObtenerDatos(),
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+              if(snapshot.hasData) {
+                return Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ReorderableListView(
+                          padding: const EdgeInsets.all(8),
+                          scrollDirection: Axis.vertical,
+                          onReorder: _onReorder,
+                          children: listaParaAudiosCategorias(
+                              context, album.songs, album.name, true,
+                              choiceAction),
+                        ),
+                      ),
+                    ]
+                );
+              }
+              else{
+                return TuneITProgressIndicator();
+              }
+          }
       ),
       bottomNavigationBar: bottomExpandableAudio(),
     );

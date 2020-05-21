@@ -11,6 +11,7 @@ import 'package:tuneit/widgets/errors.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/playlistOption.dart';
+import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';
 
 
 class ShowList extends StatefulWidget {
@@ -30,11 +31,13 @@ class _State extends State<ShowList> {
   audioPlayerClass _audioPlayerClass;
   _State(this.indetificadorLista,this.list_title,this.esAmigo);
 
-  void ObtenerDatos() async{
+  Future<bool> ObtenerDatos() async{
     SongLista canciones =await fetchSonglists(indetificadorLista);
-    setState(() {
+   // setState(() {
       audios=canciones.songs;
-    });
+   // });
+
+    return true;
 
   }
 
@@ -82,19 +85,31 @@ class _State extends State<ShowList> {
         ],
       ),
 
-      body: Column(
-          children: <Widget>[
-            Expanded(
-              child: ReorderableListView(
+      body: FutureBuilder(
+        future: ObtenerDatos(),
+        builder: (BuildContext context, AsyncSnapshot snapshot){
+          if(snapshot.hasData) {
+
+            return Column(
+                        children: <Widget>[
+                        Expanded(
+                child: ReorderableListView(
                 padding: const EdgeInsets.all(8),
                 scrollDirection: Axis.vertical,
                 onReorder: _onReorder,
                 children: listaParaAudios(context,audios,indetificadorLista,true,choiceAction),
-              ),
-            ),
-    ]
+                ),
+                ),
+                ]
+                );
+                      } else {
+
+            return TuneITProgressIndicator();
+          }
+
+        }
       ),
-      bottomNavigationBar: bottomExpandableAudio(),
+     bottomNavigationBar: bottomExpandableAudio(),
   );
 
 

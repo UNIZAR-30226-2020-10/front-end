@@ -358,17 +358,5 @@ Future<bool> upDateSettings( body) async{
 
 }
 
-Future<void> startUploadPhoto( File tmpFile , String base64Image){
-  if(null == tmpFile){
-    print("error");
-  }
-  String fileName= tmpFile.path.split('/').last;
 
-  http.post('vacio_porahora',body:{
-    "image": base64Image,
-    "name": fileName,
-  });
-
-
-}
 

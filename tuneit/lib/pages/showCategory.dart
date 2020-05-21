@@ -4,6 +4,7 @@ import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
@@ -25,17 +26,18 @@ class _ShowCategoryState extends State<ShowCategory> {
 
   _ShowCategoryState(this.name);
 
-  void ObtenerDatos() async{
+  Future<bool>ObtenerDatos() async{
     List<Song> canciones = await songsByCategory([name]);
-    setState(() {
+
       songs = canciones;
-    });
+
+      return true;
+
 
   }
 
   @override
   void initState(){
-    ObtenerDatos();
     super.initState();
   }
 
@@ -63,17 +65,29 @@ class _ShowCategoryState extends State<ShowCategory> {
         ],
       ),
 
-      body: Column(
-          children: <Widget>[
-            Expanded(
+      body: FutureBuilder(
+        future: ObtenerDatos(),
+          builder: (BuildContext context, AsyncSnapshot snapshot){
+            if(snapshot.hasData) {
+              return Column(
+              children: <Widget>[
+              Expanded(
               child: ReorderableListView(
-                padding: const EdgeInsets.all(8),
-                scrollDirection: Axis.vertical,
-                onReorder: _onReorder,
-                children: listaParaAudiosCategorias(context, songs, name, false, choiceAction),
+              padding: const EdgeInsets.all(8),
+              scrollDirection: Axis.vertical,
+              onReorder: _onReorder,
+              children: listaParaAudiosCategorias(context, songs, name, false, choiceAction),
               ),
-            ),
-          ]
+              ),
+              ]
+              );
+              }
+            else {
+
+              return TuneITProgressIndicator();
+            }
+
+          }
       ),
       bottomNavigationBar: bottomExpandableAudio(),
     );
