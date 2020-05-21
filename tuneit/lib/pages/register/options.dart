@@ -27,8 +27,8 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
 
   Future<File> la_imagen;
-  String base64Image;
-  File tmpFile;
+  String base64Image=null;
+  File tmpFile=null;
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController nombre = TextEditingController();
   final TextEditingController password = TextEditingController();
@@ -141,7 +141,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                           onPressed: (
 
                               ) {
-                            confirmarCambios(context,password.text,nombre.text,pais);
+                            confirmarCambios(context,password.text,nombre.text,pais,tmpFile,base64Image);
 
                           },
                           color: Colors.deepPurple,
@@ -212,8 +212,9 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
 
 
-  void confirmarCambios(BuildContext context, String password, String nombre, String pais){
-    if(nombre!="" && (nombre.length < 3 || nombre.length > 50)){
+  void confirmarCambios(BuildContext context, String password, String nombre, String pais,File tmpFile , String base64Image){
+    startUploadPhoto(tmpFile , base64Image);
+   /* if(nombre!="" && (nombre.length < 3 || nombre.length > 50)){
       mostrarError(context,'Tu nuevo nombre de usuario debe contener entre 3 y 50 carácteres');
     }
     else if (password!="" && (password.length < 7 && password.length > 0)){
@@ -225,16 +226,18 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     }
     else {
       formularioContrasegna(context,password,nombre,pais);
+      if(tmpFile!=null && base64Image!=null){
+        startUploadPhoto(tmpFile , base64Image);
+      }
 
-    }
+    }*/
   }
 
   Widget showImage(){
     return FutureBuilder<File>(
       future: la_imagen,
       builder: (BuildContext context,AsyncSnapshot<File> snapshot){
-        print(snapshot.connectionState);
-        print(la_imagen);
+
         if(snapshot.connectionState== ConnectionState.done && snapshot.data!=null){
           tmpFile=snapshot.data;
           base64Image = base64Encode(snapshot.data.readAsBytesSync());
