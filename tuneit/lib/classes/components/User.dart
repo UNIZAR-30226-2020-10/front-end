@@ -24,7 +24,6 @@ class User {
   User({this.name, this.email, this.password, this.date, this.country,this.photo,this.token});
 
   factory User.fromJson(Map<String, dynamic> json) {
-    print('b');
     String fecha="";
     String pais="";
 
@@ -64,20 +63,10 @@ Future<List<User>> searchUsers(String nombre) async {
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
-  if(response.statusCode==200){
-
-
+  if(response.statusCode==200) {
     list = (json.decode(response.body) as List)
         .map((data) => new User.fromJson(data))
         .toList();
-
-
-    print(list.length);
-    if(list!=[]){
-      print(list[0].name);
-    }
-
-
   }
   else{
     print("No se han encontrado resultados para amigos");
@@ -106,10 +95,8 @@ Future<bool> enviarSolicitud(
     }),
   );
 
-  print(response.body);
   if (response.body == 'Success') {
     String token= await getToken(receptor);
-    print(token);
     sendNotification('Solcitud de amistad',emisor+' quiere ser tu amigo',token);
     return true;
   } else {
@@ -225,9 +212,6 @@ Future<List<User>> listarAmigos() async{
         .map((data) => new User.fromJson(data))
         .toList();
 
-    print(response.body);
-    print(list.length);
-
   }
   else{
     print("No se han encontrado resultados para amigos");
@@ -287,7 +271,6 @@ Future<void> settingsUser(String password, String name, String pais)async{
   var body;
 
 
-
   if(name!="" && Globals.name!=name){
 
     body = jsonEncode(<String, String>{
@@ -322,7 +305,7 @@ Future<void> settingsUser(String password, String name, String pais)async{
     final encrypter = Encrypter.Encrypter(Encrypter.AES(key,mode: Encrypter.AESMode.ecb));
     final encrypted = encrypter.encrypt(password, iv: iv);
     password=encrypted.base64;
-    print(password);
+
 
     body = jsonEncode(<String, String>{
       'email': Globals.email,
@@ -340,7 +323,6 @@ Future<void> settingsUser(String password, String name, String pais)async{
 
 
 Future<bool> upDateSettings( body) async{
-  print(body);
 
   final http.Response response = await http.post(
     'https://' + baseURL + '/modify',
@@ -349,7 +331,6 @@ Future<bool> upDateSettings( body) async{
     },
     body: body,
   );
-  print(response.body);
   if (response.body == 'Success') {
     return true;
   } else {

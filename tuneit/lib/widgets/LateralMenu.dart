@@ -71,16 +71,7 @@ class LateralMenu extends StatelessWidget {
           ),
           new ListTile(
             title: Text('NOTIFICACIONES'),
-              trailing:Globals.mensaje_nuevo ? Container(
-                width: 100,
-                height: 50,
-                child:
-                    Icon(Icons.add_alert,
-                    color:Colors.green),
-
-
-              ): Icon(Icons.add_alert,
-                  color:Colors.grey),
+              subtitle:Globals.mensajes_nuevo>0?Text("Nuevos mensajes "+ Globals.mensajes_nuevo.toString()):Container(height: 0,width: 0,),
             onTap:() {
               Navigator.push(
               context,

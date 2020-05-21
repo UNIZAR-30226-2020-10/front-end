@@ -16,6 +16,7 @@ import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/model/message.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
+import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/errors.dart';
@@ -66,25 +67,28 @@ class _NotificacionesState extends State<Notificaciones> {
 
    }
 
-  void ObtenerDatos() async {
-    List<Peticion> prueba = await buscarPeticiones();
-    List<CompartidaCancion> canciones=await canciones_compartidas_conmigo();
-    List<CompartidaLista>  listas=await listasCompartidas();
+   Future <bool> obtenerNotificaciones() async{
+     List<Peticion> prueba = await buscarPeticiones();
+     peticiones=prueba;
+     return true;
+   }
 
-    print(prueba.length);
-    setState(() {
-      playlists=listas;
-      peticiones=prueba;
-      songs=canciones;
+   Future <bool> obtenerCanciones() async{
+     List<CompartidaCancion> canciones=await canciones_compartidas_conmigo();
+     songs=canciones;
+     return true;
+   }
+   Future <bool> obtenerListas() async{
+     List<CompartidaLista>  listas=await listasCompartidas();
+     playlists=listas;
+     return true;
+   }
 
-    });
-  }
 
 
   @override
   void initState() {
-    ObtenerDatos();
-    Globals.mensaje_nuevo=false;
+    Globals.mensajes_nuevo=0;
     super.initState();
 
   }
@@ -108,21 +112,60 @@ class _NotificacionesState extends State<Notificaciones> {
                   child: Text('  Peticiones de amistad', style: Theme.of(context).textTheme.subtitle,),
                 ),
                 SizedBox(height: size_height*0.01,),
-                listaParaNotificaciones(context,peticiones,size_width,size_height),
+                FutureBuilder(
+                    future:obtenerNotificaciones() ,
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                      if(snapshot.hasData) {
+                        return listaParaNotificaciones(context,peticiones,size_width,size_height);
+                      }
+                      else{
+                        return TuneITProgressIndicator();
+                      }
+
+                    }
+                ),
+
                 SizedBox(height: size_height*0.01,),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text('   Canciones compartidas', style: Theme.of(context).textTheme.subtitle,),
                 ),
                 SizedBox(height:  size_height*0.01,),
-               listaParaAudiosCompartidos(context,songs,"none",choiceAction),
+
+                FutureBuilder(
+                    future:obtenerCanciones() ,
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                      if(snapshot.hasData) {
+                        return  listaParaAudiosCompartidos(context,songs,"none",choiceAction);
+                      }
+                      else{
+                        return TuneITProgressIndicator();
+                      }
+
+                    }
+                ),
+
                 SizedBox(height:  size_height*0.01,),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('  Listar de reproducción compartidas', style: Theme.of(context).textTheme.subtitle,),
+                  child: Text('  Listas de reproducción compartidas', style: Theme.of(context).textTheme.subtitle,),
                 ),
+
                 SizedBox(height:  size_height*0.01,),
-                listaParaListasCompartidos(context,playlists),
+
+                FutureBuilder(
+                    future:obtenerListas() ,
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                      if(snapshot.hasData) {
+                        return  listaParaListasCompartidos(context,playlists);
+                      }
+                      else{
+                        return TuneITProgressIndicator();
+                      }
+
+                    }
+                ),
+
                 SizedBox(height:  size_height*0.01,),
               ]
                  //

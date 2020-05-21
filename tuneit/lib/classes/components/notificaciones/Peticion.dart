@@ -15,7 +15,8 @@ class Peticion extends Notificacion{
   String emisor_nombre;
   String emisor_email;
   String photo_emisor=Globals.default_image;
-  Peticion({this.emisor_nombre,this.emisor_email,this. photo_emisor,this.id});
+  bool Notificacion;
+  Peticion({this.emisor_nombre,this.emisor_email,this. photo_emisor,this.id,this.Notificacion});
 
 
   //[{"Id": , "Emisor": email, "Receptor": email}, {…}]
@@ -43,15 +44,13 @@ class Peticion extends Notificacion{
   factory Peticion.fromJson(Map<String, dynamic> json) {
     List<dynamic> prueba1=json['Emisor'];
     Map emisormap=prueba1[0];
-    print("Cual es?");
-    print(json['id']);
-    print(json['Id']);
-    print('dadadd');
+
     return Peticion(
       emisor_nombre:emisormap['Nombre'],
       emisor_email: emisormap['Email'],
       photo_emisor:emisormap['Imagen'],
       id:json['ID'],
+      Notificacion: json['Notificacion'],
     );
   }
 
@@ -59,15 +58,15 @@ class Peticion extends Notificacion{
 
 Future<List<Peticion>> buscarPeticiones() async {
   List<Peticion> list=[];
-//email: email del usuario cuya información se muestra
   var queryParameters = {
     'email' : Globals.email,
   };
-  print(baseURL);
+
   var uri = Uri.http(baseURL, '/list_peticiones_recibidas', queryParameters);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
+
   if(response.statusCode==200){
 
 
@@ -117,7 +116,7 @@ Future<bool> deleteFriend(String email,String amigo) async {
       'amigo':amigo,
     }),
   );
-  print(response.statusCode);
+
 
   if (response.statusCode == 200) {
     exito=true;
@@ -134,8 +133,7 @@ Future<bool> deleteFriend(String email,String amigo) async {
 Future<bool> reactNotificacion(String id,String respuesta) async {
 
   bool exito=false;
-  print(id);
-  print("aaaaa??");
+
   final http.Response response = await http.post(
     'https://' + baseURL + '/responder_peticion',
     headers: <String, String>{

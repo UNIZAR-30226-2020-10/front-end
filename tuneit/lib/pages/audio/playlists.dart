@@ -5,6 +5,7 @@ import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/Searcher.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/audioPlayerClass.dart';
+import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/pages/songs/showList.dart';
@@ -49,10 +50,19 @@ class _PlayListsState extends State<PlayLists> {
     }
   }
 
+  Future<void> recuento() async{
+    int dato= await contarNotificaciones();
+    setState(() {
+
+      Globals.mensajes_nuevo=dato;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     obtenerDatos();
+    recuento();
   }
 
   @override

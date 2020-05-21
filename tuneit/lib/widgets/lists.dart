@@ -430,8 +430,6 @@ Widget listaParaListasCompartidos(BuildContext context,List<CompartidaLista> lis
           child: new ListTile(
 
             onTap: () {
-              print(listas[index].lista.image);
-
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     ShowList(

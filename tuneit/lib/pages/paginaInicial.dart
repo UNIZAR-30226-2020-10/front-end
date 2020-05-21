@@ -5,6 +5,10 @@ import 'package:tuneit/classes/components/Category.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
+import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
+import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
+import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
 import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
@@ -65,12 +69,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
 
+  Future<void> recuento() async{
+    int dato= await contarNotificaciones();
+    setState(() {
+
+  Globals.mensajes_nuevo=dato;
+    });
+  }
+
   void initState() {
     super.initState();
 
     //FUNCION PARA REACCIONAR A LAS NOTIFICACIONES
     reaccionarNotificacion();
-    obtenerCanciones();
+    recuento();
 
   }
 
@@ -232,20 +244,17 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
   }
 
-  Future <void> almacenarMensaje() {
 
-  }
 
   void reaccionarNotificacion() async {
 
     var pus1=PushProvider();
-
     pus1.mensaje.listen((argumento) async{
       String data = argumento.title;
       String cuerpo = argumento.body;
       if(data!=null && cuerpo!=null){
         setState(() {
-          Globals.mensaje_nuevo=true;
+          Globals.mensajes_nuevo=Globals.mensajes_nuevo+1;
         });
 
       }

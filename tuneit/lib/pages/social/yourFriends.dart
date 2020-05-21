@@ -6,6 +6,7 @@ import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/social/friend.dart';
+import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';
 import 'package:tuneit/widgets/errors.dart';
 
 import '../profile.dart';
@@ -20,28 +21,35 @@ class _yourFriendsState extends State<yourFriends> {
   bool encontrado;
 
 
-  void devolverUsers() async{
+ Future<bool> devolverUsers() async{
     List<User> resultado=await listarAmigos();
 
-    setState(() {
+
       amigos=resultado;
-    });
+      return true;
   }
   @override
   void initState() {
     // TODO: implement initState
-    devolverUsers();
-
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
 
     return Center(
-      child: ListView(
-        children: listaParaAmigos(context,amigos),
-      ),
-    );
+      child:FutureBuilder(
+        future:devolverUsers() ,
+    builder: (BuildContext context, AsyncSnapshot snapshot){
+    if(snapshot.hasData) {
+        return ListView(
+          children: listaParaAmigos(context,amigos));
+    }
+    else{
+      return TuneITProgressIndicator();
+    }
+    }
+        ),
+      );
   }
 }
 
@@ -81,7 +89,6 @@ List<Widget> listaParaAmigos(BuildContext context,List<User> amigos){
                   bool prueba= await deleteFriend(Globals.email,amigos[index].email);
                   if(prueba){
                     operacionExito(context);
-                    print('Que te jodan '+ amigos[index].name );
 
                     Navigator.pop(context);
                     Navigator.push(

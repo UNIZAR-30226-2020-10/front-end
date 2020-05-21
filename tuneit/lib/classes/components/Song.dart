@@ -73,7 +73,6 @@ class Song extends Audio{
 
     List<String> losartistas = streetsFromJson.cast<String>();
     List<String> losgeneros = genreFromJson.cast<String>();
-    print(parsedJson['Imagen']);
 
     return Song(
       id: parsedJson['ID'],
@@ -131,7 +130,6 @@ Future<void> eliminarCancionDeLista(String id_lista, String id_song) async {
   if (response.statusCode == 200) {
     // If the server did return a 201 CREATED response,
     // then parse the JSON.
-    print(response.body);
   } else {
     // If the server did not return a 201 CREATED response,
     // then throw an exception.
@@ -153,7 +151,6 @@ void agregarCancion( String  id_lista, String id_song) async{
     }),
   );
   if (response.statusCode == 200) {
-    print(response.body);
   } else {
     throw Exception('Failed to load album');
   }
@@ -311,18 +308,14 @@ Future<bool>  compartirCancion(String amigo, String id_song, String receptor, St
   };
 
   var uri = Uri.https(baseURL,'/share_song' ,queryParameters);
-  print(uri);
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
 
-  print(response.body);
-  print(response.statusCode);
       if (response.statusCode == 200 && response.body== 'Success' ) {
 
         String token= await getToken(receptor);
-        print(token);
         sendNotification('Recomendación',emisor+' te ha recomendado una canción',token);
 
     return true;

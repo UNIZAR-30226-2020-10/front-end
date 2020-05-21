@@ -42,7 +42,6 @@ Future<void> launchInBrowser(String cancion,String artista) async {
 
  String url= 'https://google.com/search?q=';
  url= url + artista+'+'+cancion;
- print(url);
  if (await canLaunch(url)) {
   await launch(
    url,

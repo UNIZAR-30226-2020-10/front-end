@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/register/mainView.dart';
@@ -54,10 +55,18 @@ class _ProfilePageState extends State<Profile> {
     });
   }
 
+  Future<void> recuento() async{
+    int dato= await contarNotificaciones();
+    setState(() {
+      Globals.mensajes_nuevo=dato;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     obtenerDatos();
+    recuento();
   }
 
   @override
@@ -89,12 +98,10 @@ class _ProfilePageState extends State<Profile> {
                     encontrado=resultado;
                   });
                   if(encontrado){
-                    print("FRIEND");
                     solicitudEnviada(context,name.toString());
 
                   }
                   else{
-                    print("NO FRIEND");
                     mostrarError(context,"No se ha podido entregar la solicitud");
                   }
                 },

@@ -116,7 +116,7 @@ class _State extends State<ShowAlbum> {
     String lista=opciones[1];
 
     if(opciones[0]==optionCategory[0]){
-      print(opciones[0]);
+
 
       setState(() {
         album.songs = ordenarPorArtistaAudios(album.songs);
@@ -124,7 +124,7 @@ class _State extends State<ShowAlbum> {
 
     }
     else if(opciones[0]==optionCategory[1]){
-      print(opciones[0]);
+
 
       setState(() {
         album.songs = ordenarPorTituloAudios(album.songs);
@@ -137,7 +137,6 @@ class _State extends State<ShowAlbum> {
   }
   void choiceAction(String choice) async{
     List<String> hola=choice.split("--");
-    print(hola.toString());
     choice=hola[0];
     int id_song=int.parse(hola[1]);
     String id_lista=hola[2];

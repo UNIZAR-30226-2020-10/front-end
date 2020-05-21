@@ -137,7 +137,6 @@ class _State extends State<ShowList> {
       eliminarPlaylist(context,lista);
     }
     else if(opciones[0]==optionPlayList[1]){
-      print(opciones[0]);
 
       setState(() {
         audios =ordenarPorArtistaAudios(audios);
@@ -145,7 +144,7 @@ class _State extends State<ShowList> {
 
     }
     else if(opciones[0]==optionPlayList[2]){
-      print(opciones[0]);
+
 
       setState(() {
         audios=ordenarPorTituloAudios(audios);
@@ -153,7 +152,7 @@ class _State extends State<ShowList> {
     }
 
     else if(opciones[0]==optionPlayList[3]){
-      print(opciones[0]);
+
       List<User> amigos=await listarAmigos();
       mostrarAmigosLista ( context, amigos,  lista);
     }

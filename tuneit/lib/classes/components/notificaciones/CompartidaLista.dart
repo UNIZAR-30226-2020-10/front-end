@@ -18,8 +18,9 @@ class CompartidaLista extends Notificacion{
   User emisor;
   User receptor;
   Playlist lista;
+  bool Notificacion;
   String photo_emisor=Globals.default_image;
-  CompartidaLista({this.emisor_nombre,this.lista,this.emisor,this.receptor,this. photo_emisor,this.id});
+  CompartidaLista({this.emisor_nombre,this.lista,this.emisor,this.receptor,this. photo_emisor,this.id,this.Notificacion});
 
 
   //[{"Id": , "Emisor": email, "Receptor": email}, {…}]
@@ -53,6 +54,7 @@ class CompartidaLista extends Notificacion{
       receptor: receptor,
       lista:list,
       id:json['ID'],
+      Notificacion: json['Notificacion'],
     );
   }
 

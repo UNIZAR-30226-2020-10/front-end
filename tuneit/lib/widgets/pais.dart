@@ -37,40 +37,56 @@ List< DropdownMenuItem<String>> Paises(){
       child: Text('Argentina'),
     ),
     DropdownMenuItem(
+      value: 'Chile',
+      child: Text('Chile'),
+    ),
+    DropdownMenuItem(
       value: 'Colombia',
       child: Text('Colombia'),
+    ),
+    DropdownMenuItem(
+      value: 'Costa Rica',
+      child: Text('Costa Rica'),
     ),
     DropdownMenuItem(
       value: 'Cuba',
       child: Text('Cuba'),
     ),
     DropdownMenuItem(
-      value: 'España',
-      child: Text('España'),
-    ),
-    DropdownMenuItem(
       value: 'Ecuador',
       child: Text('Ecuador'),
+    ),
+    DropdownMenuItem(
+      value: 'España',
+      child: Text('España'),
     ),
     DropdownMenuItem(
       value: 'Estados Unidos',
       child: Text('Estados Unidos'),
     ),
     DropdownMenuItem(
-      value: 'Italia',
-      child: Text('Italia'),
+      value: 'Honduras',
+      child: Text('Honduras'),
     ),
     DropdownMenuItem(
       value: 'Mexico',
       child: Text('Mexico'),
     ),
     DropdownMenuItem(
-      value: 'Portugal',
-      child: Text('Portugal'),
+      value: 'Panamá',
+      child: Text('Panamá'),
+    ),
+    DropdownMenuItem(
+      value: 'Paraguay',
+      child: Text('Paraguay'),
     ),
     DropdownMenuItem(
       value: 'Puerto Rico',
       child: Text('Puerto Rico'),
+    ),
+    DropdownMenuItem(
+      value: 'Uruguay',
+      child: Text('Uruguay'),
     ),
     DropdownMenuItem(
       value: 'Venezuela',

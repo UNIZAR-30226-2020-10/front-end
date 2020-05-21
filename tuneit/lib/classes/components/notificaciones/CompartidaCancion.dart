@@ -17,8 +17,9 @@ class CompartidaCancion extends Notificacion{
   User emisor;
   User receptor;
   Song cancion;
+  bool Notificacion;
   String photo_emisor=Globals.default_image;
-  CompartidaCancion({this.emisor_nombre,this.cancion,this.emisor,this.receptor,this. photo_emisor,this.id});
+  CompartidaCancion({this.emisor_nombre,this.cancion,this.emisor,this.receptor,this. photo_emisor,this.id,this.Notificacion});
 
 
   //[{"Id": , "Emisor": email, "Receptor": email}, {…}]
@@ -54,6 +55,7 @@ class CompartidaCancion extends Notificacion{
       receptor: receptor,
       cancion:song,
       id:json['ID'],
+      Notificacion: json['Notificacion'],
     );
   }
 

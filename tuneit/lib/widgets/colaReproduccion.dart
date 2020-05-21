@@ -16,16 +16,7 @@ Widget colaReproduccion(List<Song> canciones,int actual) {
             title: Text(canciones[index].name),
             subtitle: Text(canciones[index].devolverArtista()),
             trailing: PopupMenuButton<String>(
-            /*onSelected: choiceAction,
-              itemBuilder: (BuildContext context){
-              return optionMenuSong.map((String choice){
-              return PopupMenuItem<String>(
-              value: (choice + "--"+songs.songs[index].id.toString()+"--"+indetificadorLista),
-                child: Text(choice),
-              );
 
-            }).toList();*/
-            //},
           ),
 
           ),

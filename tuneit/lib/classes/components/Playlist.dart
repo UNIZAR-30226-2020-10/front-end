@@ -44,8 +44,7 @@ class Playlist {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
 
-  print(response.statusCode);
-  print(response.body);
+
 
 
   if (response.statusCode == 200) {
@@ -97,8 +96,7 @@ Future<void> nuevaLista(String nombre, String desc, String email) async {
       'Content-Type': 'application/json; charset=UTF-8',
     },
 
-    /*        ◦ “list”: nombre de la lista
-        ◦ “desc”: descripción*/
+
     body: jsonEncode(<String, String>{
       'lista': nombre,
       'desc': desc,
@@ -117,7 +115,6 @@ Future<void> nuevaLista(String nombre, String desc, String email) async {
 
 Future<void> borrarLista(String id) async {
 
-  print(id);
   final http.Response response = await http.post(
     'https://psoftware.herokuapp.com/delete_list',
     headers: <String, String>{
@@ -189,14 +186,12 @@ Future<bool>  compartirLista(String amigo, String id_lista, String receptor, Str
   };
 
   var uri = Uri.https(baseURL,'/share_list' ,queryParameters);
-  print(uri);
+
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
 
-  print(response.body);
-  print(response.statusCode);
   if (response.statusCode == 200 && response.body== 'Success' ) {
 
     String token= await getToken(receptor);
@@ -229,14 +224,11 @@ Future<bool>  dejarDeCompartirLista(String id_compartida) async {
   };
 
   var uri = Uri.https(baseURL,'/unshare_list' ,queryParameters);
-  print(uri);
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
 
-  print(response.body);
-  print(response.statusCode);
   if (response.statusCode == 200 && response.body== 'Success' ) {
 
     return true;
@@ -272,14 +264,13 @@ Future<bool>  agregarLista(String id_lista) async {
   };
 
   var uri = Uri.https(baseURL,'/add_list' ,queryParameters);
-  print(uri);
+
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
 
-  print(response.body);
-  print(response.statusCode);
+
   if (response.statusCode == 200 && response.body== 'Success' ) {
 
     return true;
@@ -313,8 +304,6 @@ Future<List<CompartidaLista>>  listasCompartidas() async {
   };
 
   var uri = Uri.https(baseURL,'/list_listas_compartidas_conmigo' ,queryParameters);
-  print(uri);
-
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
