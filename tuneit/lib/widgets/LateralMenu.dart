@@ -3,6 +3,7 @@ import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/artists.dart';
 import 'package:tuneit/pages/audio/equalizer.dart';
+import 'package:tuneit/pages/ayuda.dart';
 import "package:tuneit/pages/profile.dart";
 import 'package:tuneit/pages/register/login.dart';
 import 'package:tuneit/pages/social/friend.dart';
@@ -101,6 +102,17 @@ class LateralMenu extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => Profile(name:Globals.name,email: Globals.email,country: Globals.country,date: Globals.date,esUser: true,image: Globals.image,),
+                  ),
+                );
+              }
+          ),
+          new ListTile(
+              title: Text('AYUDA'),
+              onTap:() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Ayuda(),
                   ),
                 );
               }
