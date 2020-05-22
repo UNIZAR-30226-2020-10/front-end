@@ -61,7 +61,7 @@ class _ArtistsState extends State<Artists> {
             new SizedBox(height: 10),
 
             new Expanded(
-              child: completeList (listaArtistas, onTapArtist, [])
+              child: listaArtistas.isEmpty? informacion() : completeList (listaArtistas, onTapArtist, [])
             )
           ],
         ),
@@ -74,4 +74,16 @@ class _ArtistsState extends State<Artists> {
       builder: (context) => ArtistProfile(name: listaArtistas[index].name),
     ));
   }
+
+  Widget informacion () {
+    return Column(
+      children: <Widget>[
+        new SizedBox(height: 50),
+        new Expanded(
+          child: Text('Todavía no te has suscrito a ningún artista', style: Theme.of(context).textTheme.body1,),
+        )
+      ],
+    );
+  }
+
 }

@@ -5,6 +5,7 @@ import 'package:tuneit/classes/components/Category.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
@@ -201,23 +202,23 @@ class _MyHomePageState extends State<MyHomePage> {
     List<String> hola=choice.split("--");
     choice=hola[0];
     int id_song=int.parse(hola[1]);
+    String id_lista=hola[2];
     int indice=int.parse(hola[3]);
 
-    if(choice == optionMenuSong[0]){
+    if(choice == optionMenuSongCategory[0]){
       List<Playlist>listas=await fetchPlaylists(Globals.email);
       mostrarListas(context,listas,id_song,false);
     }
-    else if(choice ==optionMenuSong[1]){
-
+    else if(choice ==optionMenuSongCategory[1]){
+      List<User> amigos=await listarAmigos();
+      mostrarAmigos(context,amigos,id_song);
     }
-    else if(choice ==optionMenuSong[2]){
-
-    }
-    else if(choice == optionMenuSong[3]){
+    else if(choice == optionMenuSongCategory[2]){
       launchInBrowser(listaUltCanc[indice].devolverTitulo(),listaUltCanc[indice].devolverArtista());
     }
-    else if(choice == optionMenuSong[4]){
+    else if(choice == optionMenuSongCategory[3]){
       agregada(context,Globals.id_fav,listaUltCanc[indice].devolverTitulo(),false);
+      // Pedir la lista de favoritos actualizada
     }
     else{
       print ("Correct option was not found");

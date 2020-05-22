@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';
@@ -76,7 +77,7 @@ class _ShowCategoryState extends State<ShowCategory> {
               padding: const EdgeInsets.all(8),
               scrollDirection: Axis.vertical,
               onReorder: _onReorder,
-              children: listaParaAudiosCategorias(context, songs, name, false, choiceAction),
+              children: listaParaAudiosCategorias(context, songs, name, true, choiceAction),
               ),
               ),
               ]
@@ -143,7 +144,8 @@ class _ShowCategoryState extends State<ShowCategory> {
       mostrarListas(context,listas,id_song,false);
     }
     else if(choice ==optionMenuSongCategory[1]){
-
+      List<User> amigos=await listarAmigos();
+      mostrarAmigos(context,amigos,id_song);
     }
     else if(choice == optionMenuSongCategory[2]){
       launchInBrowser(songs[indice].devolverTitulo(),songs[indice].devolverArtista());
