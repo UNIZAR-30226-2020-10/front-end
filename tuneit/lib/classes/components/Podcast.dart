@@ -59,7 +59,7 @@ Future<List<Podcast>> fetchBestPodcasts() async {
     uri,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1'
+      'X-ListenAPI-Key': Globals.api_key_podc
     },
   );
 
@@ -88,7 +88,7 @@ Future<List<Podcast>> fetchPodcastByTitle(String title) async {
     uri,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1'
+      'X-ListenAPI-Key': Globals.api_key_podc
     },
   );
 
@@ -113,7 +113,7 @@ Future<List<Podcast>> fetchPodcastById(String ids) async {
   final http.Response response = await http.post(
     'https://' + baseURL_POD + '/api/v2/podcasts',
     headers: <String, String>{
-      'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1',
+      'X-ListenAPI-Key': Globals.api_key_podc,
     },
     body: map,
   );
