@@ -72,7 +72,7 @@ class CompartidaPodcast extends Notificacion{
     "No existe usuario"
  ***************/
 
-Future<List<CompartidaPodcast>> canciones_compartidas_conmigo() async {
+Future<List<CompartidaPodcast>> CompartidosPodcastConmigo() async {
 
   List<CompartidaPodcast> list;
   var queryParameters = {

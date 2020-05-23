@@ -106,30 +106,36 @@ Future<List<Podcast>> fetchPodcastByTitle(String title) async {
   }
 }
 
-Future<List<Podcast>> fetchPodcastById(String ids) async {
-  Map map = {
-    'ids': ids,
-  };
-  final http.Response response = await http.post(
-    'https://' + baseURL_POD + '/api/v2/podcasts',
+Future<Podcast> fetchPodcast(String podc) async {
+  var uri = Uri.https(baseURL_POD, '/api/v2/podcasts/${podc}');
+  final http.Response response = await http.get(
+    uri,
     headers: <String, String>{
-      'X-ListenAPI-Key': Globals.api_key_podc,
+      'Content-Type': 'application/json; charset=UTF-8',
+      'X-ListenAPI-Key': Globals.api_key_podc
     },
-    body: map,
   );
   print(response.body);
 
   if (response.statusCode == 200) {
 
     Map<String, dynamic> parsedJson = json.decode(response.body);
-    var list = parsedJson['podcasts'] as List;
-    List<Podcast> podcastList = list.map((i) => new Podcast.fromJson3(i)).toList();
 
-    return podcastList;
+    return Podcast.fromJson3(parsedJson);
 
   } else {
     throw Exception(response.statusCode.toString() + ': Failed to load podcasts 1');
   }
+}
+
+Future<List<Podcast>> fetchPodcastById(List<String> ids) async {
+  List<Podcast> list = List();
+  for (String i in ids) {
+    Podcast podc = await fetchPodcast(i);
+    list.add(podc);
+  }
+
+  return list;
 }
 
 
@@ -144,8 +150,8 @@ Future<List<Podcast>> fetchFavPodcasts() async {
     List<String> list = (json.decode(response.body) as List)
         .map((data) => data.toString())
         .toList();
-    String ids = list.join(',');
-    List<Podcast> podcastList = await fetchPodcastById(ids);
+
+    List<Podcast> podcastList = await fetchPodcastById(list);
 
     return podcastList;
   }
