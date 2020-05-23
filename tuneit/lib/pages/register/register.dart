@@ -200,7 +200,7 @@ class _RegisterState extends State<Register> {
         }
         else{
           return const Text(
-            'No hay imagen loco',
+            'No hay imagen',
             textAlign: TextAlign.center,
           );
 

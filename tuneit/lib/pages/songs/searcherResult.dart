@@ -3,6 +3,7 @@ import 'package:tuneit/classes/components/Artist.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/songs/showList.dart';
@@ -95,7 +96,7 @@ class _SearcherResultState extends State<SearcherResult> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: songs.length,
             itemBuilder: (BuildContext context, int index) {
-              return listaParaAudios(context, songs, "NoLista", true, choiceAction) [index];
+              return listaParaAudiosCategorias(context, songs, "NoLista", true, choiceAction) [index];
             }
         ),
       ],
@@ -142,23 +143,23 @@ class _SearcherResultState extends State<SearcherResult> {
     List<String> hola=choice.split("--");
     choice=hola[0];
     int id_song=int.parse(hola[1]);
+    String id_lista=hola[2];
     int indice=int.parse(hola[3]);
 
-    if(choice == optionMenuSong[0]){
+    if(choice == optionMenuSongCategory[0]){
       List<Playlist>listas=await fetchPlaylists(Globals.email);
       mostrarListas(context,listas,id_song,false);
     }
-    else if(choice ==optionMenuSong[1]){
-
+    else if(choice ==optionMenuSongCategory[1]){
+      List<User> amigos=await listarAmigos();
+      mostrarAmigos(context,amigos,id_song);
     }
-    else if(choice ==optionMenuSong[2]){
-
-    }
-    else if(choice == optionMenuSong[3]){
+    else if(choice == optionMenuSongCategory[2]){
       launchInBrowser(widget.songs[indice].devolverTitulo(),widget.songs[indice].devolverArtista());
     }
-    else if(choice == optionMenuSong[4]){
+    else if(choice == optionMenuSongCategory[3]){
       agregada(context,Globals.id_fav,widget.songs[indice].devolverTitulo(),false);
+      // Pedir la lista de favoritos actualizada
     }
     else{
       print ("Correct option was not found");
