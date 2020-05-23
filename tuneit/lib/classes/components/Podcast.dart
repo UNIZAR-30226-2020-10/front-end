@@ -41,7 +41,7 @@ class Podcast {
   }
 
   factory Podcast.fromJson3(Map<String, dynamic> parsedJson) {
-
+      print(parsedJson['title']);
     return Podcast(
       id: parsedJson['id'],
       name: parsedJson['title'],
@@ -260,6 +260,30 @@ Future<bool>  compartirPodcast(String podcast, String receptor) async {
   } else {
 
     print('Error al compartir podcast');
+    return false;
+  }
+}
+
+//dejarDeCompartirPodcast(listas[index].podcast);
+Future<bool>  dejarDeCompartirPodcast(String id_compartida) async {
+
+  var queryParameters = {
+    'podcast':id_compartida
+  };
+
+  var uri = Uri.https(baseURL,'/unshare_podcast' ,queryParameters);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+
+  if (response.statusCode == 200 && response.body== 'Success' ) {
+
+    return true;
+
+  } else {
+
+    print('Error al dejar de compartir la lista de reproducción');
     return false;
   }
 }

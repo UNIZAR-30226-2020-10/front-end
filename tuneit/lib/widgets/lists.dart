@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaPodcast.dart';
@@ -11,6 +12,7 @@ import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/audio/audioPlayer.dart';
+import 'package:tuneit/pages/podcast/showPodcast.dart';
 import 'package:tuneit/pages/songs/showList.dart';
 import 'package:tuneit/widgets/errors.dart';
 
@@ -526,17 +528,12 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> list
 
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        ShowList(
-                            indetificadorLista: listas[index].podcast,
-                            list_title: listas[index].mi_podcast.name,
-                            esAmigo:false),
-
+                    builder: (context) => ShowPodcast(podcId: listas[index].podcast, podcName: listas[index].mi_podcast.name),
                   ));
                 },
 
                 leading: GFAvatar(
-                  backgroundImage: NetworkImage(listas[index].emisor.photo),
+                  backgroundImage: NetworkImage(listas[index].mi_podcast.image),
                   backgroundColor: Colors.transparent,
                   shape: GFAvatarShape.standard,
 
@@ -551,23 +548,17 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> list
                       IconButton(
                         icon: Icon(Icons.check_circle),
                         onPressed: () async {
-                          bool resultado ;
-                          //Completar
+                          bool favorito = await checkFav(listas[index].podcast);
+                          if (!favorito) {
+                            isFav(listas[index].podcast,listas[index].mi_podcast.name);
+                          }
+                          operacionExito(context);
 
-                          if (resultado) {
-                            operacionExito(context);
-                            //COmpletar
-                          }
-                          else {
-                            mostrarError(context,
-                                'No se ha podido agregar la recomendación');
-                          }
                         },
                       ),
                       IconButton(
                         onPressed: () async {
-                          bool resultado = await dejarDeCompartirLista(
-                              listas[index].id.toString());
+                          bool resultado = await dejarDeCompartirPodcast(listas[index].podcast);
                           if (resultado) {
                             operacionExitoRecomendacion(context);
                           }

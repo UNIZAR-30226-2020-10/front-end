@@ -23,8 +23,6 @@ class CompartidaLista extends Notificacion{
   CompartidaLista({this.emisor_nombre,this.lista,this.emisor,this.receptor,this. photo_emisor,this.id,this.Notificacion});
 
 
-  //[{"Id": , "Emisor": email, "Receptor": email}, {…}]
-
   String devolverEmisor(){
     return emisor_nombre;
 

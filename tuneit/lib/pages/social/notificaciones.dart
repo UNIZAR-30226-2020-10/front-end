@@ -70,10 +70,11 @@ class _NotificacionesState extends State<Notificaciones> {
    }
 
    Future <void> obtenerDatos() async{
+     List<CompartidaPodcast> ll= await CompartidosPodcastConmigo();
      List<Peticion> prueba = await buscarPeticiones();
      List<CompartidaCancion> canciones=await canciones_compartidas_conmigo();
      List<CompartidaLista>  listas=await listasCompartidas();
-     List<CompartidaPodcast> ll= await CompartidosPodcastConmigo();
+
      setState(() {
        peticiones=prueba;
        songs=canciones;
@@ -147,7 +148,7 @@ class _NotificacionesState extends State<Notificaciones> {
 
                 SizedBox(height:  size_height*0.01,),
 
-                listaPodcastCompartidos(context,podcasts),
+               listaPodcastCompartidos(context,podcasts),
                 SizedBox(height:  size_height*0.01,),
               ]
                  //
