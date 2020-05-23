@@ -126,34 +126,32 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
                       SizedBox(height: size_height*0.05,),
 
-                     Row(
+                      ListTile(
+                          title:    Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Confirmar cambios', style: Theme.of(context).textTheme.subtitle,),
+                          ),
+                          trailing:        RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(color: Colors.white)),
+                            onPressed: (
 
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Confirmar cambios', style: Theme.of(context).textTheme.subtitle,),
-                        ),
-                        SizedBox(width: size_width*0.1,),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.white)),
-                          onPressed: (
+                                ) {
+                              confirmarCambios(context,password.text,nombre.text,pais,tmpFile,base64Image);
 
-                              ) {
-                            confirmarCambios(context,password.text,nombre.text,pais,tmpFile,base64Image);
+                            },
+                            color: Colors.deepPurple,
+                            textColor: Colors.white,
+                            child: Text("Confirmar".toUpperCase(),
+                                style: TextStyle(fontSize: 14)),
+                          ) ,
 
-                          },
-                          color: Colors.deepPurple,
-                          textColor: Colors.white,
-                          child: Text("Confirmar".toUpperCase(),
-                              style: TextStyle(fontSize: 14)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: size_height*0.05,),
+                      ),
 
-                    Container(
+                       SizedBox(height: size_height*0.05,),
+
+                      Container(
                       width: size_width*0.30,
                       height: size_height*0.2,
                       decoration: BoxDecoration(
@@ -212,25 +210,26 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
 
 
-  void confirmarCambios(BuildContext context, String password, String nombre, String pais,File tmpFile , String base64Image){
-    startUploadPhoto(tmpFile , base64Image);
-   /* if(nombre!="" && (nombre.length < 3 || nombre.length > 50)){
-      mostrarError(context,'Tu nuevo nombre de usuario debe contener entre 3 y 50 carácteres');
+  void confirmarCambios(BuildContext context, String password, String nombre, String pais,File tmpFile , String base64Image) {
+    if (nombre != "" && (nombre.length < 3 || nombre.length > 50)) {
+      mostrarError(context,
+          'Tu nuevo nombre de usuario debe contener entre 3 y 50 carácteres');
     }
-    else if (password!="" && (password.length < 7 && password.length > 0)){
-      mostrarError(context,'Tu constraseña debe ser de más de 7 carácteres');
+    else if (password != "" && (password.length < 7 && password.length > 0)) {
+      mostrarError(context, 'Tu constraseña debe ser de más de 7 carácteres');
     }
-    else if(password!="" && !password.contains(new RegExp(r'^[a-zA-Z]*[0-9][0-9a-zA-Z]*$'))){
-      mostrarError(context,'Tu constraseña debe tener como mínimo 1 número y '
+    else if (password != "" &&
+        !password.contains(new RegExp(r'^[a-zA-Z]*[0-9][0-9a-zA-Z]*$'))) {
+      mostrarError(context, 'Tu constraseña debe tener como mínimo 1 número y '
           'solo se aceptan minúsculas, mayúsculas y números ');
     }
     else {
-      formularioContrasegna(context,password,nombre,pais);
-      if(tmpFile!=null && base64Image!=null){
+      formularioContrasegna(context, password, nombre, pais,tmpFile ,base64Image);
+      /*if(tmpFile!=null && base64Image!=null){
         startUploadPhoto(tmpFile , base64Image);
-      }
+      }*/
 
-    }*/
+    }
   }
 
   Widget showImage(){
@@ -344,7 +343,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     //startUploadPhoto(tmpFile, base64Image);
   }
 
-  void formularioContrasegna (BuildContext context,String passprueba, String nombre,String pais) {
+  void formularioContrasegna (BuildContext context,String passprueba, String nombre,String pais,File tmpFile , String base64Image) {
     // flutter defined functio
     final TextEditingController confirmar_password = TextEditingController();
 
@@ -382,6 +381,9 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                   Navigator.pop(context);
                   if(comprarContreynas(confirmar_password.text)){
                     settingsUser(passprueba, nombre, pais);
+                    if(tmpFile!=null && base64Image!=null){
+                      startUploadPhoto(tmpFile , base64Image);
+                      }
                     operacionExito(context);
 
                   }
