@@ -13,4 +13,5 @@ class Globals {
   static String mi_token="";
   static String idFavorite="";
   static int mensajes_nuevo=0;
+  static String api_key_podc='fa5d6d0b3b254e818d7308351facdef0';
 }

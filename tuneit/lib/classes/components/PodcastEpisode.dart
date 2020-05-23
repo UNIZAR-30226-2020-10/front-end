@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/values/Constants.dart';
+import 'package:tuneit/classes/values/Globals.dart';
 
 
 class PodcastEpisode extends Audio {
@@ -70,7 +71,7 @@ Future<List<PodcastEpisode>> fetchEpisodes(String podc) async {
     uri,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1'
+      'X-ListenAPI-Key': Globals.api_key_podc
     },
   );
 
@@ -102,7 +103,7 @@ Future<List<PodcastEpisode>> fetchEpisodeByTitle(String title) async {
     uri,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'X-ListenAPI-Key': 'fb46ce2b5ca54885969d1445995238e1'
+      'X-ListenAPI-Key': Globals.api_key_podc
     },
   );
 
