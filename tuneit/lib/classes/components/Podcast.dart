@@ -72,7 +72,8 @@ Future<List<Podcast>> fetchBestPodcasts() async {
     return podcastsList;
 
   } else {
-    throw Exception('Failed to load playlists');
+    print('Failed to load podcasts lists');
+    return [];
   }
 }
 
@@ -100,7 +101,8 @@ Future<List<Podcast>> fetchPodcastByTitle(String title) async {
     return podcastList;
 
   } else {
-    throw Exception(response.statusCode.toString() + ': Failed to load podcasts');
+    print(response.statusCode.toString() + ': Failed to load podcasts 2');
+    return [];
   }
 }
 
@@ -125,7 +127,8 @@ Future<List<Podcast>> fetchPodcastById(String ids) async {
     return podcastList;
 
   } else {
-    throw Exception(response.statusCode.toString() + ': Failed to load podcasts');
+    print(response.statusCode.toString() + ': Failed to load podcasts 1');
+    return [];
   }
 }
 
@@ -147,7 +150,8 @@ Future<List<Podcast>> fetchFavPodcasts() async {
     return podcastList;
   }
   else {
-    throw Exception(response.body + ': Failed to check favourite podcast');
+    print(response.body + ': Failed to check favourite podcast');
+    return [];
   }
 }
 
@@ -166,7 +170,7 @@ Future<void> isFav(String id, String name) async {
   );
 
   if (response.body != 'Success') {
-    throw Exception(response.body + ': Failed to set favourite podcast');
+    print(response.body + ': Failed to set favourite podcast');
   }
 }
 
@@ -183,7 +187,7 @@ Future<void> isNotFav(String id) async {
   );
 
   if (response.body != 'Success') {
-    throw Exception(response.body + ': Failed to set not favourite podcast');
+    print(response.body + ': Failed to set not favourite podcast');
   }
 }
 
@@ -202,6 +206,7 @@ Future<bool> checkFav(String id) async {
     return false;
   }
   else {
-    throw Exception(response.body + ': Failed to check favourite podcast');
+    print(response.body + ': Failed to check favourite podcast');
+    return false;
   }
 }

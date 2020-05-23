@@ -23,6 +23,7 @@ class Category {
 
 
 Future<List<Category>> listCategories () async{
+  print("listando categorias");
   List<Category> list = List();
 
   var uri = Uri.https(baseURL,'/list_categories' , null);

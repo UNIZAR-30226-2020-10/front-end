@@ -22,8 +22,6 @@ class CompartidaCancion extends Notificacion{
   CompartidaCancion({this.emisor_nombre,this.cancion,this.emisor,this.receptor,this. photo_emisor,this.id,this.Notificacion});
 
 
-  //[{"Id": , "Emisor": email, "Receptor": email}, {…}]
-
   String devolverEmisor(){
     return emisor_nombre;
 

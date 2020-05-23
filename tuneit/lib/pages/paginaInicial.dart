@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Artist.dart';
 import 'package:tuneit/classes/components/Audio.dart';
@@ -21,6 +23,7 @@ import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/optionSongs.dart';
 import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';
+import 'package:http/http.dart' as http;
 
 import '../main.dart';
 import '../widgets/LateralMenu.dart';
@@ -42,9 +45,12 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Artist> listaArtistas = List();
 
   Future<bool> obtenerPodcasts() async{
+
     List<Podcast> listaPodc = await fetchBestPodcasts();
 
-      listaPodcast = listaPodc;
+      setState(() {
+        listaPodcast = listaPodc;
+      });
 
      return true;
 
@@ -52,19 +58,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<bool> obtenerGeneros() async{
     List<Category> listaCat = await listCategories ();
-    listaCateg = listaCat;
+
+    setState(() {
+      listaCateg = listaCat;
+    });
+
     return true;
   }
 
   Future<bool> obtenerArtistas() async{
     List<Artist> listaArt = await listArtists ();
-    listaArtistas = listaArt;
+
+    setState(() {
+      listaArtistas = listaArt;
+    });
+
     return true;
   }
 
   Future<bool> obtenerCanciones() async{
     List<Song> listaUC = await lastAddedSongs();
-    listaUltCanc = listaUC.sublist(listaUC.length - 11, listaUC.length - 1).reversed.toList();
+    setState(() {
+      listaUltCanc = listaUC.sublist(listaUC.length - 11, listaUC.length - 1).reversed.toList();
+    });
+
     return true;
 
 
@@ -76,14 +93,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Globals.mensajes_nuevo=dato;
     });
+
+
+    final http.Response response = await http.get('https://' +baseURL, headers: {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader:'Basic YjMwS1pmVWk3K05aRWVsL0hCQnhwdz09OjNyREd6eno0NEMzb3dvQXdWRTZWZ1E9PQ==',
+
+    });
+
+    if (response.statusCode == 200 ) {
+
+
+
+    } else {
+
+      print('Error con lo de la seguridad');
+
+    }
+
   }
 
   void initState() {
     super.initState();
 
-    //FUNCION PARA REACCIONAR A LAS NOTIFICACIONES
     reaccionarNotificacion();
     recuento();
+
+    obtenerPodcasts();
+    obtenerGeneros();
+    obtenerArtistas();
+    obtenerCanciones();
+
 
   }
 
@@ -107,18 +147,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 height: 200,
-                child: FutureBuilder(
-                  future:obtenerGeneros()  ,
-                    builder: (BuildContext context, AsyncSnapshot snapshot){
-                      if(snapshot.hasData) {
-                        return completeListHorizontal(listaCateg, onTapCategory, []);
-                      }
-                      else{
-                        return TuneITProgressIndicator();
-                      }
+                child: completeListHorizontal(listaCateg, onTapCategory, []),
 
-                    }
-                ),//
               ),
               Align(
                 alignment: Alignment.centerLeft,
@@ -126,54 +156,26 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 height: 200,
-                child: FutureBuilder(
-                    future:obtenerPodcasts() ,
-                    builder: (BuildContext context, AsyncSnapshot snapshot){
-                      if(snapshot.hasData) {
-                        return completeListHorizontal(listaPodcast, onTapPodcasts, []);
-                      }
-                      else{
-                        return TuneITProgressIndicator();
-                      }
-
-                    }
+                child: completeListHorizontal(listaPodcast, onTapPodcasts, []),
                 ),
 
                 //completeListHorizontal(listaPodcast, onTapPodcasts, []),
-              ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text('   Artistas destacados', style: Theme.of(context).textTheme.subtitle,),
               ),
               Container(
                 height: 200,
-                child:FutureBuilder(
-                    future:obtenerArtistas() ,
-                    builder: (BuildContext context, AsyncSnapshot snapshot){
-                      if(snapshot.hasData) {
-                        return completeListHorizontal(listaArtistas, onTapArtist, []);
-                      }
-                      else{
-                        return TuneITProgressIndicator();
-                      }
+                child: completeListHorizontal(listaArtistas, onTapArtist, []),
 
-                    }
                 ),
 
-
-
-                //completeListHorizontal(listaArtistas, onTapArtist, []),
-              ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text('   Últimas canciones', style: Theme.of(context).textTheme.subtitle,),
               ),
 
-              FutureBuilder(
-                  future:obtenerCanciones() ,
-                  builder: (BuildContext context, AsyncSnapshot snapshot){
-                    if(snapshot.hasData) {
-                      return               ListView.builder(
+              ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
@@ -181,14 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           itemBuilder: (BuildContext context, int index) {
                             return listaParaAudiosCategorias(context, listaUltCanc, "NoLista",true, choiceAction,) [index];
                           }
-                      );
-                    }
-                    else{
-                      return TuneITProgressIndicator();
-                    }
-
-                  }
-              ),
+                      ),
 
             ],
           ),

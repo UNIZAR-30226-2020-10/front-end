@@ -124,29 +124,8 @@ class _PlayListsState extends State<PlayLists> {
             new SizedBox(height: 10),
 
             new Expanded(
-              child: FutureBuilder(
-                future: obtenerDatos(),
-                builder: (BuildContext context, AsyncSnapshot snapshot){
-                  if(snapshot.hasData) {
-                    if (musNpod) {
-                      return completeList (listaPlaylists, onTapPlaylists, []);
-                    }
-                    else {
-                      if (listaPodcast.isEmpty) {
-                        return informacion();
-                      }
-                      else {
-                        return completeList (listaPodcast, onTapPodcasts, []);
-                      }
-                    }
-                  } else {
-
-                    return TuneITProgressIndicator();
-                  }
-
-                }
-              ),
-            )
+              child:musNpod?completeList (listaPlaylists, onTapPlaylists, []):(listaPodcast.isEmpty?informacion():completeList (listaPodcast, onTapPodcasts, [])),
+            ),
           ],
         ),
           bottomNavigationBar: bottomExpandableAudio(),
