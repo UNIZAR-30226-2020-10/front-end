@@ -43,8 +43,6 @@ class CompartidaCancion extends Notificacion{
   }
 
   factory CompartidaCancion.fromJson(Map<String, dynamic> json) {
-    List<dynamic> prueba1=json['Emisor'];
-    Map emisormap=prueba1[0];
     User emisor=new User.fromJson(json['Emisor'][0]);
     User receptor=new User.fromJson(json['Receptor'][0]);
     Song song=new Song.fromJson(json['Cancion']);
@@ -82,11 +80,6 @@ Future<List<CompartidaCancion>> canciones_compartidas_conmigo() async {
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
-
-  print("00000000000");
-  print(response.body);
-  print("00000000000");
-  print(response.statusCode);
 
 
   if (response.statusCode == 200) {
