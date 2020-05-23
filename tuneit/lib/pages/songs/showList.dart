@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Audio.dart';
+import 'package:tuneit/classes/components/Category.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/User.dart';
@@ -25,6 +26,7 @@ class ShowList extends StatefulWidget {
 
 class _State extends State<ShowList> {
   List<Audio> audios =[];
+  List<Audio> todos_audios =[];
   String list_title;
   bool esAmigo;
   String indetificadorLista;
@@ -33,9 +35,10 @@ class _State extends State<ShowList> {
 
   Future<bool> ObtenerDatos() async{
     SongLista canciones =await fetchSonglists(indetificadorLista);
-   // setState(() {
+   setState(() {
       audios=canciones.songs;
-   // });
+      todos_audios = canciones.songs;
+   });
 
     return true;
 
@@ -85,12 +88,7 @@ class _State extends State<ShowList> {
         ],
       ),
 
-      body: FutureBuilder(
-        future: ObtenerDatos(),
-        builder: (BuildContext context, AsyncSnapshot snapshot){
-          if(snapshot.hasData) {
-
-            return Column(
+      body: Column(
                         children: <Widget>[
                         Expanded(
                 child: ReorderableListView(
@@ -101,13 +99,6 @@ class _State extends State<ShowList> {
                 ),
                 ),
                 ]
-                );
-                      } else {
-
-            return TuneITProgressIndicator();
-          }
-
-        }
       ),
      bottomNavigationBar: bottomExpandableAudio(),
   );
@@ -153,12 +144,77 @@ class _State extends State<ShowList> {
 
     else if(opciones[0]==optionPlayList[3]){
 
+      mostrarCategoriasLista ();
+    }
+
+    else if(opciones[0]==optionPlayList[4]){
+
       List<User> amigos=await listarAmigos();
       mostrarAmigosLista ( context, amigos,  lista);
     }
     else{
       print("Do nothing");
     }
+
+  }
+
+  void mostrarCategoriasLista ()async{
+    List<Category> categorias = await listCategories();
+    categorias.insert(0, Category(name: 'Todos los generos'));
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: AlertDialog(
+              content:Container(
+
+                width: double.maxFinite,
+                child:
+                //itemCount: snapshot.data.songs.length,
+                ListView.builder(
+
+                  padding: const EdgeInsets.all(8),
+                  scrollDirection: Axis.vertical,
+                  itemCount: categorias.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                      child: new ListTile(
+                        onTap:() async {
+                          if(categorias[index].name != 'Todos los generos') {
+                            SongLista canciones =await fetchSonglists(indetificadorLista);
+                            audios=canciones.songs;
+                            setState(() {
+                              audios.removeWhere((song) => !song.devolverGenero().contains(categorias[index].name));
+                            });
+                          }
+                          else {
+                            SongLista canciones =await fetchSonglists(indetificadorLista);
+                            setState(() {
+                              audios=canciones.songs;
+                            });
+                          }
+                          Navigator.pop(context);
+                        },
+                        title: Text(categorias[index].name),
+                      ),
+                    );
+
+                  },
+                ),
+
+              ),
+            ),
+          );
+        }
+    );
 
   }
 

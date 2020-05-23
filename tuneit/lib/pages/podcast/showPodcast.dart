@@ -46,7 +46,7 @@ class _ShowPodcastState extends State<ShowPodcast> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('PODCAST: ' + podcName),
+        title: Text('PODCASTS'),
         centerTitle: true,
         automaticallyImplyLeading: false,
         leading: GestureDetector(
