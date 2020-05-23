@@ -239,11 +239,16 @@ Future<bool>  compartirPodcast(String podcast, String receptor) async {
     'receptor':receptor
   };
 
-  var uri = Uri.https(baseURL,'/share_song' ,queryParameters);
+  var uri = Uri.https(baseURL,'/share_podcast' ,queryParameters);
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
+  print('podcast '+ podcast);
+  print(receptor);
+  print(Globals.email);
+  print(response.body);
+  print(response.statusCode);
 
   if (response.statusCode == 200 && response.body== 'Success' ) {
 
@@ -254,7 +259,7 @@ Future<bool>  compartirPodcast(String podcast, String receptor) async {
 
   } else {
 
-    print('Error al compartir la canción');
+    print('Error al compartir podcast');
     return false;
   }
 }

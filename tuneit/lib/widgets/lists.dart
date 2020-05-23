@@ -4,6 +4,7 @@ import 'package:tuneit/classes/components/Audio.dart';
 import 'package:tuneit/classes/components/Playlist.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
+import 'package:tuneit/classes/components/notificaciones/CompartidaPodcast.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
@@ -512,7 +513,7 @@ Widget listaParaListasCompartidos(BuildContext context,List<CompartidaLista> lis
 
 }
 
-Widget listaPodcastCompartidos(BuildContext context,List<CompartidaLista> listas) {
+Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> listas) {
   if (listas.length > 0) {
     return Column(
       children:List.generate(
@@ -527,8 +528,8 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaLista> listas
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
                         ShowList(
-                            indetificadorLista: listas[index].lista.id.toString(),
-                            list_title: listas[index].lista.name,
+                            indetificadorLista: listas[index].podcast,
+                            list_title: listas[index].mi_podcast.name,
                             esAmigo:false),
 
                   ));
@@ -540,7 +541,7 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaLista> listas
                   shape: GFAvatarShape.standard,
 
                 ),
-                title: Text(listas[index].lista.name),
+                title: Text(listas[index].mi_podcast.name),
                 subtitle: Text("Recomendada por " + listas[index].emisor.name),
                 trailing: Container(
                   height: 100,
@@ -550,12 +551,12 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaLista> listas
                       IconButton(
                         icon: Icon(Icons.check_circle),
                         onPressed: () async {
-                          bool resultado = await agregarLista(
-                              listas[index].lista.id.toString());
+                          bool resultado ;
+                          //Completar
+
                           if (resultado) {
                             operacionExito(context);
-                            resultado = await dejarDeCompartirLista(
-                                listas[index].id.toString());
+                            //COmpletar
                           }
                           else {
                             mostrarError(context,

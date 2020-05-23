@@ -17,11 +17,17 @@ class CompartidaPodcast extends Notificacion{
   String emisor_nombre;
   User emisor;
   User receptor;
-  Podcast podcast;
+  String podcast;
   bool Notificacion;
   String photo_emisor=Globals.default_image;
+  Podcast mi_podcast;
   CompartidaPodcast({this.emisor_nombre,this.podcast,this.emisor,this.receptor,this. photo_emisor,this.id,this.Notificacion});
 
+  void obtenerPodcast()async{
+    Podcast podc = await fetchPodcast(podcast);
+    mi_podcast=podc;
+
+  }
 
   String devolverEmisor(){
     return emisor_nombre;
@@ -43,11 +49,12 @@ class CompartidaPodcast extends Notificacion{
     return photo_emisor;
   }
 
-  factory CompartidaPodcast.fromJson(Map<String, dynamic> json) {
+  factory CompartidaPodcast.fromJson(Map<String, dynamic> json){
 
     User emisor=new User.fromJson(json['Emisor'][0]);
     User receptor=new User.fromJson(json['Receptor'][0]);
-    Podcast pod=new Podcast.fromJson(json['Podcast']);
+    String pod =json['Podcast'];
+    print( json['Notificacion']);
     return CompartidaPodcast(
       emisor:emisor,
       receptor: receptor,
@@ -58,7 +65,6 @@ class CompartidaPodcast extends Notificacion{
   }
 
 }
-
 
 /***listar podcast compartidos
     list_podcast_compartidos
@@ -79,7 +85,7 @@ Future<List<CompartidaPodcast>> CompartidosPodcastConmigo() async {
     'email' : Globals.email
   };
 
-  var uri = Uri.https(baseURL,'/list_canciones_compartidas_conmigo' ,queryParameters);
+  var uri = Uri.https(baseURL,'/list_podcast_compartidos' ,queryParameters);
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
@@ -95,6 +101,10 @@ Future<List<CompartidaPodcast>> CompartidosPodcastConmigo() async {
     list = (json.decode(response.body) as List)
         .map((data) => new CompartidaPodcast.fromJson(data))
         .toList();
+
+    for(int i=0;i<list.length;i++){
+      list[i].obtenerPodcast();
+    }
 
     return list;
 
