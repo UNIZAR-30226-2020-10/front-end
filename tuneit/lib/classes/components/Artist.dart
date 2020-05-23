@@ -50,6 +50,7 @@ Future<List<Artist>> listArtists () async{
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
   });
 
   if (response.statusCode == 200) {
@@ -72,6 +73,7 @@ Future<Artist> artistByName (String name) async{
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
   });
 
   if (response.statusCode == 200) {
@@ -104,6 +106,7 @@ Future<List<Artist>> fetchMyArtists (String email) async{
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
   });
 
   if (response.statusCode == 200) {
@@ -124,6 +127,7 @@ Future<void> isFav(String id) async {
     'https://' + baseURL + '/suscription',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
     },
     body: jsonEncode(<String, String>{
       'artista' : id,
@@ -141,6 +145,7 @@ Future<void> isNotFav(String id) async {
     'https://' + baseURL + '/unsuscribe',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
     },
     body: jsonEncode(<String, String>{
       'artista' : id,
@@ -158,7 +163,10 @@ Future<bool> checkFav(String id) async {
     'email' : Globals.email,
   };
   var uri = Uri.http(baseURL, '/list_suscriptions', queryParameters);
-  final http.Response response = await http.get(uri);
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
+  });
 
   if (response.body != 'Error') {
     List<String> list = (json.decode(response.body) as List)

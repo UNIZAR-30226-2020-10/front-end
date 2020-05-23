@@ -14,4 +14,5 @@ class Globals {
   static String idFavorite="";
   static int mensajes_nuevo=0;
   static String api_key_podc='fa5d6d0b3b254e818d7308351facdef0';
+  static String seguridad='Basic YjMwS1pmVWk3K05aRWVsL0hCQnhwdz09OjNyREd6eno0NEMzb3dvQXdWRTZWZ1E9PQ==';
 }

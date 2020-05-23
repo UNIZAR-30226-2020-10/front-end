@@ -53,6 +53,7 @@ Future<Album> searchAlbum(String id) async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
   });
 
   if (response.statusCode == 200) {

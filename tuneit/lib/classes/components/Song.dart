@@ -120,6 +120,7 @@ Future<void> eliminarCancionDeLista(String id_lista, String id_song) async {
     'https://psoftware.herokuapp.com/delete_from_list',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
     },
     body: jsonEncode(<String, String>{
       'cancion': id_song,
@@ -144,6 +145,7 @@ void agregarCancion( String  id_lista, String id_song) async{
     'https://psoftware.herokuapp.com/add_to_list',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
     },
     body: jsonEncode(<String, String>{
       'cancion': id_song,
@@ -166,6 +168,7 @@ Future< SongLista> fetchSonglists(String id) async {
   var uri = Uri.https(baseURL,'/list_lists_data' ,queryParameters);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
   if (response.statusCode == 200) {
@@ -188,6 +191,7 @@ Future<List<Song>> buscar_canciones(String contenido_busqueda) async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
 
@@ -216,6 +220,7 @@ Future<bool> reposicionarCancion(String id_lista, String before,String after) as
     'https://psoftware.herokuapp.com/reorder',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
     },
     body: jsonEncode(<String, String>{
       'lista': id_lista,
@@ -244,6 +249,7 @@ Future<List<Song>> lastAddedSongs() async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
 
@@ -267,6 +273,7 @@ Future<List<Song>> songsByCategory(List<String> categories) async {
     'https://' + baseURL + '/filter_category',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
     },
     body: jsonEncode(<String, dynamic>{
       'categorias' : categories
@@ -309,8 +316,9 @@ Future<bool>  compartirCancion(String amigo, String id_song, String receptor, St
 
   var uri = Uri.https(baseURL,'/share_song' ,queryParameters);
 
-  final http.Response response = await http.get(uri, headers: {
+  final http.Response response = await http.get(uri,headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
   });
 
       if (response.statusCode == 200 && response.body== 'Success' ) {

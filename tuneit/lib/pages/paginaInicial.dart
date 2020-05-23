@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final http.Response response = await http.get('https://' +baseURL, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
-      HttpHeaders.authorizationHeader:'Basic YjMwS1pmVWk3K05aRWVsL0hCQnhwdz09OjNyREd6eno0NEMzb3dvQXdWRTZWZ1E9PQ==',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
 
     });
 

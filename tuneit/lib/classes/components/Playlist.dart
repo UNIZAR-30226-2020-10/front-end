@@ -227,6 +227,7 @@ Future<bool>  dejarDeCompartirLista(String id_compartida) async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
   if (response.statusCode == 200 && response.body== 'Success' ) {
@@ -268,6 +269,7 @@ Future<bool>  agregarLista(String id_lista) async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
 
@@ -306,6 +308,7 @@ Future<List<CompartidaLista>>  listasCompartidas() async {
   var uri = Uri.https(baseURL,'/list_listas_compartidas_conmigo' ,queryParameters);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
   list = (json.decode(response.body) as List)
       .map((data) => new CompartidaLista.fromJson(data))

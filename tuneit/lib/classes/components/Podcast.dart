@@ -144,7 +144,10 @@ Future<List<Podcast>> fetchFavPodcasts() async {
     'email' : Globals.email,
   };
   var uri = Uri.http(baseURL, '/list_podcast', queryParameters);
-  final http.Response response = await http.get(uri);
+  final http.Response response = await http.get(uri,headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
+  });
 
   if (response.statusCode == 200) {
     List<String> list = (json.decode(response.body) as List)
@@ -166,6 +169,7 @@ Future<void> isFav(String id, String name) async {
     'https://' + baseURL + '/podcast_fav',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
     },
     body: jsonEncode(<String, String>{
       'nombre' : name,
@@ -184,6 +188,7 @@ Future<void> isNotFav(String id) async {
     'https://' + baseURL + '/delete_podcast_fav',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
     },
     body: jsonEncode(<String, String>{
       'podcast' : id,
@@ -202,7 +207,10 @@ Future<bool> checkFav(String id) async {
     'email' : Globals.email,
   };
   var uri = Uri.http(baseURL, '/podcast_is_fav', queryParameters);
-  final http.Response response = await http.get(uri);
+  final http.Response response = await http.get(uri,headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
+  });
 
   if (response.body == 'True') {
     return true;
@@ -243,6 +251,7 @@ Future<bool>  compartirPodcast(String podcast, String receptor) async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
   });
   print('podcast '+ podcast);
   print(receptor);
@@ -276,6 +285,7 @@ Future<bool>  dejarDeCompartirPodcast(String id_compartida) async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
   print(response.statusCode);
   print(response.body);

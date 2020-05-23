@@ -62,6 +62,7 @@ Future<List<User>> searchUsers(String nombre) async {
   var uri = Uri.http(baseURL, '/search_users', queryParameters);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
   });
   if(response.statusCode==200) {
     list = (json.decode(response.body) as List)
@@ -88,6 +89,7 @@ Future<bool> enviarSolicitud(
     'https://' + baseURL + '/solicitud_amistad',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
     },
     body: jsonEncode(<String, String>{
       'emisor': emisor,
@@ -113,6 +115,7 @@ Future<bool> setToken(
     'https://' + baseURL + '/set_token',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
     },
     body: jsonEncode(<String, String>{
       'email':email,
@@ -134,6 +137,7 @@ Future<String> getToken(
     'https://' + baseURL + '/get_token',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
     },
     body: jsonEncode(<String, String>{
       'email':email,
@@ -166,6 +170,7 @@ Future<bool> registerUser(
     'https://' + baseURL + '/register',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
     },
     body: jsonEncode(<String, String>{
       'nombre': name,
@@ -188,7 +193,10 @@ Future<String> fetchUser(String email, String password) async {
     'password' : password,
   };
   var uri = Uri.http(baseURL, '/sign_in', queryParameters);
-  final http.Response response = await http.get(uri);
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
+  });
   return response.body;
 }
 
@@ -204,6 +212,7 @@ Future<List<User>> listarAmigos() async{
   var uri = Uri.http(baseURL, '/list_friends', queryParameters);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad,
   });
   if(response.statusCode==200){
 
@@ -228,7 +237,10 @@ Future<List<String>> infoUser(String email) async {
     'email' : email,
   };
   var uri = Uri.http(baseURL, '/info_usuario', queryParameters);
-  final http.Response response = await http.get(uri);
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
+  });
   Map<String, dynamic> parsedJson = json.decode(response.body);
 
   if (response.body != 'Error' && response.body != 'No existe el usuario') {
@@ -253,6 +265,7 @@ Future<bool> deleteUser(
     'https://' + baseURL + '/delete_user',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
     },
     body: jsonEncode(<String, String>{
       'email': email,
@@ -324,10 +337,12 @@ Future<void> settingsUser(String password, String name, String pais)async{
 
 Future<bool> upDateSettings( body) async{
 
+
   final http.Response response = await http.post(
     'https://' + baseURL + '/modify',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad,
     },
     body: body,
   );
