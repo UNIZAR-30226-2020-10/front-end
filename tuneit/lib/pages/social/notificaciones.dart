@@ -9,6 +9,7 @@ import 'package:tuneit/classes/components/Song.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
+import 'package:tuneit/classes/components/notificaciones/CompartidaPodcast.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/components/notificaciones/Peticion.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
@@ -35,6 +36,7 @@ class _NotificacionesState extends State<Notificaciones> {
    List<Peticion> peticiones = [];
    List<CompartidaCancion> songs=[];
    List<CompartidaLista>  playlists=[];
+   List<CompartidaPodcast>  podcasts=[];
 
    void choiceAction(String choice) async{
      List<String> hola=choice.split("--");
@@ -67,20 +69,17 @@ class _NotificacionesState extends State<Notificaciones> {
 
    }
 
-   Future <bool> obtenerNotificaciones() async{
+   Future <bool> obtenerDatos() async{
      List<Peticion> prueba = await buscarPeticiones();
-     peticiones=prueba;
-     return true;
-   }
-
-   Future <bool> obtenerCanciones() async{
      List<CompartidaCancion> canciones=await canciones_compartidas_conmigo();
-     songs=canciones;
-     return true;
-   }
-   Future <bool> obtenerListas() async{
      List<CompartidaLista>  listas=await listasCompartidas();
-     playlists=listas;
+     List<CompartidaPodcast> ll;
+     setState(() {
+       peticiones=prueba;
+       songs=canciones;
+       playlists=listas;
+     });
+
      return true;
    }
 
@@ -89,6 +88,8 @@ class _NotificacionesState extends State<Notificaciones> {
   @override
   void initState() {
     Globals.mensajes_nuevo=0;
+    obtenerDatos();
+
     super.initState();
 
   }
@@ -112,18 +113,8 @@ class _NotificacionesState extends State<Notificaciones> {
                   child: Text('  Peticiones de amistad', style: Theme.of(context).textTheme.subtitle,),
                 ),
                 SizedBox(height: size_height*0.01,),
-                FutureBuilder(
-                    future:obtenerNotificaciones() ,
-                    builder: (BuildContext context, AsyncSnapshot snapshot){
-                      if(snapshot.hasData) {
-                        return listaParaNotificaciones(context,peticiones,size_width,size_height);
-                      }
-                      else{
-                        return TuneITProgressIndicator();
-                      }
 
-                    }
-                ),
+                listaParaNotificaciones(context,peticiones,size_width,size_height),
 
                 SizedBox(height: size_height*0.01,),
                 Align(
@@ -132,18 +123,8 @@ class _NotificacionesState extends State<Notificaciones> {
                 ),
                 SizedBox(height:  size_height*0.01,),
 
-                FutureBuilder(
-                    future:obtenerCanciones() ,
-                    builder: (BuildContext context, AsyncSnapshot snapshot){
-                      if(snapshot.hasData) {
-                        return  listaParaAudiosCompartidos(context,songs,"none",choiceAction);
-                      }
-                      else{
-                        return TuneITProgressIndicator();
-                      }
+                 listaParaAudiosCompartidos(context,songs,"none",choiceAction),
 
-                    }
-                ),
 
                 SizedBox(height:  size_height*0.01,),
                 Align(
@@ -153,18 +134,21 @@ class _NotificacionesState extends State<Notificaciones> {
 
                 SizedBox(height:  size_height*0.01,),
 
-                FutureBuilder(
-                    future:obtenerListas() ,
-                    builder: (BuildContext context, AsyncSnapshot snapshot){
-                      if(snapshot.hasData) {
-                        return  listaParaListasCompartidos(context,playlists);
-                      }
-                      else{
-                        return TuneITProgressIndicator();
-                      }
+                listaParaListasCompartidos(context,playlists),
 
-                    }
+
+                SizedBox(height:  size_height*0.01,),
+
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('  Podcasts compartidas', style: Theme.of(context).textTheme.subtitle,),
+
                 ),
+
+                SizedBox(height:  size_height*0.01,),
+
+
+                listaParaListasCompartidos(context,playlists),
 
                 SizedBox(height:  size_height*0.01,),
               ]

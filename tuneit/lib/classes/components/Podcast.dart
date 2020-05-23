@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 
@@ -73,7 +75,6 @@ Future<List<Podcast>> fetchBestPodcasts() async {
 
   } else {
     throw Exception('Failed to load podcasts lists');
-    return [];
   }
 }
 
@@ -102,7 +103,6 @@ Future<List<Podcast>> fetchPodcastByTitle(String title) async {
 
   } else {
     throw Exception(response.statusCode.toString() + ': Failed to load podcasts 2');
-    return [];
   }
 }
 
@@ -128,7 +128,6 @@ Future<List<Podcast>> fetchPodcastById(String ids) async {
 
   } else {
     throw Exception(response.statusCode.toString() + ': Failed to load podcasts 1');
-    return [];
   }
 }
 
@@ -151,7 +150,6 @@ Future<List<Podcast>> fetchFavPodcasts() async {
   }
   else {
     throw Exception(response.body + ': Failed to check favourite podcast');
-    return [];
   }
 }
 
@@ -209,3 +207,51 @@ Future<bool> checkFav(String id) async {
     throw Exception(response.body + ': Failed to check favourite podcast');
   }
 }
+
+
+/****
+ * Compartir podcast
+    /share_podcast
+    Comparte un podcast a un usuario
+
+    Entrada
+    podcast: id de la lista a compartir
+    emisor: emisor de la cancion
+    receptor: receptor de la cancion
+    Salida
+    "Mismo usuario": no se puede enviar cosas a sí mismo
+    "Elemento ya compartido con ese usuario": ya se ha compartido antes
+    "Error"
+    "Success"
+ *****************/
+Future<bool>  compartirPodcast(String podcast, String receptor) async {
+
+  var queryParameters = {
+    'podcast':podcast,
+    'emisor' : Globals.email,
+    'receptor':receptor
+  };
+
+  var uri = Uri.https(baseURL,'/share_song' ,queryParameters);
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+  });
+
+  if (response.statusCode == 200 && response.body== 'Success' ) {
+
+    String token= await getToken(receptor);
+    sendNotification('Recomendación',Globals.name +' te ha recomendado un podcast',token);
+
+    return true;
+
+  } else {
+
+    print('Error al compartir la canción');
+    return false;
+  }
+}
+
+
+
+

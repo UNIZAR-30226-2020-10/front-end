@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tuneit/classes/components/Podcast.dart';
 import 'package:tuneit/classes/components/PodcastEpisode.dart';
+import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/pages/audio/audioPlayer.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';
 import 'package:tuneit/widgets/lists.dart';
+import 'package:tuneit/widgets/optionsPodcast.dart';
 
 class ShowPodcast extends StatefulWidget {
 
@@ -23,16 +25,20 @@ class _ShowPodcastState extends State<ShowPodcast> {
   List<PodcastEpisode> list = List();
   bool fav = false;
   bool initFav;
+  List<User> amigos=[];
 
   _ShowPodcastState(this.podcId, this.podcName);
 
   void obtenerDatos() async{
+    List<User> ff=await listarAmigos();
+
     List<PodcastEpisode> lista = await fetchEpisodes(podcId);
     bool favorito = await checkFav(podcId);
     setState(() {
       list = lista;
       fav = favorito;
       initFav = favorito;
+      amigos=ff;
     });
   }
 
@@ -64,6 +70,21 @@ class _ShowPodcastState extends State<ShowPodcast> {
         ),
         actions: <Widget>[
           Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon:Icon(Icons.share),
+              tooltip: 'Compartir podcast',
+              onPressed: (){
+
+                mostrarAmigosPodcast(context, amigos,podcId,);
+
+
+              },
+
+            ),
+          ),
+
+          Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: (){
@@ -84,8 +105,6 @@ class _ShowPodcastState extends State<ShowPodcast> {
           Expanded(
             child: ListView(
               children: listaParaAudios(context,list,podcId.toString(),false,null),
-
-              // listaParaAudios(context,list,podcId.toString(),false,null),
             ),
           ),
         ],

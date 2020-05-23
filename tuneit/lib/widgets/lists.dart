@@ -512,3 +512,97 @@ Widget listaParaListasCompartidos(BuildContext context,List<CompartidaLista> lis
 
 }
 
+Widget listaPodcastCompartidos(BuildContext context,List<CompartidaLista> listas) {
+  if (listas.length > 0) {
+    return Column(
+      children:List.generate(
+        listas.length,
+            (index) {
+          return
+            Card(
+              key: Key('$index'),
+              child: new ListTile(
+
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        ShowList(
+                            indetificadorLista: listas[index].lista.id.toString(),
+                            list_title: listas[index].lista.name,
+                            esAmigo:false),
+
+                  ));
+                },
+
+                leading: GFAvatar(
+                  backgroundImage: NetworkImage(listas[index].emisor.photo),
+                  backgroundColor: Colors.transparent,
+                  shape: GFAvatarShape.standard,
+
+                ),
+                title: Text(listas[index].lista.name),
+                subtitle: Text("Recomendada por " + listas[index].emisor.name),
+                trailing: Container(
+                  height: 100,
+                  width: 100,
+                  child: Row(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.check_circle),
+                        onPressed: () async {
+                          bool resultado = await agregarLista(
+                              listas[index].lista.id.toString());
+                          if (resultado) {
+                            operacionExito(context);
+                            resultado = await dejarDeCompartirLista(
+                                listas[index].id.toString());
+                          }
+                          else {
+                            mostrarError(context,
+                                'No se ha podido agregar la recomendación');
+                          }
+                        },
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          bool resultado = await dejarDeCompartirLista(
+                              listas[index].id.toString());
+                          if (resultado) {
+                            operacionExitoRecomendacion(context);
+                          }
+                          else {
+                            mostrarError(context,
+                                'No se ha podido eliminar la recomendación');
+                          }
+                        },
+                        icon: Icon(Icons.cancel),
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                ),
+
+              ),
+            );
+        },
+      ),
+    );
+  }
+
+  else{
+    return Column(
+      children: <Widget>[
+        Center(child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:Align(
+              alignment: Alignment.centerLeft,
+              child: Text("No se han recomendaciones"),)
+        ))
+
+      ],
+
+    );
+  }
+
+}
+
