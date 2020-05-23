@@ -272,10 +272,13 @@ Future<bool>  dejarDeCompartirPodcast(String id_compartida) async {
   };
 
   var uri = Uri.https(baseURL,'/unshare_podcast' ,queryParameters);
+  print(uri);
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
+  print(response.statusCode);
+  print(response.body);
 
   if (response.statusCode == 200 && response.body== 'Success' ) {
 

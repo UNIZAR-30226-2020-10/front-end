@@ -226,7 +226,6 @@ List<Widget> listaParaAudiosCategorias(BuildContext context,List<Audio> audios, 
 }
 
 
-
 Widget listaParaNotificaciones(BuildContext context,List<Notificacion> list,anchura,altura){
   if(list.length>0){
     return Column(
@@ -279,7 +278,6 @@ Widget listaParaNotificaciones(BuildContext context,List<Notificacion> list,anch
                           bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Rechazo');
                           if(prueba){
                             operacionExitoRecomendacion(context);
-
 
                           }
                           else{

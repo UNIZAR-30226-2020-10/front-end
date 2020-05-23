@@ -96,7 +96,7 @@ void onTapReload (BuildContext context,String id_lista,String title,bool esAmigo
   Navigator.pop(context);
   Navigator.pop(context);
   Navigator.of(context).push(MaterialPageRoute(
-    builder: (context) => ShowList(indetificadorLista: id_lista, list_title: title),
+    builder: (context) => ShowList(indetificadorLista: id_lista, list_title: title,esAmigo: false,),
   ));
 }
 
