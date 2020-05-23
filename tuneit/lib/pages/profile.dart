@@ -78,7 +78,7 @@ class _ProfilePageState extends State<Profile> {
           actions: <Widget>[
             esUser  ? IconButton(
               tooltip: 'Configurar perfil',
-              icon: Icon(Icons.settings),
+              icon: Icon(Icons.settings, size: 25,),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -105,11 +105,11 @@ class _ProfilePageState extends State<Profile> {
                     mostrarError(context,"No se ha podido entregar la solicitud");
                   }
                 },
-                icon: Icon(Icons.group_add),
+                icon: Icon(Icons.group_add, size: 25,),
               ),
           ],
         ),
-        drawer: LateralMenu(),
+        drawer: esUser? LateralMenu() : null,
         body: Container(
           margin: const EdgeInsets.only(left: 10, right: 10),
           width: 400,
