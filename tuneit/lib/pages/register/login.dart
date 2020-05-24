@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:encrypt/encrypt.dart' as Encrypter;
 import 'package:flutter/cupertino.dart';
@@ -161,19 +162,19 @@ class _LoginState extends State<Login> {
             else{
               lastSong = null;
             }
-            List<Audio> audios = null;
             int idLista = parsedJson['Lista'];
+            if(idLista == 0){
+              idLista = null;
+            }
             int segundos = parsedJson['Segundo'];
-            print("------------");
-            print(idLista);
-            print("------------");
+            List<Audio> audios = null;
             if(idLista != null) {
-              SongLista canciones = await fetchSonglists((idLista+1).toString());
-              List<Audio> audios = canciones.songs;
+              SongLista canciones = await fetchSonglists((idLista).toString());
+              audios = canciones.songs;
             }
             Audio cancionNew = null;
             if(lastSong != null) {
-              Audio cancionNew = lastSong[0];
+              cancionNew = lastSong[0];
             }
             int index = 0;
             bool encontrada = false;
@@ -191,16 +192,13 @@ class _LoginState extends State<Login> {
                 }
               }
             }
-            print(index);
             if(lastSong != null && segundos != null){
               print("Aquí meto tremenda cancion al Reproductor");
               if(encontrada) {
                 _audioPlayerClass.setValoresIniciales(audios, index);
               }
               else{
-
                 _audioPlayerClass.setValoresIniciales(lastSong, 0);
-
               }
               _audioPlayerClass.rellenarUrl();
               _audioPlayerClass.rellenarNotificaciones();
@@ -214,7 +212,7 @@ class _LoginState extends State<Login> {
             print(response.body + ': Failed to load last listened song');
           }
 
-
+          sleep(const Duration(seconds:1));
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MyHomePage()),

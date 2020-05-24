@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,18 +86,20 @@ class _MainViewState extends State<MainView> {
             else{
               lastSong = null;
             }
-
-
             int idLista = parsedJson['Lista'];
+            if(idLista == 0){
+              idLista = null;
+            }
+            print(idLista);
             int segundos = parsedJson['Segundo'];
             List<Audio> audios = null;
             if(idLista != null) {
               SongLista canciones = await fetchSonglists(idLista.toString());
-              List<Audio> audios = canciones.songs;
+              audios = canciones.songs;
             }
             Audio cancionNew = null;
             if(lastSong != null) {
-              Audio cancionNew = lastSong[0];
+              cancionNew = lastSong[0];
             }
             int index = 0;
             bool encontrada = false;
@@ -117,6 +120,8 @@ class _MainViewState extends State<MainView> {
             if(lastSong != null && segundos != null){
               print("Aquí meto tremenda cancion al Reproductor");
               if(encontrada) {
+                print(index);
+                print(audios.length);
                 _audioPlayerClass.setValoresIniciales(audios, index);
               }
               else{
@@ -127,13 +132,14 @@ class _MainViewState extends State<MainView> {
               _audioPlayerClass.firstplay(segundos);
               _audioPlayerClass.setPlaying(true);
               _audioPlayerClass.setIniciado(true);
+              _audioPlayerClass.setIdLista(idLista.toString());
             }
           } else {
             lastSong = null;
             print(response.body + ': Failed to load last listened song');
           }
 
-
+          sleep(const Duration(seconds:1));
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MyHomePage()),

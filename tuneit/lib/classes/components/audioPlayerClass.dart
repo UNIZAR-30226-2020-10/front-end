@@ -88,7 +88,7 @@ class audioPlayerClass {
     _audioPlayer.dispose();
   }
   void create(){
-    _audioPlayer = AudioPlayer();
+    _audioPlayer = new AudioPlayer();
   }
   Future<void> goTo(int indice_a_ir) async {
     final Result result = await _audioPlayer.seekIndex(indice_a_ir);

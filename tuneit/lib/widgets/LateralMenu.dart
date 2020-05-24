@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/artists.dart';
@@ -113,6 +115,23 @@ class LateralMenu extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => Ayuda(),
+                  ),
+                );
+              }
+          ),
+          new ListTile(
+              title: Text('CERRAR SESION'),
+              onTap:() async {
+                audioPlayerClass _audioPlayerClass = new audioPlayerClass();
+                _audioPlayerClass.dispose();
+                _audioPlayerClass.create();
+                final prefs = await SharedPreferences.getInstance();
+                prefs.setString('user', '0');
+                prefs.setString('password', '0');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Login(),
                   ),
                 );
               }

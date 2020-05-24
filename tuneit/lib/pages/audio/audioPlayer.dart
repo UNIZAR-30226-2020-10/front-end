@@ -134,13 +134,10 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     funcion_auxiliar();
-    print(_audioPlayerClass.getEscanciones());
     if(_position != null && _audioPlayerClass.getEscanciones()) {
       contador= contador + 1;
       if (contador == 5) {
         contador = 0;
-        print("Mando tremenda peticion");
-        print(_position.inMilliseconds.toString());
         setState(() {
           sendLastSong(Globals.email, audios[indice].devolverID(),
               _position.inMilliseconds.toString(),indetificadorLista).then((value) async {
@@ -270,6 +267,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                                 initAudioPlayer();
                                 _audioPlayerClass.setIniciado(true);
                                 _audioPlayerClass.setEscanciones(escanciones);
+                                _audioPlayerClass.setIdLista(indetificadorLista);
                               }
                               else{
                                 if(_audioPlayerClass.getIndice() == indice){
