@@ -9,9 +9,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuneit/classes/components/User.dart';
 import 'package:tuneit/classes/components/Foto.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
+import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/register/mainView.dart';
+import 'package:tuneit/widgets/AutoScrollableText.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
+import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/errors.dart';
 import 'package:tuneit/widgets/lists.dart';
@@ -28,7 +31,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
 
 
-  Future<List<Foto>> imagenes;
+  List<Foto> imagenes=[];
   String base64Image=null;
   File tmpFile=null;
   String fighter=null;
@@ -36,14 +39,29 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   final TextEditingController nombre = TextEditingController();
   final TextEditingController password = TextEditingController();
 
+  Future<void> obtenerDatos() async{
+   List<Foto> DATOS= await listasImagenes();
+    setState(() {
+      imagenes=DATOS;
+    });
+  }
+
   String pais = Globals.country;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    obtenerDatos();
+
+
+  }
 
 
   @override
   Widget build(BuildContext context) {
-
     final size_width = MediaQuery.of(context).size.width;
     final size_height= MediaQuery.of(context).size.height;
+
 
     return Scaffold(
       appBar: AppBar(),
@@ -64,7 +82,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
                       Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('Cambiar nombre', style: Theme.of(context).textTheme.subtitle,),
+                            child: Text('Cambiar su nombre', style: Theme.of(context).textTheme.subtitle,),
                           ),
                       textField(
                         nombre,
@@ -79,7 +97,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text('Cambiar contraseña', style: Theme.of(context).textTheme.subtitle,),
+                        child: Text('Cambiar su contraseña', style: Theme.of(context).textTheme.subtitle,),
                     ),
                       textField(
                           password,
@@ -94,42 +112,22 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                     ListTile(
                       title:           Align(
                         alignment: Alignment.centerLeft,
-                        child: Text('Seleccionar foto', style: Theme.of(context).textTheme.subtitle,),
+                        child: Text('Cambiar su foto de perfil', style: Theme.of(context).textTheme.subtitle,),
                       ),
-                      trailing:        RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.white)),
-                        onPressed: (
-
-                            ) {
-
-                         Future<List<Foto>> DATOS=listasImagenes();
-                         setState(() {
-                           imagenes=DATOS;
-                         });
-
-                        },
-                        color: Colors.deepPurple,
-                        textColor: Colors.white,
-                        child: Text("Cambiar imagen".toUpperCase(),
-                            style: TextStyle(fontSize: 14)),
-                      ) ,
 
                     ),
-
-
-
-                      SizedBox(height: size_height*0.05,),
-                       Row(
-                         children: <Widget>[
-                           showImage(),
-                         ],
-                       ),
-
+                    Container(
+                         height:200,
+                         width:300,
+                         child: completeListHorizontalFotos (imagenes,size_width,size_height)),
 
 
                       SizedBox(height: size_height*0.05,),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Cambiar su país', style: Theme.of(context).textTheme.subtitle,),
+                    ),
 
 
                      widget_paises(countryDrop()),
@@ -137,10 +135,11 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                       SizedBox(height: size_height*0.05,),
 
                       ListTile(
-                          title:    Align(
+                          title:                 Align(
                             alignment: Alignment.centerLeft,
                             child: Text('Confirmar cambios', style: Theme.of(context).textTheme.subtitle,),
-                          ),
+                          ),  // Text('Confirmar cambios'),
+
                           trailing:        RaisedButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
@@ -148,7 +147,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                             onPressed: (
 
                                 ) {
-                              confirmarCambios(context,password.text,nombre.text,pais,tmpFile,base64Image);
+                              confirmarCambios(context,password.text,nombre.text,pais,fighter);
 
                             },
                             color: Colors.deepPurple,
@@ -218,9 +217,102 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     );
   }
 
+  void SeleccionarImagen(BuildContext context, String imagen) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("¿Quiere seleccionar esta imagen?"),
+          content: new Image(
+          image: imagen== null? new AssetImage(imagenPorDefecto) : new NetworkImage(imagen),
+          fit: BoxFit.cover,
+        ),
+          actions: <Widget>[
+            simpleButton(context, () {
+
+              setState(() {
+                fighter=imagen;
+              });
+              print(fighter);
+
+              Navigator.of(context).pop();
+              }, [], 'Confirmar'),
+            simpleButton(context, () {Navigator.of(context).pop();}, [], 'Cancelar'),
+          ],
+
+        );
+      },
+    );
+  }
+
+  Widget completeListHorizontalFotos (List<Foto> lista,size_width,size_height) {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 8.0),
+        itemCount: lista.length,
+        itemBuilder: (BuildContext context, int index) {
+          return new GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+
+              SeleccionarImagen(context, lista[index].image);
+
+            },
+            child:new Container(
+              height: size_height*.005,
+              width: size_width*0.35,
+              decoration: new BoxDecoration(
+                  color: Colors.white10,
+                  borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(8.0),
+                    topRight: const Radius.circular(8.0),
+                    bottomLeft: const Radius.circular(8.0),
+                    bottomRight: const Radius.circular(8.0),
+                  )
+              ),
+              child: Center(
+                  child: Column(
+                      children: <Widget>[
+                        Flexible(
+                            flex: 6,
+                            child: new Container(
+                              margin: EdgeInsets.all(10.0),
+                              decoration: new BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  image: new DecorationImage(
+                                    image: lista[index].image== null? new AssetImage(imagenPorDefecto) : new NetworkImage(lista[index].image),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: new BorderRadius.only(
+                                    topLeft: const Radius.circular(8.0),
+                                    topRight: const Radius.circular(8.0),
+                                    bottomLeft: const Radius.circular(8.0),
+                                    bottomRight: const Radius.circular(8.0),
+                                  )
+                              ),
+                            )
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: MarqueeWidget(
+                            child: Text(lista[index].name, style: TextStyle(fontSize: 15, fontFamily: 'RobotoMono', color: ColorSets.colorText),),
+                          ),
+                        ),
+                      ]
+                  )
+              ),
+              margin: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(1),
+            ),
+          );
+        }
+    );
+  }
 
 
-  void confirmarCambios(BuildContext context, String password, String nombre, String pais,File tmpFile , String base64Image) {
+
+  void confirmarCambios(BuildContext context, String password, String nombre, String pais,String fighter) {
     if (nombre != "" && (nombre.length < 3 || nombre.length > 50)) {
       mostrarError(context,
           'Tu nuevo nombre de usuario debe contener entre 3 y 50 carácteres');
@@ -234,7 +326,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
           'solo se aceptan minúsculas, mayúsculas y números ');
     }
     else {
-      formularioContrasegna(context, password, nombre, pais,tmpFile ,base64Image);
+      formularioContrasegna(context, password, nombre, pais,fighter);
       /*if(tmpFile!=null && base64Image!=null){
         startUploadPhoto(tmpFile , base64Image);
       }*/
@@ -242,9 +334,8 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     }
   }
 
-  Widget showImage(){
+  Widget showImage( size_width,size_height){
     return FutureBuilder<List<Foto>>(
-      future: imagenes,
       builder: (BuildContext context,AsyncSnapshot<List<Foto>> snapshot){
 
 
@@ -254,32 +345,18 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
           return Container(
               height: 200,
               width: 300,
-              child: completeListHorizontal( snapshot.data, onSelectImage, []));
+              child: completeListHorizontalFotos ( snapshot.data,size_width,size_height));
 
 
-        }
-        else if(snapshot.error!=null){
-          print(snapshot.error);
-          return const Text(
-            'Ha fallado algo',
-            textAlign: TextAlign.center,
-          );
 
         }
         else{
-          return const Text(
-            'No hay imagen',
-            textAlign: TextAlign.center,
-          );
-
+          return TuneITProgressIndicator();
         }
       },
     );
   }
 
-  void onSelectImage (int index) {
-
-  }
 
 
   void tryDelete () {
@@ -358,7 +435,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     //startUploadPhoto(tmpFile, base64Image);
   }
 
-  void formularioContrasegna (BuildContext context,String passprueba, String nombre,String pais,File tmpFile , String base64Image) {
+  void formularioContrasegna (BuildContext context,String passprueba, String nombre,String pais,String imagen) {
     // flutter defined functio
     final TextEditingController confirmar_password = TextEditingController();
 
@@ -395,10 +472,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                 onPressed: () async {
                   Navigator.pop(context);
                   if(comprarContreynas(confirmar_password.text)){
-                    settingsUser(passprueba, nombre, pais);
-                    if(tmpFile!=null && base64Image!=null){
-                      startUploadPhoto(tmpFile , base64Image);
-                      }
+                    settingsUser(passprueba, nombre, pais,imagen);
                     operacionExito(context);
 
                   }

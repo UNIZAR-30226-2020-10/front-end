@@ -91,11 +91,6 @@ Future<List<CompartidaPodcast>> CompartidosPodcastConmigo() async {
     HttpHeaders.contentTypeHeader: 'application/json',
   });
 
-  print("00000000000");
-  print(response.body);
-  print("00000000000");
-  print(response.statusCode);
-
 
   if (response.statusCode == 200) {
     list = (json.decode(response.body) as List)

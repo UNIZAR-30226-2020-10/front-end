@@ -279,7 +279,7 @@ Future<bool> deleteUser(
   }
 }
 
-Future<void> settingsUser(String password, String name, String pais)async{
+Future<void> settingsUser(String password, String name, String pais,String imagen)async{
   bool exito = false;
   var body;
 
@@ -308,6 +308,22 @@ Future<void> settingsUser(String password, String name, String pais)async{
     exito=await upDateSettings(body);
     if(exito){
       Globals.country=pais;
+    }
+
+  }
+  print(imagen);
+
+  if(imagen!="" && Globals.image!=imagen){
+    body = jsonEncode(<String, String>{
+      'email': Globals.email,
+      'password': Globals.password,
+      'imagen': imagen,
+    });
+
+    exito=await upDateSettings(body);
+
+    if(exito){
+      Globals.image=imagen;
     }
 
   }
@@ -346,6 +362,7 @@ Future<bool> upDateSettings( body) async{
     },
     body: body,
   );
+  print(response.body);
   if (response.body == 'Success') {
     return true;
   } else {
