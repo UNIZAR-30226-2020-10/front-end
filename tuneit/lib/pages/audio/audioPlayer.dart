@@ -134,13 +134,16 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     funcion_auxiliar();
-    contador= contador + 1;
-    if(_position != null) {
+    print(_audioPlayerClass.getEscanciones());
+    if(_position != null && _audioPlayerClass.getEscanciones()) {
+      contador= contador + 1;
       if (contador == 5) {
         contador = 0;
+        print("Mando tremenda peticion");
+        print(_position.inMilliseconds.toString());
         setState(() {
           sendLastSong(Globals.email, audios[indice].devolverID(),
-              _position.inMilliseconds.toString()).then((value) async {
+              _position.inMilliseconds.toString(),indetificadorLista).then((value) async {
             if (!value) {
               print("Ha ocurrido un error en la peticion");
             }
@@ -266,6 +269,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                                 audios_show = _audioPlayerClass.getAudio();
                                 initAudioPlayer();
                                 _audioPlayerClass.setIniciado(true);
+                                _audioPlayerClass.setEscanciones(escanciones);
                               }
                               else{
                                 if(_audioPlayerClass.getIndice() == indice){
@@ -499,11 +503,12 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
     }
   }
 
-  Future<bool> sendLastSong(String email, String cancion, String segundos) async {
+  Future<bool> sendLastSong(String email, String cancion, String segundos, String idLista) async {
     var queryParameters = {
       'email' : email,
       'cancion' : cancion,
       'segundo' : segundos,
+      'lista' : idLista
     };
     var uri = Uri.http(baseURL, '/set_last_song', queryParameters);
     final http.Response response = await http.get(uri);

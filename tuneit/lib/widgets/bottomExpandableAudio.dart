@@ -32,7 +32,6 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
   int contador = 0;
   Color iconRepeatColor = Colors.grey;
   Color iconShuffleColor = Colors.grey;
-
   StreamSubscription _durationSubscription;
   StreamSubscription _positionSubscription;
   StreamSubscription _playerCompleteSubscription;
@@ -62,12 +61,12 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
     audios = _audioPlayerClass.getAudio();
     indice = _audioPlayerClass.getIndice();
     contador= contador + 1;
-    if (audios != null) {
+    if (audios != null && _audioPlayerClass.getEscanciones()) {
       if (contador == 5) {
         contador = 0;
         setState(() {
           sendLastSong(Globals.email, audios[indice].devolverID(),
-              _position.inMilliseconds.toString()).then((value) async {
+              _position.inMilliseconds.toString(), _audioPlayerClass.getIdLista()).then((value) async {
             if (!value) {
               print("Ha ocurrido un error en la peticion");
             }
@@ -283,18 +282,19 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
     });
   }
 
-  Future<bool> sendLastSong(String email, String cancion, String segundos) async {
+  Future<bool> sendLastSong(String email, String cancion, String segundos, String idLista) async {
     var queryParameters = {
-      'email' : email,
-      'cancion' : cancion,
-      'segundo' : segundos,
+      'email': email,
+      'cancion': cancion,
+      'segundo': segundos,
+      'lista': idLista
     };
     var uri = Uri.http(baseURL, '/set_last_song', queryParameters);
     final http.Response response = await http.get(uri);
-    if(response.body == 'Success'){
+    if (response.body == 'Success') {
       return true;
     }
-    else{
+    else {
       return false;
     }
   }

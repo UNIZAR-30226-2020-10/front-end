@@ -25,13 +25,13 @@ class audioPlayerClass {
   bool _shuffleMode = false;
   bool playing = false;
   List<String> urls = new List<String>();
-
+  bool escanciones = true;
   // Variables Shuffle
   List<int> audiosShuffle = new List<int>();
   List<Audio> audiosShuffleShow = new List<Audio>();
   int indiceShuffle;
   int primera = 0;
-
+  String idLista = '0';
 
   bool iniciado = false;
   // Variables Notificaciones
@@ -48,6 +48,8 @@ class audioPlayerClass {
   void setIndice(int el_indice) => indice = el_indice;
   void setPlaying(bool playing) => this.playing = playing;
   void setIniciado(bool iniciado) => this.iniciado = iniciado;
+  void setEscanciones(bool escanciones) => this.escanciones = escanciones;
+  void setIdLista(String idLista) => this.idLista = idLista;
   AudioPlayer getAudioPlayer() {
     return _audioPlayer;
   }
@@ -75,7 +77,13 @@ class audioPlayerClass {
   bool getIniciado(){
     return iniciado;
   }
+  bool getEscanciones(){
+    return escanciones;
+  }
 
+  String getIdLista(){
+    return idLista;
+  }
   void dispose(){
     _audioPlayer.dispose();
   }
@@ -124,8 +132,8 @@ class audioPlayerClass {
           respectAudioFocus: false,
           playerMode: PlayerMode.FOREGROUND,
           audioNotifications: audioNotifications,
-          position: Duration(milliseconds: segundos),
         );
+        _audioPlayer.seekPosition(Duration(milliseconds: segundos));
         _playAll = true;
         if (result == Result.ERROR) {
           print("something went wrong in play method :(");

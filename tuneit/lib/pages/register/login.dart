@@ -162,16 +162,32 @@ class _LoginState extends State<Login> {
               lastSong = null;
             }
 
-
+            int idLista = parsedJson['Lista'];
             int segundos = parsedJson['Segundo'];
+            SongLista canciones =await fetchSonglists(idLista.toString());
+            List<Audio> audios=canciones.songs;
+            Audio cancionNew = lastSong[0];
+            int index = 0;
+            for(Audio elemento in audios){
+              if(elemento.devolverArtista() == cancionNew.devolverArtista() &&
+                 elemento.devolverID() == cancionNew.devolverID() &&
+                  elemento.devolverTitulo() == cancionNew.devolverTitulo()){
+                break;
+              }
+              else{
+                index++;
+              }
+            }
+            print(index);
             if(lastSong != null && segundos != null){
               print("Aquí meto tremenda cancion al Reproductor");
-              _audioPlayerClass.setValoresIniciales(lastSong, 0);
+              _audioPlayerClass.setValoresIniciales(audios, index);
               _audioPlayerClass.rellenarUrl();
               _audioPlayerClass.rellenarNotificaciones();
               _audioPlayerClass.firstplay(segundos);
               _audioPlayerClass.setPlaying(true);
               _audioPlayerClass.setIniciado(true);
+              _audioPlayerClass.setIdLista(idLista.toString());
             }
           } else {
             lastSong = null;
