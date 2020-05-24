@@ -279,7 +279,7 @@ Future<bool> deleteUser(
   }
 }
 
-Future<void> settingsUser(String password, String name, String pais,String imagen)async{
+Future<void> settingsUser(String password, String name, String pais,String id,String imagen)async{
   bool exito = false;
   var body;
   print(pais);
@@ -314,11 +314,11 @@ Future<void> settingsUser(String password, String name, String pais,String image
   }
   print(imagen);
 
-  if(imagen!="" && Globals.image!=imagen &&imagen!=null){
+  if(id!="" && Globals.image!=id &&id!=null){
     body = jsonEncode(<String, String>{
       'email': Globals.email,
       'password': Globals.password,
-      'imagen': imagen,
+      'imagen': id,
     });
 
     exito=await upDateSettings(body);

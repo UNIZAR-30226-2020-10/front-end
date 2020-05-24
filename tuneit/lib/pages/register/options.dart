@@ -35,6 +35,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   String base64Image=null;
   File tmpFile=null;
   String fighter=null;
+  String imagen=Globals.image;
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController nombre = TextEditingController();
   final TextEditingController password = TextEditingController();
@@ -147,7 +148,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                             onPressed: (
 
                                 ) {
-                              confirmarCambios(context,password.text,nombre.text,pais,fighter);
+                              confirmarCambios(context,password.text,nombre.text,pais,fighter,imagen);
 
                             },
                             color: Colors.deepPurple,
@@ -217,7 +218,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     );
   }
 
-  void SeleccionarImagen(BuildContext context, String imagen) {
+  void SeleccionarImagen(BuildContext context,String imagen_p, String id) {
     // flutter defined function
     showDialog(
       context: context,
@@ -225,14 +226,15 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
         return AlertDialog(
           title: new Text("¿Quiere seleccionar esta imagen?"),
           content: new Image(
-          image: imagen== null? new AssetImage(imagenPorDefecto) : new NetworkImage(imagen),
+          image: imagen_p== null? new AssetImage(imagenPorDefecto) : new NetworkImage(imagen_p),
           fit: BoxFit.cover,
         ),
           actions: <Widget>[
             simpleButton(context, () {
 
               setState(() {
-                fighter=imagen;
+                fighter=id;
+                imagen=imagen_p;
               });
               print(fighter);
 
@@ -261,7 +263,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
             behavior: HitTestBehavior.opaque,
             onTap: () {
 
-              SeleccionarImagen(context, lista[index].id.toString());
+              SeleccionarImagen(context,lista[index].image, lista[index].id.toString());
 
             },
             child:new Container(
@@ -317,7 +319,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
 
 
-  void confirmarCambios(BuildContext context, String password, String nombre, String pais,String fighter) {
+  void confirmarCambios(BuildContext context, String password, String nombre, String pais,String fighter,String imagen) {
     if (nombre != "" && (nombre.length < 3 || nombre.length > 50)) {
       mostrarError(context,
           'Tu nuevo nombre de usuario debe contener entre 3 y 50 carácteres');
@@ -331,7 +333,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
           'solo se aceptan minúsculas, mayúsculas y números ');
     }
     else {
-      formularioContrasegna(context, password, nombre, pais,fighter);
+      formularioContrasegna(context, password, nombre, pais,fighter,imagen);
       /*if(tmpFile!=null && base64Image!=null){
         startUploadPhoto(tmpFile , base64Image);
       }*/
@@ -440,7 +442,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
     //startUploadPhoto(tmpFile, base64Image);
   }
 
-  void formularioContrasegna (BuildContext context,String passprueba, String nombre,String pais,String imagen) {
+  void formularioContrasegna (BuildContext context,String passprueba, String nombre,String pais,String id,String imagen) {
     // flutter defined functio
     final TextEditingController confirmar_password = TextEditingController();
 
@@ -477,9 +479,11 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                 onPressed: () async {
                   Navigator.pop(context);
                   if(comprarContreynas(confirmar_password.text)){
-                   setState(() {
-                     settingsUser(passprueba, nombre, pais,imagen);
-                   });
+
+                     setState(() {
+                       settingsUser(passprueba, nombre, pais,id,imagen);
+                     });
+
                     operacionExito(context);
 
                   }
