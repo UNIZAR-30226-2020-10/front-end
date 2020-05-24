@@ -89,10 +89,12 @@ class _MainViewState extends State<MainView> {
 
             int idLista = parsedJson['Lista'];
             int segundos = parsedJson['Segundo'];
+            List<Audio> audios = null;
             if(idLista != null) {
               SongLista canciones = await fetchSonglists(idLista.toString());
               List<Audio> audios = canciones.songs;
             }
+            Audio cancionNew = null;
             if(lastSong != null) {
               Audio cancionNew = lastSong[0];
             }
