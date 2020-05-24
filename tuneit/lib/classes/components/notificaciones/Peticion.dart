@@ -66,6 +66,7 @@ Future<List<Peticion>> buscarPeticiones() async {
   var uri = Uri.http(baseURL, '/list_peticiones_recibidas', queryParameters);
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
   if(response.statusCode==200){
@@ -111,6 +112,7 @@ Future<bool> deleteFriend(String email,String amigo) async {
     'https://' + baseURL + '/delete_friend',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
     },
     body: jsonEncode(<String, dynamic>{
       'email' : email,
@@ -139,6 +141,7 @@ Future<bool> reactNotificacion(String id,String respuesta) async {
     'https://' + baseURL + '/responder_peticion',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
     },
     body: jsonEncode(<String, dynamic>{
       'peticion' : id,

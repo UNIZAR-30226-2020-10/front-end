@@ -79,6 +79,8 @@ Future<List<CompartidaCancion>> canciones_compartidas_conmigo() async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
+
   });
 
 

@@ -143,6 +143,7 @@ class _LoginState extends State<Login> {
             'https://' + baseURL + '/get_last_song',
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
+              HttpHeaders.authorizationHeader:Globals.seguridad
             },
             body: jsonEncode(<String, dynamic>{
               'email' : Globals.email

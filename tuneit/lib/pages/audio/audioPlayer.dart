@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -508,8 +509,13 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
       'segundo' : segundos,
       'lista' : idLista
     };
+
+    //HttpHeaders.authorizationHeader:Globals.seguridad
     var uri = Uri.http(baseURL, '/set_last_song', queryParameters);
-    final http.Response response = await http.get(uri);
+    final http.Response response = await http.get(uri,headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
+    });
     if(response.body == 'Success'){
       return true;
     }

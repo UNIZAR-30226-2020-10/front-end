@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_exoplayer/audio_notification.dart';
 import 'package:flutter_exoplayer/audioplayer.dart';
 import 'package:tuneit/classes/values/Constants.dart';
@@ -324,6 +325,7 @@ class audioPlayerClass {
       'https://' + baseURL + '/is_fav',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader:Globals.seguridad
       },
       body: jsonEncode(<String, String>{
         'cancion': cancion.devolverID().toString(),
