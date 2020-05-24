@@ -87,10 +87,35 @@ class _MainViewState extends State<MainView> {
             }
 
 
+            int idLista = parsedJson['Lista'];
             int segundos = parsedJson['Segundo'];
+            SongLista canciones =await fetchSonglists(idLista.toString());
+            List<Audio> audios=canciones.songs;
+            Audio cancionNew = lastSong[0];
+            int index = 0;
+            bool encontrada = false;
+            if(audios != null) {
+              for (Audio elemento in audios) {
+                if (elemento.devolverArtista() ==
+                    cancionNew.devolverArtista() &&
+                    elemento.devolverID() == cancionNew.devolverID() &&
+                    elemento.devolverTitulo() == cancionNew.devolverTitulo()) {
+                  encontrada = true;
+                  break;
+                }
+                else {
+                  index++;
+                }
+              }
+            }
             if(lastSong != null && segundos != null){
               print("Aquí meto tremenda cancion al Reproductor");
-              _audioPlayerClass.setValoresIniciales(lastSong, 0);
+              if(encontrada) {
+                _audioPlayerClass.setValoresIniciales(audios, index);
+              }
+              else{
+                _audioPlayerClass.setValoresIniciales(lastSong, 0);
+              }
               _audioPlayerClass.rellenarUrl();
               _audioPlayerClass.rellenarNotificaciones();
               _audioPlayerClass.firstplay(segundos);
