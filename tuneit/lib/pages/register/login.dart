@@ -168,20 +168,28 @@ class _LoginState extends State<Login> {
             List<Audio> audios=canciones.songs;
             Audio cancionNew = lastSong[0];
             int index = 0;
-            for(Audio elemento in audios){
-              if(elemento.devolverArtista() == cancionNew.devolverArtista() &&
-                 elemento.devolverID() == cancionNew.devolverID() &&
-                  elemento.devolverTitulo() == cancionNew.devolverTitulo()){
-                break;
-              }
-              else{
-                index++;
+            if(audios != null) {
+              for (Audio elemento in audios) {
+                if (elemento.devolverArtista() ==
+                    cancionNew.devolverArtista() &&
+                    elemento.devolverID() == cancionNew.devolverID() &&
+                    elemento.devolverTitulo() == cancionNew.devolverTitulo()) {
+                  break;
+                }
+                else {
+                  index++;
+                }
               }
             }
             print(index);
             if(lastSong != null && segundos != null){
               print("Aquí meto tremenda cancion al Reproductor");
-              _audioPlayerClass.setValoresIniciales(audios, index);
+              if(audios != null) {
+                _audioPlayerClass.setValoresIniciales(audios, index);
+              }
+              else{
+                _audioPlayerClass.setValoresIniciales(cancionNew, 0);
+              }
               _audioPlayerClass.rellenarUrl();
               _audioPlayerClass.rellenarNotificaciones();
               _audioPlayerClass.firstplay(segundos);
