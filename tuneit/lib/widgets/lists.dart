@@ -43,7 +43,7 @@ Widget elementOfList2 (String image, String name) {
                     decoration: new BoxDecoration(
                       shape: BoxShape.rectangle,
                       image: new DecorationImage(
-                        image: image == null? new AssetImage(imagenPorDefecto) : new NetworkImage(image),
+                        image: new NetworkImage(image),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: new BorderRadius.only(

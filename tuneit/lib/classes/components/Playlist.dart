@@ -24,7 +24,7 @@ class Playlist {
       id: json['ID'],
       name: json['Nombre'],
       description: json['Desc'],
-      image: json['Image'],
+      image: json['Imagen'],
     );
   }
 
