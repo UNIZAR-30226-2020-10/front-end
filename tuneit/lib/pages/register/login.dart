@@ -194,7 +194,9 @@ class _LoginState extends State<Login> {
                 _audioPlayerClass.setValoresIniciales(audios, index);
               }
               else{
+
                 _audioPlayerClass.setValoresIniciales(lastSong, 0);
+
               }
               _audioPlayerClass.rellenarUrl();
               _audioPlayerClass.rellenarNotificaciones();

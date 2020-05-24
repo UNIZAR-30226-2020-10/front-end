@@ -97,7 +97,7 @@ class _MainViewState extends State<MainView> {
               Audio cancionNew = lastSong[0];
             }
             int index = 0;
-            bool encontrada == false;
+            bool encontrada = false;
             if(audios != null) {
               for (Audio elemento in audios) {
                 if (elemento.devolverArtista() ==
