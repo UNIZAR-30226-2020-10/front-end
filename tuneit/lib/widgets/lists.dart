@@ -525,18 +525,20 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> list
               child: new ListTile(
 
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ShowPodcast(podcId: listas[index].podcast, podcName: listas[index].mi_podcast.name),
-                  ));
+                 if(listas[index].mi_podcast.name!=null&&listas[index].mi_podcast.id!=null){
+                   Navigator.of(context).push(MaterialPageRoute(
+                     builder: (context) => ShowPodcast(podcId: listas[index].podcast, podcName: listas[index].mi_podcast.name),
+                   ));
+                 }
                 },
 
                 leading: GFAvatar(
-                  backgroundImage: NetworkImage(listas[index].emisor.photo),
+                  backgroundImage: NetworkImage(listas[index].mi_podcast.image==null?'https://i.blogs.es/6c558d/luna-400mpx/450_1000.jpg':listas[index].mi_podcast.image),
                   backgroundColor: Colors.transparent,
                   shape: GFAvatarShape.standard,
 
                 ),
-                title: Text(listas[index].mi_podcast.name),
+                title: Text(listas[index].mi_podcast.name==null?'Cargando recomendacion':listas[index].mi_podcast.name),
                 subtitle: Text("Recomendada por " + listas[index].emisor.name),
                 trailing: Container(
                   height: 100,

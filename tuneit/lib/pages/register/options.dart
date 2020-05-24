@@ -256,7 +256,7 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
             behavior: HitTestBehavior.opaque,
             onTap: () {
 
-              SeleccionarImagen(context, lista[index].image);
+              SeleccionarImagen(context, lista[index].id.toString());
 
             },
             child:new Container(

@@ -20,7 +20,7 @@ class CompartidaPodcast extends Notificacion{
   String podcast;
   bool Notificacion;
   String photo_emisor=Globals.default_image;
-  Podcast mi_podcast;
+  Podcast mi_podcast=new Podcast(image:'https://i.blogs.es/6c558d/luna-400mpx/450_1000.jpg' ,name:"Cargando podcasts");
   CompartidaPodcast({this.emisor_nombre,this.podcast,this.emisor,this.receptor,this. photo_emisor,this.id,this.Notificacion});
 
   void obtenerPodcast()async{
@@ -78,6 +78,11 @@ class CompartidaPodcast extends Notificacion{
     "No existe usuario"
  ***************/
 
+Future<void> obtenertodos(list)async{
+  for(int i=0;i<list.length;i++){
+    list[i].obtenerPodcast();
+  }
+}
 Future<List<CompartidaPodcast>> CompartidosPodcastConmigo() async {
 
   List<CompartidaPodcast> list;
@@ -97,10 +102,7 @@ Future<List<CompartidaPodcast>> CompartidosPodcastConmigo() async {
         .map((data) => new CompartidaPodcast.fromJson(data))
         .toList();
 
-    for(int i=0;i<list.length;i++){
-      list[i].obtenerPodcast();
-    }
-
+    await obtenertodos(list);
     return list;
 
   } else {
