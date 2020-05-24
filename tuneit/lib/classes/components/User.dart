@@ -282,9 +282,10 @@ Future<bool> deleteUser(
 Future<void> settingsUser(String password, String name, String pais,String imagen)async{
   bool exito = false;
   var body;
+  print(pais);
 
 
-  if(name!="" && Globals.name!=name){
+  if(name!="" && Globals.name!=name &&name!=null &&name!="null"){
 
     body = jsonEncode(<String, String>{
       'email': Globals.email,
@@ -298,7 +299,7 @@ Future<void> settingsUser(String password, String name, String pais,String image
     }
 
   }
-  if(pais!="" && Globals.country!=pais){
+  if(pais!="" && Globals.country!=pais &&pais!=null){
     body = jsonEncode(<String, String>{
       'email': Globals.email,
       'password': Globals.password,
@@ -313,7 +314,7 @@ Future<void> settingsUser(String password, String name, String pais,String image
   }
   print(imagen);
 
-  if(imagen!="" && Globals.image!=imagen){
+  if(imagen!="" && Globals.image!=imagen &&imagen!=null){
     body = jsonEncode(<String, String>{
       'email': Globals.email,
       'password': Globals.password,
@@ -362,6 +363,7 @@ Future<bool> upDateSettings( body) async{
     },
     body: body,
   );
+  print(body);
   print(response.body);
   if (response.body == 'Success') {
     return true;

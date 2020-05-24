@@ -238,7 +238,12 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
               Navigator.of(context).pop();
               }, [], 'Confirmar'),
-            simpleButton(context, () {Navigator.of(context).pop();}, [], 'Cancelar'),
+            simpleButton(context, () {
+              setState(() {
+                fighter=null;
+              });
+
+              Navigator.of(context).pop();}, [], 'Cancelar'),
           ],
 
         );
@@ -472,7 +477,9 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
                 onPressed: () async {
                   Navigator.pop(context);
                   if(comprarContreynas(confirmar_password.text)){
-                    settingsUser(passprueba, nombre, pais,imagen);
+                   setState(() {
+                     settingsUser(passprueba, nombre, pais,imagen);
+                   });
                     operacionExito(context);
 
                   }
