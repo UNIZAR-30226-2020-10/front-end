@@ -168,12 +168,14 @@ class _LoginState extends State<Login> {
             List<Audio> audios=canciones.songs;
             Audio cancionNew = lastSong[0];
             int index = 0;
+            bool encontrada = false;
             if(audios != null) {
               for (Audio elemento in audios) {
                 if (elemento.devolverArtista() ==
                     cancionNew.devolverArtista() &&
                     elemento.devolverID() == cancionNew.devolverID() &&
                     elemento.devolverTitulo() == cancionNew.devolverTitulo()) {
+                  encontrada = true;
                   break;
                 }
                 else {
@@ -184,11 +186,11 @@ class _LoginState extends State<Login> {
             print(index);
             if(lastSong != null && segundos != null){
               print("Aquí meto tremenda cancion al Reproductor");
-              if(audios != null) {
+              if(encontrada) {
                 _audioPlayerClass.setValoresIniciales(audios, index);
               }
               else{
-                _audioPlayerClass.setValoresIniciales(cancionNew, 0);
+                _audioPlayerClass.setValoresIniciales(lastSong, 0);
               }
               _audioPlayerClass.rellenarUrl();
               _audioPlayerClass.rellenarNotificaciones();
