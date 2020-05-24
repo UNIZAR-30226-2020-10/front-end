@@ -36,7 +36,7 @@ class _NotificacionesState extends State<Notificaciones> {
    List<Peticion> peticiones = [];
    List<CompartidaCancion> songs=[];
    List<CompartidaLista>  playlists=[];
-   Future<List<CompartidaPodcast>>  podcasts_future;
+   List<CompartidaPodcast> podcasts_future=[];
 
    void choiceAction(String choice) async{
      List<String> hola=choice.split("--");
@@ -69,24 +69,22 @@ class _NotificacionesState extends State<Notificaciones> {
 
    }
 
+
+
    Future <void> obtenerDatos() async{
-     Future<List<CompartidaPodcast>> ll=  CompartidosPodcastConmigo();
-     List<CompartidaPodcast>  podcasts = await ll;
-
-
+     List<CompartidaPodcast> podcasts= await CompartidosPodcastConmigo();
+     desNotificarLista( podcasts,'/unnotify_podcast');
      List<Peticion> prueba = await buscarPeticiones();
      List<CompartidaCancion> canciones=await canciones_compartidas_conmigo();
      List<CompartidaLista>  listas=await listasCompartidas();
      desNotificarLista(canciones,'/unnotify_song');
      desNotificarLista(listas,'/unnotify_list');
-     desNotificarLista( podcasts,'/unnotify_podcast');
-
 
      setState(() {
+       podcasts_future=podcasts;
        peticiones=prueba;
        songs=canciones;
        playlists=listas;
-       podcasts_future=ll;
      });
 
 
@@ -96,8 +94,8 @@ class _NotificacionesState extends State<Notificaciones> {
 
   @override
   void initState() {
-    Globals.mensajes_nuevo=0;
     obtenerDatos();
+    Globals.mensajes_nuevo=0;
 
     super.initState();
 
@@ -154,7 +152,7 @@ class _NotificacionesState extends State<Notificaciones> {
                 ),
 
                 SizedBox(height:  size_height*0.01,),
-                showPodcast(),
+                listaPodcastCompartidos(context,podcasts_future),
                 SizedBox(height:  size_height*0.01,),
               ]
           ),
@@ -171,27 +169,5 @@ class _NotificacionesState extends State<Notificaciones> {
 
 
 
-   Widget showPodcast(){
-     return FutureBuilder<List<CompartidaPodcast>>(
-       future: podcasts_future,
-       builder: (BuildContext context,AsyncSnapshot<List<CompartidaPodcast>> snapshot){
-
-
-         if(snapshot.connectionState== ConnectionState.done && snapshot.data!=null && snapshot.data.isNotEmpty){
-
-           return listaPodcastCompartidos(context,snapshot.data);
-
-
-         }
-         else{
-           return const Text(
-             'No hay notificaciones',
-             textAlign: TextAlign.center,
-           );
-
-         }
-       },
-     );
-   }
 
 }

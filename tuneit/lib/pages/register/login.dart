@@ -168,7 +168,7 @@ class _LoginState extends State<Login> {
             print(idLista);
             print("------------");
             if(idLista != null) {
-              SongLista canciones = await fetchSonglists((idLista).toString());
+              SongLista canciones = await fetchSonglists((idLista+1).toString());
               List<Audio> audios = canciones.songs;
             }
             Audio cancionNew = null;

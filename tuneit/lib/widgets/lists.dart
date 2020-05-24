@@ -460,7 +460,7 @@ Widget listaParaListasCompartidos(BuildContext context,List<CompartidaLista> lis
                       bool resultado = await agregarLista(
                           listas[index].lista.id.toString());
                       if (resultado) {
-                        operacionExito(context);
+                        operacionExitoRecomendacion(context);
                         resultado = await dejarDeCompartirLista(
                             listas[index].id.toString());
                       }
@@ -531,7 +531,7 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> list
                 },
 
                 leading: GFAvatar(
-                  backgroundImage: NetworkImage(listas[index].mi_podcast.image),
+                  backgroundImage: NetworkImage(listas[index].emisor.photo),
                   backgroundColor: Colors.transparent,
                   shape: GFAvatarShape.standard,
 
@@ -551,7 +551,7 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> list
                           if (!favorito) {
                             isFav(listas[index].podcast,listas[index].mi_podcast.name);
                           }
-                          operacionExito(context);
+                          operacionExitoRecomendacion(context);
 
                         },
                       ),
