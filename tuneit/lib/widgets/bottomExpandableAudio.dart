@@ -61,7 +61,7 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
     audios = _audioPlayerClass.getAudio();
     indice = _audioPlayerClass.getIndice();
     contador= contador + 1;
-    if (audios != null && _audioPlayerClass.getEscanciones()) {
+    if (audios != null && _audioPlayerClass.getEscanciones() && _position!=null) {
       if (contador == 5) {
         contador = 0;
         setState(() {

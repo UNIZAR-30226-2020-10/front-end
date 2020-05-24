@@ -31,7 +31,7 @@ class audioPlayerClass {
   List<Audio> audiosShuffleShow = new List<Audio>();
   int indiceShuffle;
   int primera = 0;
-  String idLista = '0';
+  String idLista = "1";
 
   bool iniciado = false;
   // Variables Notificaciones

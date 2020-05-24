@@ -170,7 +170,6 @@ Future< SongLista> fetchSonglists(String id) async {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader:Globals.seguridad
   });
-
   if (response.statusCode == 200) {
 
     return SongLista.fromJson(json.decode(response.body));

@@ -164,8 +164,11 @@ class _LoginState extends State<Login> {
             List<Audio> audios = null;
             int idLista = parsedJson['Lista'];
             int segundos = parsedJson['Segundo'];
+            print("------------");
+            print(idLista);
+            print("------------");
             if(idLista != null) {
-              SongLista canciones = await fetchSonglists(idLista.toString());
+              SongLista canciones = await fetchSonglists((idLista).toString());
               List<Audio> audios = canciones.songs;
             }
             Audio cancionNew = null;
