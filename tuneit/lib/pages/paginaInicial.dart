@@ -187,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             ],
           ),
-        )
+        ),
       ),
         bottomNavigationBar: bottomExpandableAudio(),
     );

@@ -36,7 +36,7 @@ class _NotificacionesState extends State<Notificaciones> {
    List<Peticion> peticiones = [];
    List<CompartidaCancion> songs=[];
    List<CompartidaLista>  playlists=[];
-   List<CompartidaPodcast>  podcasts=[];
+   Future<List<CompartidaPodcast>>  podcasts_future;
 
    void choiceAction(String choice) async{
      List<String> hola=choice.split("--");
@@ -70,17 +70,25 @@ class _NotificacionesState extends State<Notificaciones> {
    }
 
    Future <void> obtenerDatos() async{
-     List<CompartidaPodcast> ll= await CompartidosPodcastConmigo();
+     Future<List<CompartidaPodcast>> ll=  CompartidosPodcastConmigo();
+     List<CompartidaPodcast>  podcasts = await ll;
+
+
      List<Peticion> prueba = await buscarPeticiones();
      List<CompartidaCancion> canciones=await canciones_compartidas_conmigo();
      List<CompartidaLista>  listas=await listasCompartidas();
+     desNotificarLista(canciones,'/unnotify_song');
+     desNotificarLista(listas,'/unnotify_list');
+     desNotificarLista( podcasts,'/unnotify_podcast');
+
 
      setState(() {
        peticiones=prueba;
        songs=canciones;
        playlists=listas;
-       podcasts=ll;
+       podcasts_future=ll;
      });
+
 
    }
 
@@ -143,15 +151,12 @@ class _NotificacionesState extends State<Notificaciones> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text('  Podcasts compartidas', style: Theme.of(context).textTheme.subtitle,),
-
                 ),
 
                 SizedBox(height:  size_height*0.01,),
-
-               listaPodcastCompartidos(context,podcasts),
+                showPodcast(),
                 SizedBox(height:  size_height*0.01,),
               ]
-                 //
           ),
         ),
       bottomNavigationBar: bottomExpandableAudio(),
@@ -162,6 +167,31 @@ class _NotificacionesState extends State<Notificaciones> {
      Navigator.of(context).push(MaterialPageRoute(
        builder: (context) => ShowList(indetificadorLista: playlists[index].id.toString(), list_title: playlists[index].lista.name,esAmigo: true,),
      ));
+   }
+
+
+
+   Widget showPodcast(){
+     return FutureBuilder<List<CompartidaPodcast>>(
+       future: podcasts_future,
+       builder: (BuildContext context,AsyncSnapshot<List<CompartidaPodcast>> snapshot){
+
+
+         if(snapshot.connectionState== ConnectionState.done && snapshot.data!=null && snapshot.data.isNotEmpty){
+
+           return listaPodcastCompartidos(context,snapshot.data);
+
+
+         }
+         else{
+           return const Text(
+             'No hay notificaciones',
+             textAlign: TextAlign.center,
+           );
+
+         }
+       },
+     );
    }
 
 }

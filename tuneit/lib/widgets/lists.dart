@@ -408,7 +408,7 @@ Widget listaParaAudiosCompartidos(BuildContext context,List<CompartidaCancion> a
           padding: const EdgeInsets.all(8.0),
           child: Align(
           alignment: Alignment.centerLeft,
-            child:Text("No se han recomendaciones"),
+            child:Text("No se han encontrado recomendaciones"),
         )))
 
       ],
@@ -503,7 +503,7 @@ Widget listaParaListasCompartidos(BuildContext context,List<CompartidaLista> lis
           padding: const EdgeInsets.all(8.0),
           child:Align(
           alignment: Alignment.centerLeft,
-           child: Text("No se han recomendaciones"),)
+           child: Text("No se han encontrado recomendaciones"),)
           ))
 
       ],
@@ -547,6 +547,7 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> list
                         icon: Icon(Icons.check_circle),
                         onPressed: () async {
                           bool favorito = await checkFav(listas[index].podcast);
+                          bool resultado = await dejarDeCompartirPodcast(listas[index].devolverID().toString());
                           if (!favorito) {
                             isFav(listas[index].podcast,listas[index].mi_podcast.name);
                           }
@@ -556,7 +557,7 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> list
                       ),
                       IconButton(
                         onPressed: () async {
-                          bool resultado = await dejarDeCompartirPodcast(listas[index].podcast);
+                          bool resultado = await dejarDeCompartirPodcast(listas[index].devolverID().toString());
                           if (resultado) {
                             operacionExitoRecomendacion(context);
                           }

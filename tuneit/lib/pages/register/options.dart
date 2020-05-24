@@ -14,6 +14,7 @@ import 'package:tuneit/pages/register/mainView.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/errors.dart';
+import 'package:tuneit/widgets/lists.dart';
 import 'package:tuneit/widgets/pais.dart';
 import 'package:tuneit/widgets/textFields.dart';
 
@@ -26,9 +27,11 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
 
 
-  Future<File> la_imagen;
+
+  Future<List<Foto>> imagenes;
   String base64Image=null;
   File tmpFile=null;
+  String fighter=null;
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController nombre = TextEditingController();
   final TextEditingController password = TextEditingController();
@@ -44,12 +47,10 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
     return Scaffold(
       appBar: AppBar(),
-      drawer: LateralMenu(),
-
-        body:
+      body:
           SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
-                vertical: (25.0), horizontal: 25.0),
+                vertical: (15.0), horizontal: 15.0),
 
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -90,25 +91,34 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
 
                       SizedBox(height: size_height*0.05,),
 
-                      Row(children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Seleccionar foto', style: Theme.of(context).textTheme.subtitle,),
-                        ),
-                        IconButton(icon: Icon(Icons.photo), onPressed: (){
-                          setState(() {
-                            la_imagen = chooseImage_Gallery();
-                          });
+                    ListTile(
+                      title:           Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('Seleccionar foto', style: Theme.of(context).textTheme.subtitle,),
+                      ),
+                      trailing:        RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.white)),
+                        onPressed: (
 
-                        },),
+                            ) {
 
-                        IconButton(icon: Icon(Icons.camera), onPressed: (){
-                          setState(() {
-                            la_imagen =chooseImage_Camera();
-                          });
+                         Future<List<Foto>> DATOS=listasImagenes();
+                         setState(() {
+                           imagenes=DATOS;
+                         });
 
-                        },),
-                      ],),
+                        },
+                        color: Colors.deepPurple,
+                        textColor: Colors.white,
+                        child: Text("Cambiar imagen".toUpperCase(),
+                            style: TextStyle(fontSize: 14)),
+                      ) ,
+
+                    ),
+
+
 
                       SizedBox(height: size_height*0.05,),
                        Row(
@@ -233,22 +243,23 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
   }
 
   Widget showImage(){
-    return FutureBuilder<File>(
-      future: la_imagen,
-      builder: (BuildContext context,AsyncSnapshot<File> snapshot){
+    return FutureBuilder<List<Foto>>(
+      future: imagenes,
+      builder: (BuildContext context,AsyncSnapshot<List<Foto>> snapshot){
 
-        if(snapshot.connectionState== ConnectionState.done && snapshot.data!=null){
-          tmpFile=snapshot.data;
-          base64Image = base64Encode(snapshot.data.readAsBytesSync());
-          return Flexible(
-            child: Image.file(
-              snapshot.data,
-              fit: BoxFit.fill,
-            ),
-          );
+
+        if(snapshot.connectionState== ConnectionState.done && snapshot.data!=null && snapshot.data.isNotEmpty){
+          print(snapshot.data);
+
+          return Container(
+              height: 200,
+              width: 300,
+              child: completeListHorizontal( snapshot.data, onSelectImage, []));
+
 
         }
         else if(snapshot.error!=null){
+          print(snapshot.error);
           return const Text(
             'Ha fallado algo',
             textAlign: TextAlign.center,
@@ -264,6 +275,10 @@ class _opcionesPerfilState extends State<opcionesPerfil> {
         }
       },
     );
+  }
+
+  void onSelectImage (int index) {
+
   }
 
 

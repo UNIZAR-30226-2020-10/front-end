@@ -9,11 +9,11 @@ import 'package:tuneit/classes/values/Globals.dart';
 
 
 class Podcast {
-  String id;
-  String name;
-  String image;
-  String description;
-  String web_link;
+  String id="";
+  String name="";
+  String image="";
+  String description="";
+  String web_link="";
 
   Podcast({this.id,this.name, this.image,this.description,this.web_link});
   // [ {“ID”:, “Nombre” : x, “Artistas”:[], ”Album”: ,”URL”: }, Id2{}, …]
@@ -41,7 +41,6 @@ class Podcast {
   }
 
   factory Podcast.fromJson3(Map<String, dynamic> parsedJson) {
-      print(parsedJson['title']);
     return Podcast(
       id: parsedJson['id'],
       name: parsedJson['title'],
@@ -115,8 +114,6 @@ Future<Podcast> fetchPodcast(String podc) async {
       'X-ListenAPI-Key': Globals.api_key_podc
     },
   );
-  print(response.body);
-
   if (response.statusCode == 200) {
 
     Map<String, dynamic> parsedJson = json.decode(response.body);
@@ -253,11 +250,6 @@ Future<bool>  compartirPodcast(String podcast, String receptor) async {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader:Globals.seguridad,
   });
-  print('podcast '+ podcast);
-  print(receptor);
-  print(Globals.email);
-  print(response.body);
-  print(response.statusCode);
 
   if (response.statusCode == 200 && response.body== 'Success' ) {
 
@@ -281,14 +273,11 @@ Future<bool>  dejarDeCompartirPodcast(String id_compartida) async {
   };
 
   var uri = Uri.https(baseURL,'/unshare_podcast' ,queryParameters);
-  print(uri);
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader:Globals.seguridad
   });
-  print(response.statusCode);
-  print(response.body);
 
   if (response.statusCode == 200 && response.body== 'Success' ) {
 

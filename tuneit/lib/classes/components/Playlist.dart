@@ -42,6 +42,7 @@ class Playlist {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
 
@@ -73,6 +74,7 @@ Future<List<Playlist>> buscar_una_lista(String data, String user) async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
   if (response.statusCode == 200) {
@@ -94,6 +96,7 @@ Future<void> nuevaLista(String nombre, String desc, String email) async {
     'https://psoftware.herokuapp.com/create_list',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
     },
 
 
@@ -119,6 +122,7 @@ Future<void> borrarLista(String id) async {
     'https://psoftware.herokuapp.com/delete_list',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader:Globals.seguridad
     },
 
 
@@ -148,6 +152,7 @@ Future<List<Playlist>> listasUsuario(String email) async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
   if (response.statusCode == 200) {
@@ -190,6 +195,7 @@ Future<bool>  compartirLista(String amigo, String id_lista, String receptor, Str
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
   if (response.statusCode == 200 && response.body== 'Success' ) {

@@ -45,6 +45,7 @@ class Peticion extends Notificacion{
     List<dynamic> prueba1=json['Emisor'];
     Map emisormap=prueba1[0];
 
+
     return Peticion(
       emisor_nombre:emisormap['Nombre'],
       emisor_email: emisormap['Email'],

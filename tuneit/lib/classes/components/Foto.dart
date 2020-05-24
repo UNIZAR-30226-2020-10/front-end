@@ -12,6 +12,46 @@ import 'package:path/path.dart' as path;
 import 'package:async/async.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 
+class Foto {
+  String name;
+  String image;
+  int id;
+  Foto({this.name,this.image,this.id});
+
+//[{"ID": x,"Nombre":"x","Url":"x"}, {…}]
+  factory Foto.fromJson(Map<String, dynamic> json) {
+    return Foto(
+      name: json['Nombre'],
+      image: json['Url'],
+      id: json['ID'],
+    );
+  }
+}
+
+Future<List<Foto>> listasImagenes() async {
+
+  List<Foto> list = [];
+
+
+  var uri = Uri.https(baseURL,'/list_image');
+
+  final http.Response response = await http.get(uri, headers: {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
+  });
+
+  if (response.statusCode == 200) {
+
+    list = (json.decode(response.body) as List)
+        .map((data) => new Foto.fromJson(data))
+        .toList();
+    return list;
+
+  } else {
+    print('Failed to load user playlists');
+    return null;
+  }
+}
 
 
 Future <File> chooseImage_Gallery() async{
@@ -24,6 +64,7 @@ Future <File> chooseImage_Gallery() async{
     return ImagePicker.pickImage(source: ImageSource.camera);
 
   }
+
 
 
 Future<void> startUploadPhoto( File tmpFile , String base64Image) async{
