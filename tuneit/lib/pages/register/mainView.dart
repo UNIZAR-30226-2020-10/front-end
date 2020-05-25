@@ -143,7 +143,6 @@ class _MainViewState extends State<MainView> {
             lastSong = null;
             print(response.body + ': Failed to load last listened song');
           }
-
           sleep(const Duration(seconds:2));
           Navigator.push(
             context,

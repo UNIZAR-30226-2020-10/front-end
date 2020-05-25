@@ -189,7 +189,6 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
                           ),
                         ],
                       ),
-
                       // Sección de botones de la aplicación
                       new Row(mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

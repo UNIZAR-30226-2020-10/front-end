@@ -8,6 +8,7 @@ import 'package:tuneit/pages/audio/equalizer.dart';
 import 'package:tuneit/pages/ayuda.dart';
 import "package:tuneit/pages/profile.dart";
 import 'package:tuneit/pages/register/login.dart';
+import 'package:tuneit/pages/register/mainView.dart';
 import 'package:tuneit/pages/social/friend.dart';
 import 'package:tuneit/pages/social/notificaciones.dart';
 import 'package:tuneit/pages/audio/playlists.dart';
@@ -130,7 +131,7 @@ class LateralMenu extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Login(),
+                    builder: (context) => MainView(),
                   ),
                 );
               }
