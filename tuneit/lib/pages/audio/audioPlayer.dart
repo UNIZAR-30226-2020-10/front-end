@@ -101,6 +101,9 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
     audio_controller = BottomBarController(vsync: this, dragLength: 533, snap: true);
     if(_audioPlayerClass.getShuffle()){
       audios_show =  _audioPlayerClass.getAudioShuffle();
+      if(audios_show == null){
+        audios_show = audios;
+      }
     }
     else {
       if (_audioPlayerClass.getAudio() != null) {
