@@ -95,7 +95,7 @@ class _State extends State<ShowList> {
                 padding: const EdgeInsets.all(8),
                 scrollDirection: Axis.vertical,
                 onReorder: _onReorder,
-                children: listaParaAudios(context,audios,indetificadorLista,true,choiceAction),
+                children: esAmigo?listaParaAudiosCategorias(context,audios,indetificadorLista,true,choiceAction):listaParaAudios(context,audios,indetificadorLista,true,choiceAction2),
                 ),
                 ),
                 ]
@@ -218,8 +218,38 @@ class _State extends State<ShowList> {
 
   }
 
-
   void choiceAction(String choice) async{
+    List<String> hola=choice.split("--");
+    choice=hola[0];
+    int id_song=int.parse(hola[1]);
+    String id_lista=hola[2];
+    int indice=int.parse(hola[3]);
+
+    if(choice == optionMenuSongCategory[0]){
+      List<Playlist>listas=await fetchPlaylists(Globals.email);
+      mostrarListas(context,listas,id_song,false);
+    }
+    else if(choice ==optionMenuSongCategory[1]){
+      List<User> amigos=await listarAmigos();
+      mostrarAmigos(context,amigos,id_song);
+    }
+    else if(choice == optionMenuSongCategory[2]){
+      launchInBrowser(audios[indice].devolverTitulo(),audios[indice].devolverArtista());
+    }
+    else if(choice == optionMenuSongCategory[3]){
+      agregarCancion(Globals.idFavorite,id_song.toString());
+      agregada(context,Globals.idFavorite,audios[indice].devolverTitulo(),esAmigo);
+      // Pedir la lista de favoritos actualizada
+    }
+    else{
+      print ("Correct option was not found");
+
+    }
+
+  }
+
+
+  void choiceAction2(String choice) async{
     List<String> hola=choice.split("--");
     choice=hola[0];
     int id_song=int.parse(hola[1]);
