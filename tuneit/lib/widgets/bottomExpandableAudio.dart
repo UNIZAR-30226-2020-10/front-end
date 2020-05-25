@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,7 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
   Duration _duration;
   Duration _position;
   int contador = 0;
+  bool vecesInitState = true;
   Color iconRepeatColor = Colors.grey;
   Color iconShuffleColor = Colors.grey;
   StreamSubscription _durationSubscription;
@@ -61,7 +64,7 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
     audios = _audioPlayerClass.getAudio();
     indice = _audioPlayerClass.getIndice();
     contador= contador + 1;
-    if (audios != null && _audioPlayerClass.getEscanciones() && _position!=null) {
+    if (audios != null && _audioPlayerClass.getEscanciones() && _position!=null && _audioPlayer.playerState == PlayerState.PLAYING) {
       if (contador == 5) {
         contador = 0;
         setState(() {
@@ -283,14 +286,23 @@ class _bottomExpandableAudio extends State<bottomExpandableAudio> with SingleTic
   }
 
   Future<bool> sendLastSong(String email, String cancion, String segundos, String idLista) async {
-    var queryParameters = {
-      'email': email,
-      'cancion': cancion,
-      'segundo': segundos,
-      'lista': idLista
-    };
-    var uri = Uri.http(baseURL, '/set_last_song', queryParameters);
-    final http.Response response = await http.get(uri);
+    if(idLista == "NoLista"){
+      idLista = null;
+    }
+
+    final http.Response response = await http.post(
+      'https://' + baseURL + '/set_last_song',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader:Globals.seguridad,
+      },
+      body: jsonEncode(<String, String>{
+        'email' : email,
+        'cancion' : cancion,
+        'segundo' : segundos,
+        'lista' : idLista
+      }),
+    );
     if (response.body == 'Success') {
       return true;
     }

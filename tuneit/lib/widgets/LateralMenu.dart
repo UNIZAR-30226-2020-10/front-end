@@ -123,8 +123,7 @@ class LateralMenu extends StatelessWidget {
               title: Text('CERRAR SESION'),
               onTap:() async {
                 audioPlayerClass _audioPlayerClass = new audioPlayerClass();
-                _audioPlayerClass.dispose();
-                _audioPlayerClass.create();
+                _audioPlayerClass.pause();
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setString('user', '0');
                 prefs.setString('password', '0');

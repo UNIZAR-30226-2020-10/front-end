@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
@@ -135,7 +136,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     funcion_auxiliar();
-    if(_position != null && _audioPlayerClass.getEscanciones()) {
+    if(_position != null && _audioPlayerClass.getEscanciones() && _audioPlayer.playerState == PlayerState.PLAYING) {
       contador= contador + 1;
       if (contador == 5) {
         contador = 0;
@@ -262,7 +263,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                                 _audioPlayerClass.setValoresIniciales(audios,indice);
                                 _audioPlayerClass.rellenarUrl();
                                 _audioPlayerClass.rellenarNotificaciones();
-                                _audioPlayerClass.Changeplay();
+                                _audioPlayerClass.Changeplay(0);
                                 _audioPlayerClass.setPlaying(true);
                                 audios_show = _audioPlayerClass.getAudio();
                                 initAudioPlayer();
@@ -503,19 +504,23 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
   }
 
   Future<bool> sendLastSong(String email, String cancion, String segundos, String idLista) async {
-    var queryParameters = {
-      'email' : email,
-      'cancion' : cancion,
-      'segundo' : segundos,
-      'lista' : idLista
-    };
-
+    if(idLista == "NoLista"){
+      idLista = null;
+    }
     //HttpHeaders.authorizationHeader:Globals.seguridad
-    var uri = Uri.http(baseURL, '/set_last_song', queryParameters);
-    final http.Response response = await http.get(uri,headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      HttpHeaders.authorizationHeader:Globals.seguridad
-    });
+    final http.Response response = await http.post(
+      'https://' + baseURL + '/set_last_song',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader:Globals.seguridad,
+      },
+      body: jsonEncode(<String, String>{
+        'email' : email,
+        'cancion' : cancion,
+        'segundo' : segundos,
+        'lista' : idLista
+      }),
+    );
     if(response.body == 'Success'){
       return true;
     }

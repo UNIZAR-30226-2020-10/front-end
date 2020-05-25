@@ -122,7 +122,7 @@ class _MainViewState extends State<MainView> {
               if(encontrada) {
                 print(index);
                 print(audios.length);
-                _audioPlayerClass.setValoresIniciales(audios, index);
+                _audioPlayerClass.setValoresIniciales(audios, 0);
               }
               else{
                 _audioPlayerClass.setValoresIniciales(lastSong, 0);
@@ -132,14 +132,19 @@ class _MainViewState extends State<MainView> {
               _audioPlayerClass.firstplay(segundos);
               _audioPlayerClass.setPlaying(true);
               _audioPlayerClass.setIniciado(true);
-              _audioPlayerClass.setIdLista(idLista.toString());
+              if(idLista != null){
+                _audioPlayerClass.setIdLista(idLista.toString());
+              }
+              else{
+                _audioPlayerClass.setIdLista("NoLista");
+              }
             }
           } else {
             lastSong = null;
             print(response.body + ': Failed to load last listened song');
           }
 
-          sleep(const Duration(seconds:1));
+          sleep(const Duration(seconds:2));
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MyHomePage()),

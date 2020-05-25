@@ -163,20 +163,25 @@ class _LoginState extends State<Login> {
             else{
               lastSong = null;
             }
+
             int idLista = parsedJson['Lista'];
             if(idLista == 0){
               idLista = null;
             }
+
             int segundos = parsedJson['Segundo'];
+
             List<Audio> audios = null;
             if(idLista != null) {
               SongLista canciones = await fetchSonglists((idLista).toString());
               audios = canciones.songs;
             }
+
             Audio cancionNew = null;
             if(lastSong != null) {
               cancionNew = lastSong[0];
             }
+
             int index = 0;
             bool encontrada = false;
             if(audios != null) {
@@ -194,26 +199,30 @@ class _LoginState extends State<Login> {
               }
             }
             if(lastSong != null && segundos != null){
-              print("Aquí meto tremenda cancion al Reproductor");
               if(encontrada) {
                 _audioPlayerClass.setValoresIniciales(audios, index);
               }
               else{
-                _audioPlayerClass.setValoresIniciales(lastSong, 0);
+                _audioPlayerClass.setValoresIniciales(lastSong, index);
               }
               _audioPlayerClass.rellenarUrl();
               _audioPlayerClass.rellenarNotificaciones();
               _audioPlayerClass.firstplay(segundos);
               _audioPlayerClass.setPlaying(true);
               _audioPlayerClass.setIniciado(true);
-              _audioPlayerClass.setIdLista(idLista.toString());
+              if(idLista != null){
+                _audioPlayerClass.setIdLista(idLista.toString());
+              }
+              else{
+                _audioPlayerClass.setIdLista("NoLista");
+              }
             }
           } else {
             lastSong = null;
             print(response.body + ': Failed to load last listened song');
           }
 
-          sleep(const Duration(seconds:1));
+          sleep(const Duration(seconds:2));
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MyHomePage()),

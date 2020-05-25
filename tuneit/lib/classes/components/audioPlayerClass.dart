@@ -126,32 +126,10 @@ class audioPlayerClass {
   }
 
   Future<void> firstplay(int segundos) async {
-    if (audios != null) {
-      if(!_playAll) {
-        final Result result = await _audioPlayer.playAll(urls,index: indice,
-          repeatMode: false,
-          respectAudioFocus: false,
-          playerMode: PlayerMode.FOREGROUND,
-          audioNotifications: audioNotifications,
-        );
-        _audioPlayer.seekPosition(Duration(milliseconds: segundos));
-        _playAll = true;
-        if (result == Result.ERROR) {
-          print("something went wrong in play method :(");
-        }
-
-      }
-      else{
-        final Result result = await _audioPlayer.resume();
-        if (result == Result.ERROR) {
-          print("something went wrong in play method :(");
-        }
-      }
-    }
-
+    Changeplay(segundos);
   }
 
-  Future<void> Changeplay() async {
+  Future<void> Changeplay(int segundos) async {
     if (audios != null) {
         _audioPlayer.dispose();
         _audioPlayer = new AudioPlayer();
@@ -160,6 +138,7 @@ class audioPlayerClass {
           respectAudioFocus: false,
           playerMode: PlayerMode.FOREGROUND,
           audioNotifications: audioNotifications,
+          position: Duration(milliseconds: segundos)
         );
         _playAll = true;
         if (result == Result.ERROR) {
