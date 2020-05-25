@@ -119,6 +119,7 @@ Future<bool> canciones_compartidas_eliminar(String id) async {
 
   final http.Response response = await http.get(uri, headers: {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader:Globals.seguridad
   });
 
 
