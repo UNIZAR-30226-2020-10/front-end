@@ -122,11 +122,7 @@ class _ArtistProfileState extends State<ArtistProfile> {
                           alignment: Alignment.centerLeft,
                           child: iconText(artist.country, Icons.place),
                         ),
-                        SizedBox(height: 5,),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: iconText(artist.date, Icons.cake),
-                        ),
+
                       ],
                     ),
                   )
