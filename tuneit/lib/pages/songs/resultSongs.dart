@@ -31,29 +31,29 @@ class _ResultSongListState extends State<ResultSongList> {
 
 
 
+
   void choiceAction(String choice) async{
     List<String> hola=choice.split("--");
     choice=hola[0];
     int id_song=int.parse(hola[1]);
+    String id_lista=hola[2];
     int indice=int.parse(hola[3]);
 
-    if(choice == optionMenuSong[0]){
+    if(choice == optionMenuSongCategory[0]){
       List<Playlist>listas=await fetchPlaylists(Globals.email);
       mostrarListas(context,listas,id_song,false);
     }
-    else if(choice ==optionMenuSong[1]){
+    else if(choice ==optionMenuSongCategory[1]){
       List<User> amigos=await listarAmigos();
       mostrarAmigos(context,amigos,id_song);
-
     }
-    else if(choice ==optionMenuSong[2]){
-
-    }
-    else if(choice == optionMenuSong[3]){
+    else if(choice == optionMenuSongCategory[2]){
       launchInBrowser(widget.songs[indice].devolverTitulo(),widget.songs[indice].devolverArtista());
     }
-    else if(choice == optionMenuSong[4]){
+    else if(choice == optionMenuSongCategory[3]){
+      agregarCancion(Globals.idFavorite,id_song.toString());
       agregada(context,Globals.id_fav,widget.songs[indice].devolverTitulo(),false);
+      // Pedir la lista de favoritos actualizada
     }
     else{
       print ("Correct option was not found");
@@ -61,6 +61,8 @@ class _ResultSongListState extends State<ResultSongList> {
     }
 
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,7 @@ class _ResultSongListState extends State<ResultSongList> {
           ),
           Expanded(
             child:ListView(
-            children: listaParaAudios(context,widget.songs, "NoLista",true,choiceAction),
+            children: listaParaAudiosCategorias(context,widget.songs, "NoLista",true,choiceAction),
           ),
             ),
         ],

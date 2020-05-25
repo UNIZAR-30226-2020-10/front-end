@@ -366,7 +366,7 @@ Widget listaParaAudiosCompartidos(BuildContext context,List<CompartidaCancion> a
                     PopupMenuButton<String>(
                       onSelected: choiceAction,
                       itemBuilder: (BuildContext context) {
-                        return optionMenuSong.map((String choice) {
+                        return optionMenuSongCategory.map((String choice) {
                           return PopupMenuItem<String>(
                             value: (choice + "--" +
                                 audios[index].devolverID().toString() + "--" +

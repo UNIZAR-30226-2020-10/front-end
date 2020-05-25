@@ -167,7 +167,10 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
 
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
         actions: <Widget>[
+
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(

@@ -47,7 +47,7 @@ class _State extends State<ShowAlbum> {
 
     return Scaffold(
       appBar:AppBar(
-        title:Text('ALBUM: ' + album.name),
+        title:Text('ALBUM'),
         centerTitle: true,
         actions: <Widget>[
           PopupMenuButton<String>(

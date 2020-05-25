@@ -158,8 +158,8 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                 child: IconButton(
                   iconSize: 20.0,
                   icon: Icon(esFavorita ?
-                  Icons.favorite :
-                  Icons.favorite_border),
+                  Icons.star :
+                  Icons.star_border),
                     onPressed: (){
                       if(esFavorita){
                         eliminarCancionDeLista(Globals.idFavorite,audios[indice].devolverID().toString());
