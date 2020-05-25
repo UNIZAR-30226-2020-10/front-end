@@ -165,7 +165,8 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                       }
                     }
                 ),
-              ):Container(width: 0,height: 0,)
+              ) :
+              Container(width: 0,height: 0,)
             ],
             backgroundColor: Colors.transparent,
             elevation: 0.0,
@@ -400,7 +401,8 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                 child: Card(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
+                    children:
+                    audios_show != null ? <Widget>[
                       Text(
                         "",
                         textAlign: TextAlign.center,
@@ -410,10 +412,8 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                        padding: const EdgeInsets.all(8),
                        scrollDirection: Axis.vertical,
                        onReorder: _onReorder,
-                       children:
-                        audios_show != null ?
-                          List.generate(
-                            audios_show.length, (index) {
+                       children: List.generate(
+                          audios_show.length, (index) {
                               return Card(
                                 key: Key('$index'),
                                 child: new ListTile(
@@ -433,10 +433,10 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                                 ),
                               );
                             },
-                          ):
-                        Container(width: 0,height: 0,),
+                        ),
                     ),
-                   )],
+                   )] :
+                    Container(width: 0,height: 0,),
                   ),
                 )
               ),
