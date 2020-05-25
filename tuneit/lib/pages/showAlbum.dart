@@ -153,7 +153,10 @@ class _State extends State<ShowAlbum> {
       launchInBrowser(album.songs[indice].devolverTitulo(),album.songs[indice].devolverArtista());
     }
     else if(choice == optionMenuSongCategory[3]){
-      agregada(context,Globals.id_fav,album.songs[indice].devolverTitulo(),false);
+      print(Globals.idFavorite);
+      // agregarCancion(Globals.idFavorite,audios[indice].devolverID().toString());
+      agregarCancion(Globals.idFavorite,id_song.toString());
+      agregada(context,Globals.idFavorite,album.songs[indice].devolverTitulo(),false);
     }
     else{
       print ("Correct option was not found");

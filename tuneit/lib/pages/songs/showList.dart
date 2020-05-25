@@ -242,7 +242,8 @@ class _State extends State<ShowList> {
       launchInBrowser(audios[indice].devolverTitulo(),audios[indice].devolverArtista());
     }
     else if(choice == optionMenuSong[4]){
-      agregada(context,Globals.id_fav,audios[indice].devolverTitulo(),esAmigo);
+      agregarCancion(Globals.idFavorite,id_song.toString());
+      agregada(context,Globals.idFavorite,audios[indice].devolverTitulo(),esAmigo);
     }
     else{
       print ("Correct option was not found");

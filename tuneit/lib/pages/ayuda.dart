@@ -95,7 +95,7 @@ class Ayuda extends StatelessWidget {
               SizedBox(height: 10,),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text('¿En dónde puedo usar TuneIT?', style: TextStyle(fontSize: 20)),
+                child: Text('Dónde puedo usar TuneIT?', style: TextStyle(fontSize: 20)),
               ),
               SizedBox(height: 10,),
               Align(

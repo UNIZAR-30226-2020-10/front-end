@@ -158,7 +158,8 @@ class _SearcherResultState extends State<SearcherResult> {
       launchInBrowser(widget.songs[indice].devolverTitulo(),widget.songs[indice].devolverArtista());
     }
     else if(choice == optionMenuSongCategory[3]){
-      agregada(context,Globals.id_fav,widget.songs[indice].devolverTitulo(),false);
+      agregarCancion(Globals.idFavorite,id_song.toString());
+      agregada(context,Globals.idFavorite,widget.songs[indice].devolverTitulo(),false);
       // Pedir la lista de favoritos actualizada
     }
     else{
