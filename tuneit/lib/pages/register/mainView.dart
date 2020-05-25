@@ -27,7 +27,6 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   List<String> datos = new List<String>();
   audioPlayerClass _audioPlayerClass;
-
   @override
   void initState() {
     // TODO: implement initState
