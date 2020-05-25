@@ -38,8 +38,18 @@ class _FriendListPageState extends State<Friend_List> {
           title: Text('LISTA DE AMIGOS'),
           bottom: TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.youtube_searched_for)),
-              Tab(icon: Icon(Icons.face)),
+              Tab(
+
+
+                  text: "Busque nuevos amigos",
+                  icon: Icon(Icons.youtube_searched_for)
+          //
+           ),
+
+
+              Tab(
+                  text: "Lista de amigos",
+                  icon: Icon(Icons.face)),
             ],
           ),
           centerTitle: true,

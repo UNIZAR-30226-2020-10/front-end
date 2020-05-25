@@ -27,7 +27,7 @@ const String exito_mensaje="Exito";
 
 
 const String agregarListaAmigo="Agregar a tus listas de reproducción";
-const String aceptar_mensaje="Aceptar";
+const String aceptar_mensaje="Aceptar ";
 const String rechazar_mensaje="Rechazar";
 
 const String baseURL = 'psoftware.herokuapp.com';
