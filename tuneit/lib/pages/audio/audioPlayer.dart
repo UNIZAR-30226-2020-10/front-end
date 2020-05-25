@@ -411,7 +411,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                        scrollDirection: Axis.vertical,
                        onReorder: _onReorder,
                        children:
-                        audios_show == null ?
+                        audios_show != null ?
                           List.generate(
                             audios_show.length, (index) {
                               return Card(
