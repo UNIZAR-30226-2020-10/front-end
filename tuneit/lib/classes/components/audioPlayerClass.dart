@@ -8,6 +8,7 @@ import 'package:tuneit/classes/values/Globals.dart';
 import 'Audio.dart';
 import 'package:http/http.dart' as http;
 
+// Clase Singleton de la aplicacion
 class audioPlayerClass {
 
   // Implementacion Singleton
@@ -27,17 +28,20 @@ class audioPlayerClass {
   bool playing = false;
   List<String> urls = new List<String>();
   bool escanciones = true;
+  bool iniciado = false;
+
   // Variables Shuffle
   List<int> audiosShuffle = new List<int>();
   List<Audio> audiosShuffleShow = new List<Audio>();
   int indiceShuffle;
   int primera = 0;
+
+  // Valor inicial de idLista
   String idLista = "1";
 
-  bool iniciado = false;
   // Variables Notificaciones
   List<AudioNotification> audioNotifications = new List<AudioNotification>();
-  //////////////////////////////
+
   // Funciones Set y Get de parametros
   void setValoresIniciales(List<Audio> audios, int indice) {
     this.audios = audios;
@@ -85,12 +89,16 @@ class audioPlayerClass {
   String getIdLista(){
     return idLista;
   }
+
+  // Dispose y create del AudioPlayer
   void dispose(){
     _audioPlayer.dispose();
   }
   void create(){
     _audioPlayer = new AudioPlayer();
   }
+
+  // Funcion para ir de una canción a otra
   Future<void> goTo(int indice_a_ir) async {
     final Result result = await _audioPlayer.seekIndex(indice_a_ir);
     if (result == Result.FAIL) {
@@ -100,6 +108,28 @@ class audioPlayerClass {
       print("something went wrong in pause :(");
     }
   }
+
+  // Funcion para cambiar de una lista de reproduccion a otra
+  Future<void> changePlay(int segundos) async {
+    if (audios != null) {
+        _audioPlayer.dispose();
+        _audioPlayer = new AudioPlayer();
+        final Result result = await _audioPlayer.playAll(urls,index: indice,
+          repeatMode: false,
+          respectAudioFocus: false,
+          playerMode: PlayerMode.FOREGROUND,
+          audioNotifications: audioNotifications,
+          position: Duration(milliseconds: segundos)
+        );
+        _playAll = true;
+        if (result == Result.ERROR) {
+          print("something went wrong in play method :(");
+        }
+    }
+
+  }
+
+  // Play del AudioPlayer
   Future<void> play() async {
     if (audios != null) {
       if(!_playAll) {
@@ -125,29 +155,7 @@ class audioPlayerClass {
 
   }
 
-  Future<void> firstplay(int segundos) async {
-    Changeplay(segundos);
-  }
-
-  Future<void> Changeplay(int segundos) async {
-    if (audios != null) {
-        _audioPlayer.dispose();
-        _audioPlayer = new AudioPlayer();
-        final Result result = await _audioPlayer.playAll(urls,index: indice,
-          repeatMode: false,
-          respectAudioFocus: false,
-          playerMode: PlayerMode.FOREGROUND,
-          audioNotifications: audioNotifications,
-          position: Duration(milliseconds: segundos)
-        );
-        _playAll = true;
-        if (result == Result.ERROR) {
-          print("something went wrong in play method :(");
-        }
-    }
-
-  }
-
+  // Pause del AudioPlayer
   Future<void> pause() async {
     if(audios != null) {
       final Result result = await _audioPlayer.pause();
@@ -160,6 +168,7 @@ class audioPlayerClass {
     }
   }
 
+  // Stop del AudioPlayer
   Future<void> stop() async {
     if(audios != null) {
       indice = 0;
@@ -173,6 +182,7 @@ class audioPlayerClass {
     }
   }
 
+  // Funcion para permitir repetir listas de reproduccion
   Future<void> repeat() async {
     if (audios != null) {
       final Result result = await _audioPlayer.setRepeatMode(_repeatMode);
@@ -185,6 +195,7 @@ class audioPlayerClass {
     }
   }
 
+  // Avanzar a la siguiente cancion
   Future<void> next() async {
     if(audios != null) {
       if (!_shuffleMode) {
@@ -222,6 +233,7 @@ class audioPlayerClass {
     }
   }
 
+  // Ir a la anterior cancion
   Future<void> previous() async {
     if(audios != null) {
       if (!_shuffleMode) {
@@ -259,6 +271,7 @@ class audioPlayerClass {
     }
   }
 
+  // Me quedo con las URL de las canciones
   void rellenarUrl() {
     urls = new List<String>();
     for(int i = 0; i < audios.length; i++){
@@ -266,6 +279,7 @@ class audioPlayerClass {
     }
   }
 
+  // Relleno notificaciones para la interfaz superior del móvil
   void rellenarNotificaciones(){
     audioNotifications = new List<AudioNotification>();
     for(int i = 0; i < audios.length; i++){
@@ -279,6 +293,7 @@ class audioPlayerClass {
     }
   }
 
+  // Funcion que me permite mezclar canciones
   Future<void> shuffle() async {
     if(audios != null) {
       audiosShuffle = new List<int>();
@@ -299,6 +314,7 @@ class audioPlayerClass {
     }
   }
 
+  // Peticion para saber si existe o no una canción en favoritos
   Future<bool> existeCancionFav (Audio cancion ) async {
     final http.Response response = await http.post(
       'https://' + baseURL + '/is_fav',
@@ -317,5 +333,4 @@ class audioPlayerClass {
       return  Future<bool>.value(false);
     }
   }
-
 }

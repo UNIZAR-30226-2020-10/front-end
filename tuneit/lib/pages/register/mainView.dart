@@ -129,7 +129,7 @@ class _MainViewState extends State<MainView> {
               }
               _audioPlayerClass.rellenarUrl();
               _audioPlayerClass.rellenarNotificaciones();
-              _audioPlayerClass.firstplay(segundos);
+              _audioPlayerClass.changePlay(segundos);
               _audioPlayerClass.setPlaying(true);
               _audioPlayerClass.setIniciado(true);
               if(idLista != null){
