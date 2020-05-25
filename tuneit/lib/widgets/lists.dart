@@ -256,7 +256,6 @@ Widget listaParaNotificaciones(BuildContext context,List<Notificacion> list,anch
                   child: Row(
                     children: <Widget>[
                       IconButton(
-                        color:Colors.green,
                         onPressed: () async {
                           bool prueba= await reactNotificacion(list[index].devolverID().toString(),'Acepto');
                           if(prueba){
@@ -269,6 +268,7 @@ Widget listaParaNotificaciones(BuildContext context,List<Notificacion> list,anch
                           }
                         },
                         icon:Icon(Icons.check_circle),
+                        color:Colors.green,
                         tooltip: aceptar_mensaje,
                       ),
                       IconButton(
@@ -390,6 +390,7 @@ Widget listaParaAudiosCompartidos(BuildContext context,List<CompartidaCancion> a
                       },
                       icon: Icon(Icons.cancel),
                       color: Colors.red,
+                      tooltip: rechazar_mensaje,
                     ),
                   ],
                 ),
@@ -455,6 +456,8 @@ Widget listaParaListasCompartidos(BuildContext context,List<CompartidaLista> lis
               child: Row(
                 children: <Widget>[
                   IconButton(
+                  color:Colors.green,
+                  tooltip: aceptar_mensaje,
                     icon: Icon(Icons.check_circle),
                     onPressed: () async {
                       bool resultado = await agregarLista(
@@ -484,6 +487,7 @@ Widget listaParaListasCompartidos(BuildContext context,List<CompartidaLista> lis
                     },
                     icon: Icon(Icons.cancel),
                     color: Colors.red,
+                    tooltip: rechazar_mensaje,
                   ),
                 ],
               ),
@@ -556,6 +560,8 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> list
                           operacionExitoRecomendacion(context);
 
                         },
+                          color:Colors.green,
+                          tooltip: aceptar_mensaje
                       ),
                       IconButton(
                         onPressed: () async {
@@ -570,6 +576,7 @@ Widget listaPodcastCompartidos(BuildContext context,List<CompartidaPodcast> list
                         },
                         icon: Icon(Icons.cancel),
                         color: Colors.red,
+                        tooltip: rechazar_mensaje,
                       ),
                     ],
                   ),
