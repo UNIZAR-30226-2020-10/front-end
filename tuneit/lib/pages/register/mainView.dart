@@ -67,6 +67,7 @@ class _MainViewState extends State<MainView> {
             'https://' + baseURL + '/get_last_song',
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
+              HttpHeaders.authorizationHeader:Globals.seguridad
             },
             body: jsonEncode(<String, dynamic>{
               'email' : Globals.email
@@ -120,12 +121,11 @@ class _MainViewState extends State<MainView> {
             if(lastSong != null && segundos != null){
               print("Aquí meto tremenda cancion al Reproductor");
               if(encontrada) {
-                print(index);
                 print(audios.length);
-                _audioPlayerClass.setValoresIniciales(audios, 0);
+                _audioPlayerClass.setValoresIniciales(audios, index);
               }
               else{
-                _audioPlayerClass.setValoresIniciales(lastSong, 0);
+                _audioPlayerClass.setValoresIniciales(lastSong, index);
               }
               _audioPlayerClass.rellenarUrl();
               _audioPlayerClass.rellenarNotificaciones();
