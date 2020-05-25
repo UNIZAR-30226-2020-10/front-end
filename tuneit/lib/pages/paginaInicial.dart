@@ -212,7 +212,8 @@ class _MyHomePageState extends State<MyHomePage> {
       launchInBrowser(listaUltCanc[indice].devolverTitulo(),listaUltCanc[indice].devolverArtista());
     }
     else if(choice == optionMenuSongCategory[3]){
-      agregada(context,Globals.id_fav,listaUltCanc[indice].devolverTitulo(),false);
+      agregarCancion(Globals.idFavorite,id_song.toString());
+      agregada(context,Globals.idFavorite,listaUltCanc[indice].devolverTitulo(),false);
       // Pedir la lista de favoritos actualizada
     }
     else{
