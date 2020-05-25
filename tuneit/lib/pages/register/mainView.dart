@@ -11,6 +11,7 @@ import 'package:tuneit/classes/components/audioPlayerClass.dart';
 import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
+import 'package:tuneit/pages/ayuda.dart';
 import 'package:tuneit/pages/register/login.dart';
 import 'package:tuneit/pages/register/register.dart';
 import 'package:tuneit/widgets/buttons.dart';
@@ -164,6 +165,35 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      appBar: AppBar(
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+
+              icon:Icon(Icons.help_outline),
+              tooltip: 'Ayuda',
+              onPressed: (){
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Ayuda(),
+                  ),
+                );
+
+
+
+
+              },
+
+            ),
+          ),],
+
+      ),
+
+
       body: Container(
           child: Column(
               children: <Widget>[
