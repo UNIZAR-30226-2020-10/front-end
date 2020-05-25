@@ -401,8 +401,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                 child: Card(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children:
-                    audios_show != null ? <Widget>[
+                    children: <Widget>[
                       Text(
                         "",
                         textAlign: TextAlign.center,
@@ -435,8 +434,7 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
                             },
                         ),
                     ),
-                   )] :
-                    Container(width: 0,height: 0,),
+                   )],
                   ),
                 )
               ),
