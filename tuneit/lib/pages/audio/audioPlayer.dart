@@ -106,6 +106,9 @@ class _PlayerPageState extends State<PlayerPage> with SingleTickerProviderStateM
       if (_audioPlayerClass.getAudio() != null) {
         audios_show = _audioPlayerClass.getAudio();
       }
+      else{
+        audios_show = audios;
+      }
     }
     funcion_auxiliar();
   }
