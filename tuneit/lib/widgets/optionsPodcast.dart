@@ -1,8 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Podcast.dart';
-import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/podcast/Podcast.dart';
+import 'package:tuneit/classes/components/usuario/User.dart';
 import 'package:tuneit/widgets/errors.dart';
 
 void mostrarAmigosPodcast(BuildContext context,List<User> amigos, String id_podcast)async{

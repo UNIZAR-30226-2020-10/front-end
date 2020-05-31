@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Audio.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
-import 'package:tuneit/classes/components/Song.dart';
-import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/audio/Audio.dart';
+import 'package:tuneit/classes/components/playlist/Playlist.dart';
+import 'package:tuneit/classes/components/cancion/Song.dart';
+import 'package:tuneit/classes/components/usuario/User.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/widgets/TuneITProgressIndicator%20.dart';

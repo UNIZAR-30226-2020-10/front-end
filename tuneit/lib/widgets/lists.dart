@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
-import 'package:tuneit/classes/components/Audio.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
-import 'package:tuneit/classes/components/Podcast.dart';
+import 'package:tuneit/classes/components/audio/Audio.dart';
+import 'package:tuneit/classes/components/playlist/Playlist.dart';
+import 'package:tuneit/classes/components/podcast/Podcast.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaPodcast.dart';

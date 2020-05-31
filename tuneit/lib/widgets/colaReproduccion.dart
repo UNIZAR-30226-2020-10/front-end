@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getflutter/getflutter.dart';
-import 'package:tuneit/classes/components/Song.dart';
+import 'package:tuneit/classes/components/cancion/Song.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 
 Widget colaReproduccion(List<Song> canciones,int actual) {

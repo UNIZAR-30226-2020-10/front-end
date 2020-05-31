@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Artist.dart';
+import 'package:tuneit/classes/components/cancion/Artist.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/widgets/LateralMenu.dart';
 import 'package:tuneit/widgets/bottomExpandableAudio.dart';

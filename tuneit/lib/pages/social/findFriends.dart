@@ -3,7 +3,7 @@ import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:getflutter/getflutter.dart';
-import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/usuario/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/profile.dart';

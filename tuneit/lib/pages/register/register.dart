@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Foto.dart';
-import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/usuario/Foto.dart';
+import 'package:tuneit/classes/components/usuario/User.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/widgets/buttons.dart';
 import 'package:tuneit/widgets/pais.dart';

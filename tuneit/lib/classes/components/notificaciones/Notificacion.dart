@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:tuneit/api/messaging.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/components/playlist/Playlist.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
 import 'package:tuneit/classes/components/notificaciones/Peticion.dart';

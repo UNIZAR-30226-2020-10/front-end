@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
-import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/playlist/Playlist.dart';
+import 'package:tuneit/classes/components/usuario/User.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/ColorSets.dart';
 import 'package:tuneit/classes/values/Globals.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
+import 'package:tuneit/classes/components/playlist/Playlist.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/pages/songs/showList.dart';
 class ResultListPlaylist extends StatelessWidget {

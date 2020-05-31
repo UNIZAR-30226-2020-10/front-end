@@ -7,7 +7,7 @@ import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 
-import '../User.dart';
+import '../usuario/User.dart';
 
 class Peticion extends Notificacion{
 

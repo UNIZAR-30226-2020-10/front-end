@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Audio.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
-import 'package:tuneit/classes/components/Song.dart';
-import 'package:tuneit/classes/components/User.dart';
-import 'package:tuneit/classes/components/audioPlayerClass.dart';
+import 'package:tuneit/classes/components/audio/Audio.dart';
+import 'package:tuneit/classes/components/playlist/Playlist.dart';
+import 'package:tuneit/classes/components/cancion/Song.dart';
+import 'package:tuneit/classes/components/usuario/User.dart';
+import 'package:tuneit/classes/components/audio/audioPlayerClass.dart';
 import 'package:tuneit/classes/components/notificaciones/PushProvider.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';

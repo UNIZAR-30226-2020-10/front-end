@@ -7,8 +7,8 @@ import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 
-import '../Song.dart';
-import '../User.dart';
+import '../cancion/Song.dart';
+import '../usuario/User.dart';
 
 class CompartidaCancion extends Notificacion{
 

@@ -5,16 +5,16 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
-import 'package:tuneit/classes/components/Podcast.dart';
+import 'package:tuneit/classes/components/playlist/Playlist.dart';
+import 'package:tuneit/classes/components/podcast/Podcast.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';
 import 'package:tuneit/pages/podcast/resultPodcasts.dart';
 import 'package:tuneit/pages/songs/searcherResult.dart';
 
-import 'Album.dart';
-import 'Artist.dart';
-import 'Song.dart';
+import '../cancion/Album.dart';
+import '../cancion/Artist.dart';
+import '../cancion/Song.dart';
 
 class Searcher extends StatefulWidget {
 

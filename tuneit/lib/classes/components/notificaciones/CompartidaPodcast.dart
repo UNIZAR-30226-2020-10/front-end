@@ -2,9 +2,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:tuneit/classes/components/Podcast.dart';
-import 'package:tuneit/classes/components/Song.dart';
-import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/podcast/Podcast.dart';
+import 'package:tuneit/classes/components/cancion/Song.dart';
+import 'package:tuneit/classes/components/usuario/User.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
 import 'package:tuneit/classes/values/Constants.dart';
 import 'package:tuneit/classes/values/Globals.dart';

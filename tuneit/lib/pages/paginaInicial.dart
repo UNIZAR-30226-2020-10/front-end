@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:tuneit/classes/components/Artist.dart';
-import 'package:tuneit/classes/components/Audio.dart';
-import 'package:tuneit/classes/components/Category.dart';
-import 'package:tuneit/classes/components/Playlist.dart';
-import 'package:tuneit/classes/components/Podcast.dart';
-import 'package:tuneit/classes/components/Song.dart';
-import 'package:tuneit/classes/components/User.dart';
+import 'package:tuneit/classes/components/cancion/Artist.dart';
+import 'package:tuneit/classes/components/audio/Audio.dart';
+import 'package:tuneit/classes/components/cancion/Category.dart';
+import 'package:tuneit/classes/components/playlist/Playlist.dart';
+import 'package:tuneit/classes/components/podcast/Podcast.dart';
+import 'package:tuneit/classes/components/cancion/Song.dart';
+import 'package:tuneit/classes/components/usuario/User.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaCancion.dart';
 import 'package:tuneit/classes/components/notificaciones/CompartidaLista.dart';
 import 'package:tuneit/classes/components/notificaciones/Notificacion.dart';
